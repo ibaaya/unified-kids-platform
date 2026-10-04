@@ -60,22 +60,12 @@ export function DiscoverHome() {
   ).length
 
   return (
-    <div className="relative min-h-screen pb-28" dir="rtl">
+    <div className="relative isolate min-h-screen pb-28" dir="rtl" style={{ backgroundImage: 'linear-gradient(160deg, rgba(4,30,25,.58) 0%, rgba(7,26,38,.64) 55%, rgba(5,16,28,.68) 100%), url("/images/discover_bg.webp")', backgroundPosition: 'center', backgroundSize: 'cover', backgroundAttachment: 'fixed' }}>
 
       {/* ─── أنماط CSS المدمجة ─── */}
       <style>{ANIMATIONS}</style>
 
-      {/* ══════════════════════════════════════
-          خلفية الصفحة — تدرج داكن خضراء/زرقاء
-      ══════════════════════════════════════ */}
-      <div
-        aria-hidden="true"
-        className="pointer-events-none fixed inset-0 -z-20"
-        style={{
-          background:
-            'linear-gradient(160deg, #06281a 0%, #0a1e2e 55%, #081420 100%)',
-        }}
-      />
+
       {/* طبقة تعتيم شفافة إضافية للعمق */}
       <div
         aria-hidden="true"

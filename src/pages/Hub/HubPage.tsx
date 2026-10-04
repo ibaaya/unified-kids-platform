@@ -115,10 +115,10 @@ const MODULES = [
     gradient: 'linear-gradient(135deg, #2fb68c 0%, #3aa0d9 100%)',
     glowColor: 'rgba(47,182,140,.50)',
     border: '#2fb68c',
-    textColor: '#064e3b',
+    textColor: '#e8fff7',
     dir: 'rtl' as const,
     flag: '🌍',
-    video: null,
+    video: '/video/discover_intro.mp4',
     shadowColor: 'rgba(47,182,140,.40)',
     iconBg: 'linear-gradient(145deg, #c8f7e4, #6ddbb8)',
   },
@@ -467,7 +467,7 @@ export function HubPage() {
                 style={{
                   borderRadius: '24px',
                   border: `2px solid rgba(255,255,255,.15)`,
-                  background: 'rgba(255,255,255,.07)',
+                  background: mod.id === 'discover' ? 'rgba(5,34,42,.58)' : 'rgba(255,255,255,.07)',
                   backdropFilter: 'blur(14px)',
                   // ظل خارجي ملوّن يعطي شخصية لكل بطاقة
                   boxShadow: `
