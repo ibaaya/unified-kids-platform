@@ -1,0 +1,113 @@
+@import "tailwindcss";
+@import "./styles/tokens.css";
+
+@font-face {
+  font-family: 'Cairo';
+  src: local('Cairo');
+}
+
+html, body {
+  direction: rtl;
+  background:
+    radial-gradient(ellipse at 8% 8%, rgba(255, 214, 133, 0.24), transparent 34rem),
+    radial-gradient(ellipse at 92% 32%, rgba(122, 199, 226, 0.18), transparent 38rem),
+    linear-gradient(160deg, #edf8f5 0%, #f4f7ff 55%, #fff8ec 100%);
+  background-attachment: fixed;
+  color: var(--color-ink);
+  font-family: var(--font-body);
+  min-height: 100%;
+}
+
+.mascot-moon {
+  animation: moon-float 3s ease-in-out infinite;
+  transform-origin: center;
+}
+
+@keyframes moon-float {
+  0%, 100% { transform: translateY(0) rotate(-2deg); }
+  50% { transform: translateY(-5px) rotate(2deg); }
+}
+
+.world-art-float { animation: world-art-float 3s ease-in-out infinite; }
+.world-art-delay-1 { animation-delay: -0.8s; }
+.world-art-delay-2 { animation-delay: -1.6s; }
+.world-art-tile {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-family: var(--font-display);
+  font-weight: 900;
+  text-shadow: 0 1px 2px rgba(30, 44, 54, .32);
+  border: 1px solid rgba(255, 255, 255, .9);
+  box-shadow: 0 3px 0 rgba(41, 74, 87, .28), 0 6px 8px rgba(36, 49, 58, .17), inset 0 1px 0 rgba(255, 255, 255, .65);
+  transform: perspective(240px) rotateY(-10deg) rotateX(5deg);
+  animation: world-art-piece 2.8s ease-in-out infinite;
+}
+.world-art-word { display: inline-block; text-shadow: 0 1px 1px rgba(255, 255, 255, .9), 0 2px 4px rgba(36, 49, 58, .16); animation: world-art-piece 2.8s ease-in-out infinite; }
+.world-art-book { filter: drop-shadow(0 3px 2px rgba(36, 49, 58, .24)); animation: world-art-book 3.2s ease-in-out infinite; }
+.world-art-cat { filter: drop-shadow(0 2px 1px rgba(36, 49, 58, .18)); animation: world-art-cat 2.6s ease-in-out infinite; transform-origin: bottom center; }
+.child-avatar-float { animation: child-avatar-float 3.4s ease-in-out infinite; transform-origin: center; }
+.progress-pearl-shine { background: linear-gradient(90deg, rgba(255,255,255,.15), rgba(255,255,255,.9), rgba(255,255,255,.2)); }
+
+/* إطار عالم الكلمات في العرض البسيط: أخضر واضح حتى عندما يكون العالم مقفلاً. */
+.world-simple-card[data-world-id="words"] {
+  border-color: #2fb68c !important;
+  background: linear-gradient(145deg, rgba(47,182,140,.28), rgba(255,255,255,.48)) !important;
+}
+
+@keyframes world-art-float {
+  0%, 100% { transform: translateY(1px); }
+  50% { transform: translateY(-3px); }
+}
+@keyframes world-art-piece {
+  0%, 100% { translate: 0 0; }
+  50% { translate: 0 -2px; }
+}
+@keyframes world-art-book {
+  0%, 100% { transform: rotate(-4deg) translateY(1px); }
+  50% { transform: rotate(4deg) translateY(-2px); }
+}
+@keyframes world-art-cat {
+  0%, 100% { transform: rotate(-4deg); }
+  50% { transform: rotate(5deg) translateY(-2px); }
+}
+@keyframes child-avatar-float {
+  0%, 100% { transform: translateY(0) rotate(-1deg); }
+  50% { transform: translateY(-4px) rotate(1deg); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mascot-moon { animation: none; }
+  .world-art-float, .world-art-tile, .world-art-word, .world-art-book, .world-art-cat, .child-avatar-float { animation: none; }
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+}
+
+#root {
+  min-height: 100vh;
+}
+
+.font-display {
+  font-family: var(--font-display);
+}
+
+/* شريط تمرير لطيف */
+::-webkit-scrollbar {
+  width: 10px;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--color-sun);
+  border-radius: 999px;
+}
+
+:focus-visible {
+  outline: 3px solid var(--color-sky);
+  outline-offset: 2px;
+}

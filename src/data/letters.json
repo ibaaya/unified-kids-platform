@@ -1,0 +1,394 @@
+[
+  {
+    "id": "ا",
+    "name": "أَلِف",
+    "soundId": "letter_ا",
+    "forms": {
+      "isolated": "ا",
+      "initial": "اـ",
+      "medial": "ـاـ",
+      "final": "ـا"
+    },
+    "exampleWordId": "word_ا_start",
+    "imageEmoji": "🦁",
+    "order": 1
+  },
+  {
+    "id": "ب",
+    "name": "بَاء",
+    "soundId": "letter_ب",
+    "forms": {
+      "isolated": "ب",
+      "initial": "بـ",
+      "medial": "ـبـ",
+      "final": "ـب"
+    },
+    "exampleWordId": "word_ب_start",
+    "imageEmoji": "🚪",
+    "order": 2
+  },
+  {
+    "id": "ت",
+    "name": "تاء",
+    "soundId": "letter_ت",
+    "forms": {
+      "isolated": "ت",
+      "initial": "تـ",
+      "medial": "ـتـ",
+      "final": "ـت"
+    },
+    "exampleWordId": "word_ت_start",
+    "imageEmoji": "👑",
+    "order": 3
+  },
+  {
+    "id": "ث",
+    "name": "ثاء",
+    "soundId": "letter_ث",
+    "forms": {
+      "isolated": "ث",
+      "initial": "ثـ",
+      "medial": "ـثـ",
+      "final": "ـث"
+    },
+    "exampleWordId": "word_ث_start",
+    "imageEmoji": "👕",
+    "order": 4
+  },
+  {
+    "id": "ج",
+    "name": "جيم",
+    "soundId": "letter_ج",
+    "forms": {
+      "isolated": "ج",
+      "initial": "جـ",
+      "medial": "ـجـ",
+      "final": "ـج"
+    },
+    "exampleWordId": "word_ج_start",
+    "imageEmoji": "🐫",
+    "order": 5
+  },
+  {
+    "id": "ح",
+    "name": "حاء",
+    "soundId": "letter_ح",
+    "forms": {
+      "isolated": "ح",
+      "initial": "حـ",
+      "medial": "ـحـ",
+      "final": "ـح"
+    },
+    "exampleWordId": "word_ح_start",
+    "imageEmoji": "🐴",
+    "order": 6
+  },
+  {
+    "id": "خ",
+    "name": "خاء",
+    "soundId": "letter_خ",
+    "forms": {
+      "isolated": "خ",
+      "initial": "خـ",
+      "medial": "ـخـ",
+      "final": "ـخ"
+    },
+    "exampleWordId": "word_خ_start",
+    "imageEmoji": "🍞",
+    "order": 7
+  },
+  {
+    "id": "د",
+    "name": "دال",
+    "soundId": "letter_د",
+    "forms": {
+      "isolated": "د",
+      "initial": "دـ",
+      "medial": "ـدـ",
+      "final": "ـد"
+    },
+    "exampleWordId": "word_د_start",
+    "imageEmoji": "🐓",
+    "order": 8
+  },
+  {
+    "id": "ذ",
+    "name": "ذال",
+    "soundId": "letter_ذ",
+    "forms": {
+      "isolated": "ذ",
+      "initial": "ذـ",
+      "medial": "ـذـ",
+      "final": "ـذ"
+    },
+    "exampleWordId": "word_ذ_start",
+    "imageEmoji": "🪰",
+    "order": 9
+  },
+  {
+    "id": "ر",
+    "name": "راء",
+    "soundId": "letter_ر",
+    "forms": {
+      "isolated": "ر",
+      "initial": "رـ",
+      "medial": "ـرـ",
+      "final": "ـر"
+    },
+    "exampleWordId": "word_ر_start",
+    "imageEmoji": "🍎",
+    "order": 10
+  },
+  {
+    "id": "ز",
+    "name": "زاي",
+    "soundId": "letter_ز",
+    "forms": {
+      "isolated": "ز",
+      "initial": "زـ",
+      "medial": "ـزـ",
+      "final": "ـز"
+    },
+    "exampleWordId": "word_ز_start",
+    "imageEmoji": "🌸",
+    "order": 11
+  },
+  {
+    "id": "س",
+    "name": "سين",
+    "soundId": "letter_س",
+    "forms": {
+      "isolated": "س",
+      "initial": "سـ",
+      "medial": "ـسـ",
+      "final": "ـس"
+    },
+    "exampleWordId": "word_س_start",
+    "imageEmoji": "🐟",
+    "order": 12
+  },
+  {
+    "id": "ش",
+    "name": "شين",
+    "soundId": "letter_ش",
+    "forms": {
+      "isolated": "ش",
+      "initial": "شـ",
+      "medial": "ـشـ",
+      "final": "ـش"
+    },
+    "exampleWordId": "word_ش_start",
+    "imageEmoji": "☀️",
+    "order": 13
+  },
+  {
+    "id": "ص",
+    "name": "صاد",
+    "soundId": "letter_ص",
+    "forms": {
+      "isolated": "ص",
+      "initial": "صـ",
+      "medial": "ـصـ",
+      "final": "ـص"
+    },
+    "exampleWordId": "word_ص_start",
+    "imageEmoji": "🦅",
+    "order": 14
+  },
+  {
+    "id": "ض",
+    "name": "ضاد",
+    "soundId": "letter_ض",
+    "forms": {
+      "isolated": "ض",
+      "initial": "ضـ",
+      "medial": "ـضـ",
+      "final": "ـض"
+    },
+    "exampleWordId": "word_ض_start",
+    "imageEmoji": "🐸",
+    "order": 15
+  },
+  {
+    "id": "ط",
+    "name": "طاء",
+    "soundId": "letter_ط",
+    "forms": {
+      "isolated": "ط",
+      "initial": "طـ",
+      "medial": "ـطـ",
+      "final": "ـط"
+    },
+    "exampleWordId": "word_ط_start",
+    "imageEmoji": "🐦",
+    "order": 16
+  },
+  {
+    "id": "ظ",
+    "name": "ظاء",
+    "soundId": "letter_ظ",
+    "forms": {
+      "isolated": "ظ",
+      "initial": "ظـ",
+      "medial": "ـظـ",
+      "final": "ـظ"
+    },
+    "exampleWordId": "word_ظ_start",
+    "imageEmoji": "✉️",
+    "order": 17
+  },
+  {
+    "id": "ع",
+    "name": "عين",
+    "soundId": "letter_ع",
+    "forms": {
+      "isolated": "ع",
+      "initial": "عـ",
+      "medial": "ـعـ",
+      "final": "ـع"
+    },
+    "exampleWordId": "word_ع_start",
+    "imageEmoji": "👁️",
+    "order": 18
+  },
+  {
+    "id": "غ",
+    "name": "غين",
+    "soundId": "letter_غ",
+    "forms": {
+      "isolated": "غ",
+      "initial": "غـ",
+      "medial": "ـغـ",
+      "final": "ـغ"
+    },
+    "exampleWordId": "word_غ_start",
+    "imageEmoji": "🛋️",
+    "order": 19
+  },
+  {
+    "id": "ف",
+    "name": "فاء",
+    "soundId": "letter_ف",
+    "forms": {
+      "isolated": "ف",
+      "initial": "فـ",
+      "medial": "ـفـ",
+      "final": "ـف"
+    },
+    "exampleWordId": "word_ف_start",
+    "imageEmoji": "👄",
+    "order": 20
+  },
+  {
+    "id": "ق",
+    "name": "قاف",
+    "soundId": "letter_ق",
+    "forms": {
+      "isolated": "ق",
+      "initial": "قـ",
+      "medial": "ـقـ",
+      "final": "ـق"
+    },
+    "exampleWordId": "word_ق_start",
+    "imageEmoji": "✏️",
+    "order": 21
+  },
+  {
+    "id": "ك",
+    "name": "كاف",
+    "soundId": "letter_ك",
+    "forms": {
+      "isolated": "ك",
+      "initial": "كـ",
+      "medial": "ـكـ",
+      "final": "ـك"
+    },
+    "exampleWordId": "word_ك_start",
+    "imageEmoji": "📖",
+    "order": 22
+  },
+  {
+    "id": "ل",
+    "name": "لام",
+    "soundId": "letter_ل",
+    "forms": {
+      "isolated": "ل",
+      "initial": "لـ",
+      "medial": "ـلـ",
+      "final": "ـل"
+    },
+    "exampleWordId": "word_ل_start",
+    "imageEmoji": "🥛",
+    "order": 23
+  },
+  {
+    "id": "م",
+    "name": "ميم",
+    "soundId": "letter_م",
+    "forms": {
+      "isolated": "م",
+      "initial": "مـ",
+      "medial": "ـمـ",
+      "final": "ـم"
+    },
+    "exampleWordId": "word_م_start",
+    "imageEmoji": "💧",
+    "order": 24
+  },
+  {
+    "id": "ن",
+    "name": "نون",
+    "soundId": "letter_ن",
+    "forms": {
+      "isolated": "ن",
+      "initial": "نـ",
+      "medial": "ـنـ",
+      "final": "ـن"
+    },
+    "exampleWordId": "word_ن_start",
+    "imageEmoji": "⭐",
+    "order": 25
+  },
+  {
+    "id": "ه",
+    "name": "هاء",
+    "soundId": "letter_ه",
+    "forms": {
+      "isolated": "ه",
+      "initial": "هـ",
+      "medial": "ـهـ",
+      "final": "ـه"
+    },
+    "exampleWordId": "word_ه_start",
+    "imageEmoji": "🌒",
+    "order": 26
+  },
+  {
+    "id": "و",
+    "name": "واو",
+    "soundId": "letter_و",
+    "forms": {
+      "isolated": "و",
+      "initial": "وـ",
+      "medial": "ـوـ",
+      "final": "ـو"
+    },
+    "exampleWordId": "word_و_start",
+    "imageEmoji": "📄",
+    "order": 27
+  },
+  {
+    "id": "ي",
+    "name": "ياء",
+    "soundId": "letter_ي",
+    "forms": {
+      "isolated": "ي",
+      "initial": "يـ",
+      "medial": "ـيـ",
+      "final": "ـي"
+    },
+    "exampleWordId": "word_ي_start",
+    "imageEmoji": "✋",
+    "order": 28
+  }
+]

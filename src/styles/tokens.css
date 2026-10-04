@@ -1,0 +1,92 @@
+/*
+  نظام التصميم — منصة تعلم العربية للأطفال
+  ------------------------------------------------
+  الفكرة: "نسيم الصباح" — لوحة ألوان هادئة ومنعشة (سماء فاتحة + شمس دافئة)
+  بدل الألوان الصارخة أو النمط الكلاسيكي للتطبيقات التعليمية.
+*/
+
+:root {
+  /* -------- الألوان الأساسية -------- */
+  --color-bg: #eaf6f3;              /* خلفية عامة: نسيم فاتح */
+  --color-surface: #ffffff;         /* البطاقات والأسطح */
+  --color-ink: #24313a;             /* نص أساسي داكن دافئ */
+  --color-ink-soft: #5b6b72;        /* نص ثانوي */
+
+  --color-sun: #ff9f45;             /* اللون الأساسي/الطاقة: الأزرار والشخصية */
+  --color-sun-dark: hsl(43, 97%, 39%);       /*#e8802a;
+  --color-leaf: #2fb68c;            /* النجاح، الإتقان، التقدم */
+  --color-sky: #3aa0d9;             /* الجمل/القراءة */
+  --color-violet: #8b5fbf;          /* الحركات */
+  --color-coral: #e85d75;           /* القصص */
+  --color-amber: #ffb74d;           /* تنبيه لطيف "حاول مرة أخرى" — ليس أحمر أبدًا */
+
+  /* عوالم التعلم — لكل عالم لونه المميز */
+  --world-letters: var(--color-sun);
+  --world-harakat: var(--color-violet);
+  --world-syllables: #ffd166;
+  --world-words: var(--color-leaf);
+  --world-sentences: var(--color-sky);
+  --world-stories: var(--color-coral);
+
+  /* -------- الطباعة -------- */
+  --font-display: 'Baloo Bhaijaan 2', 'Cairo', sans-serif; /* العناوين وحديث الشخصية */
+  --font-body: 'Cairo', 'Baloo Bhaijaan 2', sans-serif;    /* الأزرار والنصوص والتعليمات */
+
+  /* -------- المسافات والزوايا -------- */
+  --radius-lg: 28px;
+  --radius-md: 20px;
+  --radius-sm: 14px;
+  --shadow-card: 0 8px 24px rgba(36, 49, 58, 0.08);
+  --shadow-card-hover: 0 12px 28px rgba(36, 49, 58, 0.14);
+
+  /* -------- الحركة -------- */
+  --ease-bounce: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --duration-fast: 180ms;
+  --duration-med: 300ms;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/*
+  تحكم عام بحجم النص من زر عائم متاح في كل الصفحات.
+  --base-font-size يغيّر النصوص المعتمدة على rem في كامل الواجهة،
+  بينما --content-scale يبقى لتكبير المحتوى التعليمي بشكل إضافي عند الحاجة.
+*/
+:root {
+  --content-scale: 1;
+  --base-font-size: 16px;
+}
+
+/*
+  حجم النص من إعداد الطفل يجب أن يؤثر في كل نصوص الواجهة، وليس فقط
+  العناصر التي تحمل .content-scale. لأن Tailwind يستخدم rem في أحجام النص،
+  تغيير حجم الخط الأساسي لـ html يجعل text-sm/text-base/text-lg/text-*
+  تستجيب أيضًا من دون تعديل كل صفحة يدويًا.
+*/
+html[data-text-size='large'] {
+  --content-scale: 1.25;
+  --base-font-size: 20px;
+}
+
+html[data-text-size='xlarge'] {
+  --content-scale: 1.5;
+  --base-font-size: 24px;
+}
+
+html {
+  font-size: var(--base-font-size);
+}
+
+body {
+  font-size: 1rem;
+}
+
+.content-scale {
+  font-size: calc(1em * var(--content-scale));
+  transition: font-size var(--duration-med) var(--ease-bounce);
+}

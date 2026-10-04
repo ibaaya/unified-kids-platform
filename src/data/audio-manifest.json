@@ -1,0 +1,82 @@
+{
+  "letter:ا": {
+    "itemId": "letter:ا",
+    "sourceId": "letter_ا",
+    "type": "letter",
+    "text": "أَلِف",
+    "filename": "letter_alif.mp3",
+    "relativePath": "/audio/letters/letter_alif.mp3",
+    "status": "approved",
+    "updatedAt": "2026-09-29T20:00:38.465Z",
+    "durationMs": 620,
+    "contentHash": "f11dc873d6bebf1d539878d6c3cbc228aebfd6416cbb68a256607e63917b45f7",
+    "processing": {
+      "format": "mp3",
+      "channels": 1,
+      "sampleRate": 24000,
+      "bitrateKbps": 64,
+      "trimSilence": true,
+      "normalizeDb": -1
+    }
+  },
+  "letter:ب": {
+    "itemId": "letter:ب",
+    "sourceId": "letter_ب",
+    "type": "letter",
+    "text": "بَاء",
+    "filename": "letter_baa.mp3",
+    "relativePath": "/audio/letters/letter_baa.mp3",
+    "status": "approved",
+    "updatedAt": "2026-09-29T20:00:48.445Z",
+    "durationMs": 930,
+    "contentHash": "84c94e0fc21787e1a43b460f59dc41733c94b7c92b96c14da96bb732a582d485",
+    "processing": {
+      "format": "mp3",
+      "channels": 1,
+      "sampleRate": 24000,
+      "bitrateKbps": 64,
+      "trimSilence": true,
+      "normalizeDb": -1
+    }
+  },
+  "letter:ت": {
+    "itemId": "letter:ت",
+    "sourceId": "letter_ت",
+    "type": "letter",
+    "text": "تاء",
+    "filename": "letter_taa.mp3",
+    "relativePath": "/audio/letters/letter_taa.mp3",
+    "status": "approved",
+    "updatedAt": "2026-09-29T20:01:01.156Z",
+    "durationMs": 690,
+    "contentHash": "af020dfd0f191cb8b0031de66c0da1cbd11fb87376c6da37b50b1187e3a0885c",
+    "processing": {
+      "format": "mp3",
+      "channels": 1,
+      "sampleRate": 24000,
+      "bitrateKbps": 64,
+      "trimSilence": true,
+      "normalizeDb": -1
+    }
+  },
+  "voice-prompt:letters:letter-position:ا": {
+    "itemId": "voice-prompt:letters:letter-position:ا",
+    "sourceId": "voice-prompt:letters:letter-position:ا",
+    "type": "prompt",
+    "text": "أَيْنَ حَرْفُ أَلِف فِي هَذِهِ الْكَلِمَةِ؟",
+    "filename": "prompt_letters_letter-position_a.mp3",
+    "relativePath": "/audio/prompts/prompt_letters_letter-position_a.mp3",
+    "status": "approved",
+    "updatedAt": "2026-09-29T20:01:28.876Z",
+    "durationMs": 4200,
+    "contentHash": "047f8484fff300294be009925c9064c90d3d95f60272cfffbb7c51b60b0dafa8",
+    "processing": {
+      "format": "mp3",
+      "channels": 1,
+      "sampleRate": 24000,
+      "bitrateKbps": 64,
+      "trimSilence": true,
+      "normalizeDb": -1
+    }
+  }
+}

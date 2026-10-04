@@ -1,0 +1,1157 @@
+[
+  {
+    "id": "syllable_short_ا_fatha",
+    "letterId": "ا",
+    "haraka": "fatha",
+    "text": "أَ",
+    "type": "short"
+  },
+  {
+    "id": "syllable_short_ا_damma",
+    "letterId": "ا",
+    "haraka": "damma",
+    "text": "أُ",
+    "type": "short"
+  },
+  {
+    "id": "syllable_short_ا_kasra",
+    "letterId": "ا",
+    "haraka": "kasra",
+    "text": "إِ",
+    "type": "short"
+  },
+  {
+    "id": "syllable_short_ب_fatha",
+    "letterId": "ب",
+    "haraka": "fatha",
+    "text": "بَ",
+    "type": "short"
+  },
+  {
+    "id": "syllable_short_ب_damma",
+    "letterId": "ب",
+    "haraka": "damma",
+    "text": "بُ",
+    "type": "short"
+  },
+  {
+    "id": "syllable_short_ب_kasra",
+    "letterId": "ب",
+    "haraka": "kasra",
+    "text": "بِ",
+    "type": "short"
+  },
+  {
+    "id": "syllable_short_ت_fatha",
+    "letterId": "ت",
+    "haraka": "fatha",
+    "text": "تَ",
+    "type": "short"
+  },
+  {
+    "id": "syllable_short_ت_damma",
+    "letterId": "ت",
+    "haraka": "damma",
+    "text": "تُ",
+    "type": "short"
+  },
+  {
+    "id": "syllable_short_ت_kasra",
+    "letterId": "ت",
+    "haraka": "kasra",
+    "text": "تِ",
+    "type": "short"
+  },
+  {
+    "id": "syllable_short_ث_fatha",
+    "letterId": "ث",
+    "haraka": "fatha",
+    "text": "ثَ",
+    "type": "short"
+  },
+  {
+    "id": "syllable_short_ث_damma",
+    "letterId": "ث",
+    "haraka": "damma",
+    "text": "ثُ",
+    "type": "short"
+  },
+  {
+    "id": "syllable_short_ث_kasra",
+    "letterId": "ث",
+    "haraka": "kasra",
+    "text": "ثِ",
+    "type": "short"
+  },
+  {
+    "id": "syllable_short_ج_fatha",
+    "letterId": "ج",
+    "haraka": "fatha",
+    "text": "جَ",
+    "type": "short"
+  },
+  {
+    "id": "syllable_short_ج_damma",
+    "letterId": "ج",
+    "haraka": "damma",
+    "text": "جُ",
+    "type": "short"
+  },
+  {
+    "id": "syllable_short_ج_kasra",
+    "letterId": "ج",
+    "haraka": "kasra",
+    "text": "جِ",
+    "type": "short"
+  },
+  {
+    "id": "syllable_short_ح_fatha",
+    "letterId": "ح",
+    "haraka": "fatha",
+    "text": "حَ",
+    "type": "short"
+  },
+  {
+    "id": "syllable_short_ح_damma",
+    "letterId": "ح",
+    "haraka": "damma",
+    "text": "حُ",
+    "type": "short"
+  },
+  {
+    "id": "syllable_short_ح_kasra",
+    "letterId": "ح",
+    "haraka": "kasra",
+    "text": "حِ",
+    "type": "short"
+  },
+  {
+    "id": "syllable_short_خ_fatha",
+    "letterId": "خ",
+    "haraka": "fatha",
+    "text": "خَ",
+    "type": "short"
+  },
+  {
+    "id": "syllable_short_خ_damma",
+    "letterId": "خ",
+    "haraka": "damma",
+    "text": "خُ",
+    "type": "short"
+  },
+  {
+    "id": "syllable_short_خ_kasra",
+    "letterId": "خ",
+    "haraka": "kasra",
+    "text": "خِ",
+    "type": "short"
+  },
+  {
+    "id": "syllable_short_د_fatha",
+    "letterId": "د",
+    "haraka": "fatha",
+    "text": "دَ",
+    "type": "short"
+  },
+  {
+    "id": "syllable_short_د_damma",
+    "letterId": "د",
+    "haraka": "damma",
+    "text": "دُ",
+    "type": "short"
+  },
+  {
+    "id": "syllable_short_د_kasra",
+    "letterId": "د",
+    "haraka": "kasra",
+    "text": "دِ",
+    "type": "short"
+  },
+  {
+    "id": "syllable_short_ذ_fatha",
+    "letterId": "ذ",
+    "haraka": "fatha",
+    "text": "ذَ",
+    "type": "short"
+  },
+  {
+    "id": "syllable_short_ذ_damma",
+    "letterId": "ذ",
+    "haraka": "damma",
+    "text": "ذُ",
+    "type": "short"
+  },
+  {
+    "id": "syllable_short_ذ_kasra",
+    "letterId": "ذ",
+    "haraka": "kasra",
+    "text": "ذِ",
+    "type": "short"
+  },
+  {
+    "id": "syllable_short_ر_fatha",
+    "letterId": "ر",
+    "haraka": "fatha",
+    "text": "رَ",
+    "type": "short"
+  },
+  {
+    "id": "syllable_short_ر_damma",
+    "letterId": "ر",
+    "haraka": "damma",
+    "text": "رُ",
+    "type": "short"
+  },
+  {
+    "id": "syllable_short_ر_kasra",
+    "letterId": "ر",
+    "haraka": "kasra",
+    "text": "رِ",
+    "type": "short"
+  },
+  {
+    "id": "syllable_short_ز_fatha",
+    "letterId": "ز",
+    "haraka": "fatha",
+    "text": "زَ",
+    "type": "short"
+  },
+  {
+    "id": "syllable_short_ز_damma",
+    "letterId": "ز",
+    "haraka": "damma",
+    "text": "زُ",
+    "type": "short"
+  },
+  {
+    "id": "syllable_short_ز_kasra",
+    "letterId": "ز",
+    "haraka": "kasra",
+    "text": "زِ",
+    "type": "short"
+  },
+  {
+    "id": "syllable_short_س_fatha",
+    "letterId": "س",
+    "haraka": "fatha",
+    "text": "سَ",
+    "type": "short"
+  },
+  {
+    "id": "syllable_short_س_damma",
+    "letterId": "س",
+    "haraka": "damma",
+    "text": "سُ",
+    "type": "short"
+  },
+  {
+    "id": "syllable_short_س_kasra",
+    "letterId": "س",
+    "haraka": "kasra",
+    "text": "سِ",
+    "type": "short"
+  },
+  {
+    "id": "syllable_short_ش_fatha",
+    "letterId": "ش",
+    "haraka": "fatha",
+    "text": "شَ",
+    "type": "short"
+  },
+  {
+    "id": "syllable_short_ش_damma",
+    "letterId": "ش",
+    "haraka": "damma",
+    "text": "شُ",
+    "type": "short"
+  },
+  {
+    "id": "syllable_short_ش_kasra",
+    "letterId": "ش",
+    "haraka": "kasra",
+    "text": "شِ",
+    "type": "short"
+  },
+  {
+    "id": "syllable_short_ص_fatha",
+    "letterId": "ص",
+    "haraka": "fatha",
+    "text": "صَ",
+    "type": "short"
+  },
+  {
+    "id": "syllable_short_ص_damma",
+    "letterId": "ص",
+    "haraka": "damma",
+    "text": "صُ",
+    "type": "short"
+  },
+  {
+    "id": "syllable_short_ص_kasra",
+    "letterId": "ص",
+    "haraka": "kasra",
+    "text": "صِ",
+    "type": "short"
+  },
+  {
+    "id": "syllable_short_ض_fatha",
+    "letterId": "ض",
+    "haraka": "fatha",
+    "text": "ضَ",
+    "type": "short"
+  },
+  {
+    "id": "syllable_short_ض_damma",
+    "letterId": "ض",
+    "haraka": "damma",
+    "text": "ضُ",
+    "type": "short"
+  },
+  {
+    "id": "syllable_short_ض_kasra",
+    "letterId": "ض",
+    "haraka": "kasra",
+    "text": "ضِ",
+    "type": "short"
+  },
+  {
+    "id": "syllable_short_ط_fatha",
+    "letterId": "ط",
+    "haraka": "fatha",
+    "text": "طَ",
+    "type": "short"
+  },
+  {
+    "id": "syllable_short_ط_damma",
+    "letterId": "ط",
+    "haraka": "damma",
+    "text": "طُ",
+    "type": "short"
+  },
+  {
+    "id": "syllable_short_ط_kasra",
+    "letterId": "ط",
+    "haraka": "kasra",
+    "text": "طِ",
+    "type": "short"
+  },
+  {
+    "id": "syllable_short_ظ_fatha",
+    "letterId": "ظ",
+    "haraka": "fatha",
+    "text": "ظَ",
+    "type": "short"
+  },
+  {
+    "id": "syllable_short_ظ_damma",
+    "letterId": "ظ",
+    "haraka": "damma",
+    "text": "ظُ",
+    "type": "short"
+  },
+  {
+    "id": "syllable_short_ظ_kasra",
+    "letterId": "ظ",
+    "haraka": "kasra",
+    "text": "ظِ",
+    "type": "short"
+  },
+  {
+    "id": "syllable_short_ع_fatha",
+    "letterId": "ع",
+    "haraka": "fatha",
+    "text": "عَ",
+    "type": "short"
+  },
+  {
+    "id": "syllable_short_ع_damma",
+    "letterId": "ع",
+    "haraka": "damma",
+    "text": "عُ",
+    "type": "short"
+  },
+  {
+    "id": "syllable_short_ع_kasra",
+    "letterId": "ع",
+    "haraka": "kasra",
+    "text": "عِ",
+    "type": "short"
+  },
+  {
+    "id": "syllable_short_غ_fatha",
+    "letterId": "غ",
+    "haraka": "fatha",
+    "text": "غَ",
+    "type": "short"
+  },
+  {
+    "id": "syllable_short_غ_damma",
+    "letterId": "غ",
+    "haraka": "damma",
+    "text": "غُ",
+    "type": "short"
+  },
+  {
+    "id": "syllable_short_غ_kasra",
+    "letterId": "غ",
+    "haraka": "kasra",
+    "text": "غِ",
+    "type": "short"
+  },
+  {
+    "id": "syllable_short_ف_fatha",
+    "letterId": "ف",
+    "haraka": "fatha",
+    "text": "فَ",
+    "type": "short"
+  },
+  {
+    "id": "syllable_short_ف_damma",
+    "letterId": "ف",
+    "haraka": "damma",
+    "text": "فُ",
+    "type": "short"
+  },
+  {
+    "id": "syllable_short_ف_kasra",
+    "letterId": "ف",
+    "haraka": "kasra",
+    "text": "فِ",
+    "type": "short"
+  },
+  {
+    "id": "syllable_short_ق_fatha",
+    "letterId": "ق",
+    "haraka": "fatha",
+    "text": "قَ",
+    "type": "short"
+  },
+  {
+    "id": "syllable_short_ق_damma",
+    "letterId": "ق",
+    "haraka": "damma",
+    "text": "قُ",
+    "type": "short"
+  },
+  {
+    "id": "syllable_short_ق_kasra",
+    "letterId": "ق",
+    "haraka": "kasra",
+    "text": "قِ",
+    "type": "short"
+  },
+  {
+    "id": "syllable_short_ك_fatha",
+    "letterId": "ك",
+    "haraka": "fatha",
+    "text": "كَ",
+    "type": "short"
+  },
+  {
+    "id": "syllable_short_ك_damma",
+    "letterId": "ك",
+    "haraka": "damma",
+    "text": "كُ",
+    "type": "short"
+  },
+  {
+    "id": "syllable_short_ك_kasra",
+    "letterId": "ك",
+    "haraka": "kasra",
+    "text": "كِ",
+    "type": "short"
+  },
+  {
+    "id": "syllable_short_ل_fatha",
+    "letterId": "ل",
+    "haraka": "fatha",
+    "text": "لَ",
+    "type": "short"
+  },
+  {
+    "id": "syllable_short_ل_damma",
+    "letterId": "ل",
+    "haraka": "damma",
+    "text": "لُ",
+    "type": "short"
+  },
+  {
+    "id": "syllable_short_ل_kasra",
+    "letterId": "ل",
+    "haraka": "kasra",
+    "text": "لِ",
+    "type": "short"
+  },
+  {
+    "id": "syllable_short_م_fatha",
+    "letterId": "م",
+    "haraka": "fatha",
+    "text": "مَ",
+    "type": "short"
+  },
+  {
+    "id": "syllable_short_م_damma",
+    "letterId": "م",
+    "haraka": "damma",
+    "text": "مُ",
+    "type": "short"
+  },
+  {
+    "id": "syllable_short_م_kasra",
+    "letterId": "م",
+    "haraka": "kasra",
+    "text": "مِ",
+    "type": "short"
+  },
+  {
+    "id": "syllable_short_ن_fatha",
+    "letterId": "ن",
+    "haraka": "fatha",
+    "text": "نَ",
+    "type": "short"
+  },
+  {
+    "id": "syllable_short_ن_damma",
+    "letterId": "ن",
+    "haraka": "damma",
+    "text": "نُ",
+    "type": "short"
+  },
+  {
+    "id": "syllable_short_ن_kasra",
+    "letterId": "ن",
+    "haraka": "kasra",
+    "text": "نِ",
+    "type": "short"
+  },
+  {
+    "id": "syllable_short_ه_fatha",
+    "letterId": "ه",
+    "haraka": "fatha",
+    "text": "هَ",
+    "type": "short"
+  },
+  {
+    "id": "syllable_short_ه_damma",
+    "letterId": "ه",
+    "haraka": "damma",
+    "text": "هُ",
+    "type": "short"
+  },
+  {
+    "id": "syllable_short_ه_kasra",
+    "letterId": "ه",
+    "haraka": "kasra",
+    "text": "هِ",
+    "type": "short"
+  },
+  {
+    "id": "syllable_short_و_fatha",
+    "letterId": "و",
+    "haraka": "fatha",
+    "text": "وَ",
+    "type": "short"
+  },
+  {
+    "id": "syllable_short_و_damma",
+    "letterId": "و",
+    "haraka": "damma",
+    "text": "وُ",
+    "type": "short"
+  },
+  {
+    "id": "syllable_short_و_kasra",
+    "letterId": "و",
+    "haraka": "kasra",
+    "text": "وِ",
+    "type": "short"
+  },
+  {
+    "id": "syllable_short_ي_fatha",
+    "letterId": "ي",
+    "haraka": "fatha",
+    "text": "يَ",
+    "type": "short"
+  },
+  {
+    "id": "syllable_short_ي_damma",
+    "letterId": "ي",
+    "haraka": "damma",
+    "text": "يُ",
+    "type": "short"
+  },
+  {
+    "id": "syllable_short_ي_kasra",
+    "letterId": "ي",
+    "haraka": "kasra",
+    "text": "يِ",
+    "type": "short"
+  },
+  {
+    "id": "syllable_madd_ب_madd_alif",
+    "letterId": "ب",
+    "haraka": "madd_alif",
+    "text": "بَا",
+    "type": "madd"
+  },
+  {
+    "id": "syllable_madd_ب_madd_waw",
+    "letterId": "ب",
+    "haraka": "madd_waw",
+    "text": "بُو",
+    "type": "madd"
+  },
+  {
+    "id": "syllable_madd_ب_madd_yaa",
+    "letterId": "ب",
+    "haraka": "madd_yaa",
+    "text": "بِي",
+    "type": "madd"
+  },
+  {
+    "id": "syllable_madd_ت_madd_alif",
+    "letterId": "ت",
+    "haraka": "madd_alif",
+    "text": "تَا",
+    "type": "madd"
+  },
+  {
+    "id": "syllable_madd_ت_madd_waw",
+    "letterId": "ت",
+    "haraka": "madd_waw",
+    "text": "تُو",
+    "type": "madd"
+  },
+  {
+    "id": "syllable_madd_ت_madd_yaa",
+    "letterId": "ت",
+    "haraka": "madd_yaa",
+    "text": "تِي",
+    "type": "madd"
+  },
+  {
+    "id": "syllable_madd_ث_madd_alif",
+    "letterId": "ث",
+    "haraka": "madd_alif",
+    "text": "ثَا",
+    "type": "madd"
+  },
+  {
+    "id": "syllable_madd_ث_madd_waw",
+    "letterId": "ث",
+    "haraka": "madd_waw",
+    "text": "ثُو",
+    "type": "madd"
+  },
+  {
+    "id": "syllable_madd_ث_madd_yaa",
+    "letterId": "ث",
+    "haraka": "madd_yaa",
+    "text": "ثِي",
+    "type": "madd"
+  },
+  {
+    "id": "syllable_madd_ج_madd_alif",
+    "letterId": "ج",
+    "haraka": "madd_alif",
+    "text": "جَا",
+    "type": "madd"
+  },
+  {
+    "id": "syllable_madd_ج_madd_waw",
+    "letterId": "ج",
+    "haraka": "madd_waw",
+    "text": "جُو",
+    "type": "madd"
+  },
+  {
+    "id": "syllable_madd_ج_madd_yaa",
+    "letterId": "ج",
+    "haraka": "madd_yaa",
+    "text": "جِي",
+    "type": "madd"
+  },
+  {
+    "id": "syllable_madd_ح_madd_alif",
+    "letterId": "ح",
+    "haraka": "madd_alif",
+    "text": "حَا",
+    "type": "madd"
+  },
+  {
+    "id": "syllable_madd_ح_madd_waw",
+    "letterId": "ح",
+    "haraka": "madd_waw",
+    "text": "حُو",
+    "type": "madd"
+  },
+  {
+    "id": "syllable_madd_ح_madd_yaa",
+    "letterId": "ح",
+    "haraka": "madd_yaa",
+    "text": "حِي",
+    "type": "madd"
+  },
+  {
+    "id": "syllable_madd_خ_madd_alif",
+    "letterId": "خ",
+    "haraka": "madd_alif",
+    "text": "خَا",
+    "type": "madd"
+  },
+  {
+    "id": "syllable_madd_خ_madd_waw",
+    "letterId": "خ",
+    "haraka": "madd_waw",
+    "text": "خُو",
+    "type": "madd"
+  },
+  {
+    "id": "syllable_madd_خ_madd_yaa",
+    "letterId": "خ",
+    "haraka": "madd_yaa",
+    "text": "خِي",
+    "type": "madd"
+  },
+  {
+    "id": "syllable_madd_د_madd_alif",
+    "letterId": "د",
+    "haraka": "madd_alif",
+    "text": "دَا",
+    "type": "madd"
+  },
+  {
+    "id": "syllable_madd_د_madd_waw",
+    "letterId": "د",
+    "haraka": "madd_waw",
+    "text": "دُو",
+    "type": "madd"
+  },
+  {
+    "id": "syllable_madd_د_madd_yaa",
+    "letterId": "د",
+    "haraka": "madd_yaa",
+    "text": "دِي",
+    "type": "madd"
+  },
+  {
+    "id": "syllable_madd_ذ_madd_alif",
+    "letterId": "ذ",
+    "haraka": "madd_alif",
+    "text": "ذَا",
+    "type": "madd"
+  },
+  {
+    "id": "syllable_madd_ذ_madd_waw",
+    "letterId": "ذ",
+    "haraka": "madd_waw",
+    "text": "ذُو",
+    "type": "madd"
+  },
+  {
+    "id": "syllable_madd_ذ_madd_yaa",
+    "letterId": "ذ",
+    "haraka": "madd_yaa",
+    "text": "ذِي",
+    "type": "madd"
+  },
+  {
+    "id": "syllable_madd_ر_madd_alif",
+    "letterId": "ر",
+    "haraka": "madd_alif",
+    "text": "رَا",
+    "type": "madd"
+  },
+  {
+    "id": "syllable_madd_ر_madd_waw",
+    "letterId": "ر",
+    "haraka": "madd_waw",
+    "text": "رُو",
+    "type": "madd"
+  },
+  {
+    "id": "syllable_madd_ر_madd_yaa",
+    "letterId": "ر",
+    "haraka": "madd_yaa",
+    "text": "رِي",
+    "type": "madd"
+  },
+  {
+    "id": "syllable_madd_ز_madd_alif",
+    "letterId": "ز",
+    "haraka": "madd_alif",
+    "text": "زَا",
+    "type": "madd"
+  },
+  {
+    "id": "syllable_madd_ز_madd_waw",
+    "letterId": "ز",
+    "haraka": "madd_waw",
+    "text": "زُو",
+    "type": "madd"
+  },
+  {
+    "id": "syllable_madd_ز_madd_yaa",
+    "letterId": "ز",
+    "haraka": "madd_yaa",
+    "text": "زِي",
+    "type": "madd"
+  },
+  {
+    "id": "syllable_madd_س_madd_alif",
+    "letterId": "س",
+    "haraka": "madd_alif",
+    "text": "سَا",
+    "type": "madd"
+  },
+  {
+    "id": "syllable_madd_س_madd_waw",
+    "letterId": "س",
+    "haraka": "madd_waw",
+    "text": "سُو",
+    "type": "madd"
+  },
+  {
+    "id": "syllable_madd_س_madd_yaa",
+    "letterId": "س",
+    "haraka": "madd_yaa",
+    "text": "سِي",
+    "type": "madd"
+  },
+  {
+    "id": "syllable_madd_ش_madd_alif",
+    "letterId": "ش",
+    "haraka": "madd_alif",
+    "text": "شَا",
+    "type": "madd"
+  },
+  {
+    "id": "syllable_madd_ش_madd_waw",
+    "letterId": "ش",
+    "haraka": "madd_waw",
+    "text": "شُو",
+    "type": "madd"
+  },
+  {
+    "id": "syllable_madd_ش_madd_yaa",
+    "letterId": "ش",
+    "haraka": "madd_yaa",
+    "text": "شِي",
+    "type": "madd"
+  },
+  {
+    "id": "syllable_madd_ص_madd_alif",
+    "letterId": "ص",
+    "haraka": "madd_alif",
+    "text": "صَا",
+    "type": "madd"
+  },
+  {
+    "id": "syllable_madd_ص_madd_waw",
+    "letterId": "ص",
+    "haraka": "madd_waw",
+    "text": "صُو",
+    "type": "madd"
+  },
+  {
+    "id": "syllable_madd_ص_madd_yaa",
+    "letterId": "ص",
+    "haraka": "madd_yaa",
+    "text": "صِي",
+    "type": "madd"
+  },
+  {
+    "id": "syllable_madd_ض_madd_alif",
+    "letterId": "ض",
+    "haraka": "madd_alif",
+    "text": "ضَا",
+    "type": "madd"
+  },
+  {
+    "id": "syllable_madd_ض_madd_waw",
+    "letterId": "ض",
+    "haraka": "madd_waw",
+    "text": "ضُو",
+    "type": "madd"
+  },
+  {
+    "id": "syllable_madd_ض_madd_yaa",
+    "letterId": "ض",
+    "haraka": "madd_yaa",
+    "text": "ضِي",
+    "type": "madd"
+  },
+  {
+    "id": "syllable_madd_ط_madd_alif",
+    "letterId": "ط",
+    "haraka": "madd_alif",
+    "text": "طَا",
+    "type": "madd"
+  },
+  {
+    "id": "syllable_madd_ط_madd_waw",
+    "letterId": "ط",
+    "haraka": "madd_waw",
+    "text": "طُو",
+    "type": "madd"
+  },
+  {
+    "id": "syllable_madd_ط_madd_yaa",
+    "letterId": "ط",
+    "haraka": "madd_yaa",
+    "text": "طِي",
+    "type": "madd"
+  },
+  {
+    "id": "syllable_madd_ظ_madd_alif",
+    "letterId": "ظ",
+    "haraka": "madd_alif",
+    "text": "ظَا",
+    "type": "madd"
+  },
+  {
+    "id": "syllable_madd_ظ_madd_waw",
+    "letterId": "ظ",
+    "haraka": "madd_waw",
+    "text": "ظُو",
+    "type": "madd"
+  },
+  {
+    "id": "syllable_madd_ظ_madd_yaa",
+    "letterId": "ظ",
+    "haraka": "madd_yaa",
+    "text": "ظِي",
+    "type": "madd"
+  },
+  {
+    "id": "syllable_madd_ع_madd_alif",
+    "letterId": "ع",
+    "haraka": "madd_alif",
+    "text": "عَا",
+    "type": "madd"
+  },
+  {
+    "id": "syllable_madd_ع_madd_waw",
+    "letterId": "ع",
+    "haraka": "madd_waw",
+    "text": "عُو",
+    "type": "madd"
+  },
+  {
+    "id": "syllable_madd_ع_madd_yaa",
+    "letterId": "ع",
+    "haraka": "madd_yaa",
+    "text": "عِي",
+    "type": "madd"
+  },
+  {
+    "id": "syllable_madd_غ_madd_alif",
+    "letterId": "غ",
+    "haraka": "madd_alif",
+    "text": "غَا",
+    "type": "madd"
+  },
+  {
+    "id": "syllable_madd_غ_madd_waw",
+    "letterId": "غ",
+    "haraka": "madd_waw",
+    "text": "غُو",
+    "type": "madd"
+  },
+  {
+    "id": "syllable_madd_غ_madd_yaa",
+    "letterId": "غ",
+    "haraka": "madd_yaa",
+    "text": "غِي",
+    "type": "madd"
+  },
+  {
+    "id": "syllable_madd_ف_madd_alif",
+    "letterId": "ف",
+    "haraka": "madd_alif",
+    "text": "فَا",
+    "type": "madd"
+  },
+  {
+    "id": "syllable_madd_ف_madd_waw",
+    "letterId": "ف",
+    "haraka": "madd_waw",
+    "text": "فُو",
+    "type": "madd"
+  },
+  {
+    "id": "syllable_madd_ف_madd_yaa",
+    "letterId": "ف",
+    "haraka": "madd_yaa",
+    "text": "فِي",
+    "type": "madd"
+  },
+  {
+    "id": "syllable_madd_ق_madd_alif",
+    "letterId": "ق",
+    "haraka": "madd_alif",
+    "text": "قَا",
+    "type": "madd"
+  },
+  {
+    "id": "syllable_madd_ق_madd_waw",
+    "letterId": "ق",
+    "haraka": "madd_waw",
+    "text": "قُو",
+    "type": "madd"
+  },
+  {
+    "id": "syllable_madd_ق_madd_yaa",
+    "letterId": "ق",
+    "haraka": "madd_yaa",
+    "text": "قِي",
+    "type": "madd"
+  },
+  {
+    "id": "syllable_madd_ك_madd_alif",
+    "letterId": "ك",
+    "haraka": "madd_alif",
+    "text": "كَا",
+    "type": "madd"
+  },
+  {
+    "id": "syllable_madd_ك_madd_waw",
+    "letterId": "ك",
+    "haraka": "madd_waw",
+    "text": "كُو",
+    "type": "madd"
+  },
+  {
+    "id": "syllable_madd_ك_madd_yaa",
+    "letterId": "ك",
+    "haraka": "madd_yaa",
+    "text": "كِي",
+    "type": "madd"
+  },
+  {
+    "id": "syllable_madd_ل_madd_alif",
+    "letterId": "ل",
+    "haraka": "madd_alif",
+    "text": "لَا",
+    "type": "madd"
+  },
+  {
+    "id": "syllable_madd_ل_madd_waw",
+    "letterId": "ل",
+    "haraka": "madd_waw",
+    "text": "لُو",
+    "type": "madd"
+  },
+  {
+    "id": "syllable_madd_ل_madd_yaa",
+    "letterId": "ل",
+    "haraka": "madd_yaa",
+    "text": "لِي",
+    "type": "madd"
+  },
+  {
+    "id": "syllable_madd_م_madd_alif",
+    "letterId": "م",
+    "haraka": "madd_alif",
+    "text": "مَا",
+    "type": "madd"
+  },
+  {
+    "id": "syllable_madd_م_madd_waw",
+    "letterId": "م",
+    "haraka": "madd_waw",
+    "text": "مُو",
+    "type": "madd"
+  },
+  {
+    "id": "syllable_madd_م_madd_yaa",
+    "letterId": "م",
+    "haraka": "madd_yaa",
+    "text": "مِي",
+    "type": "madd"
+  },
+  {
+    "id": "syllable_madd_ن_madd_alif",
+    "letterId": "ن",
+    "haraka": "madd_alif",
+    "text": "نَا",
+    "type": "madd"
+  },
+  {
+    "id": "syllable_madd_ن_madd_waw",
+    "letterId": "ن",
+    "haraka": "madd_waw",
+    "text": "نُو",
+    "type": "madd"
+  },
+  {
+    "id": "syllable_madd_ن_madd_yaa",
+    "letterId": "ن",
+    "haraka": "madd_yaa",
+    "text": "نِي",
+    "type": "madd"
+  },
+  {
+    "id": "syllable_madd_ه_madd_alif",
+    "letterId": "ه",
+    "haraka": "madd_alif",
+    "text": "هَا",
+    "type": "madd"
+  },
+  {
+    "id": "syllable_madd_ه_madd_waw",
+    "letterId": "ه",
+    "haraka": "madd_waw",
+    "text": "هُو",
+    "type": "madd"
+  },
+  {
+    "id": "syllable_madd_ه_madd_yaa",
+    "letterId": "ه",
+    "haraka": "madd_yaa",
+    "text": "هِي",
+    "type": "madd"
+  },
+  {
+    "id": "syllable_madd_و_madd_alif",
+    "letterId": "و",
+    "haraka": "madd_alif",
+    "text": "وَا",
+    "type": "madd"
+  },
+  {
+    "id": "syllable_madd_و_madd_waw",
+    "letterId": "و",
+    "haraka": "madd_waw",
+    "text": "وُو",
+    "type": "madd"
+  },
+  {
+    "id": "syllable_madd_و_madd_yaa",
+    "letterId": "و",
+    "haraka": "madd_yaa",
+    "text": "وِي",
+    "type": "madd"
+  },
+  {
+    "id": "syllable_madd_ي_madd_alif",
+    "letterId": "ي",
+    "haraka": "madd_alif",
+    "text": "يَا",
+    "type": "madd"
+  },
+  {
+    "id": "syllable_madd_ي_madd_waw",
+    "letterId": "ي",
+    "haraka": "madd_waw",
+    "text": "يُو",
+    "type": "madd"
+  },
+  {
+    "id": "syllable_madd_ي_madd_yaa",
+    "letterId": "ي",
+    "haraka": "madd_yaa",
+    "text": "يِي",
+    "type": "madd"
+  }
+]

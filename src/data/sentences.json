@@ -1,0 +1,371 @@
+[
+  {
+    "id": "sent_1",
+    "letter": "ا",
+    "text": "أَكَلَ أَحْمَدُ التُّفَّاحَةَ",
+    "translation": "Ahmed ate the apple",
+    "words": [
+      "أَكَلَ",
+      "أَحْمَدُ",
+      "التُّفَّاحَةَ"
+    ],
+    "audioPrompt": "أَكَلَ أَحْمَدُ التُّفَّاحَةَ",
+    "imageEmoji": "🍎"
+  },
+  {
+    "id": "sent_2",
+    "letter": "ب",
+    "text": "شَرِبَ بِلَالٌ المَاءَ",
+    "translation": "Bilal drank the water",
+    "words": [
+      "شَرِبَ",
+      "بِلَالٌ",
+      "المَاءَ"
+    ],
+    "audioPrompt": "شَرِبَ بِلَالٌ المَاءَ",
+    "imageEmoji": "🥛"
+  },
+  {
+    "id": "sent_3",
+    "letter": "ت",
+    "text": "كَتَبَ تَامِرٌ دَرْسَهُ",
+    "translation": "Tamer wrote his lesson",
+    "words": [
+      "كَتَبَ",
+      "تَامِرٌ",
+      "دَرْسَهُ"
+    ],
+    "audioPrompt": "كَتَبَ تَامِرٌ دَرْسَهُ",
+    "imageEmoji": "✏️"
+  },
+  {
+    "id": "sent_4",
+    "letter": "ث",
+    "text": "رَأَى ثَامِرٌ ثَعْلَبًا",
+    "translation": "Thamer saw a fox",
+    "words": [
+      "رَأَى",
+      "ثَامِرٌ",
+      "ثَعْلَبًا"
+    ],
+    "audioPrompt": "رَأَى ثَامِرٌ ثَعْلَبًا",
+    "imageEmoji": "🦊"
+  },
+  {
+    "id": "sent_5",
+    "letter": "ج",
+    "text": "جَلَسَ جَمَالٌ تَحْتَ الشَّجَرَةِ",
+    "translation": "Jamal sat under the tree",
+    "words": [
+      "جَلَسَ",
+      "جَمَالٌ",
+      "تَحْتَ",
+      "الشَّجَرَةِ"
+    ],
+    "audioPrompt": "جَلَسَ جَمَالٌ تَحْتَ الشَّجَرَةِ",
+    "imageEmoji": "🌳"
+  },
+  {
+    "id": "sent_6",
+    "letter": "ح",
+    "text": "شَرِبَ حَسَنٌ الحَلِيبَ",
+    "translation": "Hasan drank the milk",
+    "words": [
+      "شَرِبَ",
+      "حَسَنٌ",
+      "الحَلِيبَ"
+    ],
+    "audioPrompt": "شَرِبَ حَسَنٌ الحَلِيبَ",
+    "imageEmoji": "🥛"
+  },
+  {
+    "id": "sent_7",
+    "letter": "خ",
+    "text": "أَكَلَ خَالِدٌ الخُبْزَ",
+    "translation": "Khalid ate the bread",
+    "words": [
+      "أَكَلَ",
+      "خَالِدٌ",
+      "الخُبْزَ"
+    ],
+    "audioPrompt": "أَكَلَ خَالِدٌ الخُبْزَ",
+    "imageEmoji": "🍞"
+  },
+  {
+    "id": "sent_8",
+    "letter": "د",
+    "text": "دَخَلَ دَاوُدُ البَيْتَ",
+    "translation": "Dawood entered the house",
+    "words": [
+      "دَخَلَ",
+      "دَاوُدُ",
+      "البَيْتَ"
+    ],
+    "audioPrompt": "دَخَلَ دَاوُدُ البَيْتَ",
+    "imageEmoji": "🏠"
+  },
+  {
+    "id": "sent_9",
+    "letter": "ذ",
+    "text": "ذَهَبَ ذِيَابٌ إِلَى المَدْرَسَةِ",
+    "translation": "Dhiab went to school",
+    "words": [
+      "ذَهَبَ",
+      "ذِيَابٌ",
+      "إِلَى",
+      "المَدْرَسَةِ"
+    ],
+    "audioPrompt": "ذَهَبَ ذِيَابٌ إِلَى المَدْرَسَةِ",
+    "imageEmoji": "🏫"
+  },
+  {
+    "id": "sent_10",
+    "letter": "ر",
+    "text": "رَسَمَ رَامِيٌ شَجَرَةً",
+    "translation": "Rami drew a tree",
+    "words": [
+      "رَسَمَ",
+      "رَامِيٌ",
+      "شَجَرَةً"
+    ],
+    "audioPrompt": "رَسَمَ رَامِيٌ شَجَرَةً",
+    "imageEmoji": "🎨"
+  },
+  {
+    "id": "sent_11",
+    "letter": "ز",
+    "text": "زَرَعَ زَيْدٌ زَهْرَةً",
+    "translation": "Zaid planted a flower",
+    "words": [
+      "زَرَعَ",
+      "زَيْدٌ",
+      "زَهْرَةً"
+    ],
+    "audioPrompt": "زَرَعَ زَيْدٌ زَهْرَةً",
+    "imageEmoji": "🌷"
+  },
+  {
+    "id": "sent_12",
+    "letter": "س",
+    "text": "سَقَى سَامِيٌ الزَّهْرَةَ",
+    "translation": "Sami watered the flower",
+    "words": [
+      "سَقَى",
+      "سَامِيٌ",
+      "الزَّهْرَةَ"
+    ],
+    "audioPrompt": "سَقَى سَامِيٌ الزَّهْرَةَ",
+    "imageEmoji": "💧"
+  },
+  {
+    "id": "sent_13",
+    "letter": "ش",
+    "text": "شَرِبَ شَادِيٌ الحَلِيبَ",
+    "translation": "Shadi drank the milk",
+    "words": [
+      "شَرِبَ",
+      "شَادِيٌ",
+      "الحَلِيبَ"
+    ],
+    "audioPrompt": "شَرِبَ شَادِيٌ الحَلِيبَ",
+    "imageEmoji": "🥛"
+  },
+  {
+    "id": "sent_14",
+    "letter": "ص",
+    "text": "صَادَ صَالِحٌ سَمَكَةً",
+    "translation": "Saleh caught a fish",
+    "words": [
+      "صَادَ",
+      "صَالِحٌ",
+      "سَمَكَةً"
+    ],
+    "audioPrompt": "صَادَ صَالِحٌ سَمَكَةً",
+    "imageEmoji": "🐟"
+  },
+  {
+    "id": "sent_15",
+    "letter": "ض",
+    "text": "رَأَى ضِيَاءٌ ضِفْدَعًا",
+    "translation": "Diaa saw a frog",
+    "words": [
+      "رَأَى",
+      "ضِيَاءٌ",
+      "ضِفْدَعًا"
+    ],
+    "audioPrompt": "رَأَى ضِيَاءٌ ضِفْدَعًا",
+    "imageEmoji": "🐸"
+  },
+  {
+    "id": "sent_16",
+    "letter": "ط",
+    "text": "رَكِبَ طَارِقٌ القِطَارَ",
+    "translation": "Tariq rode the train",
+    "words": [
+      "رَكِبَ",
+      "طَارِقٌ",
+      "القِطَارَ"
+    ],
+    "audioPrompt": "رَكِبَ طَارِقٌ القِطَارَ",
+    "imageEmoji": "🚂"
+  },
+  {
+    "id": "sent_17",
+    "letter": "ظ",
+    "text": "وَقَفَ ظَافِرٌ تَحْتَ المِظَلَّةِ",
+    "translation": "Dhafer stood under the umbrella",
+    "words": [
+      "وَقَفَ",
+      "ظَافِرٌ",
+      "تَحْتَ",
+      "المِظَلَّةِ"
+    ],
+    "audioPrompt": "وَقَفَ ظَافِرٌ تَحْتَ المِظَلَّةِ",
+    "imageEmoji": "☂️"
+  },
+  {
+    "id": "sent_18",
+    "letter": "ع",
+    "text": "لَعِبَ عَلِيٌّ بِالكُرَةِ",
+    "translation": "Ali played with the ball",
+    "words": [
+      "لَعِبَ",
+      "عَلِيٌّ",
+      "بِالكُرَةِ"
+    ],
+    "audioPrompt": "لَعِبَ عَلِيٌّ بِالكُرَةِ",
+    "imageEmoji": "⚽"
+  },
+  {
+    "id": "sent_19",
+    "letter": "غ",
+    "text": "غَسَلَ غَانِمٌ يَدَيْهِ",
+    "translation": "Ghanem washed his hands",
+    "words": [
+      "غَسَلَ",
+      "غَانِمٌ",
+      "يَدَيْهِ"
+    ],
+    "audioPrompt": "غَسَلَ غَانِمٌ يَدَيْهِ",
+    "imageEmoji": "🧼"
+  },
+  {
+    "id": "sent_20",
+    "letter": "ف",
+    "text": "فَتَحَ فَهْدٌ الكِتَابَ",
+    "translation": "Fahd opened the book",
+    "words": [
+      "فَتَحَ",
+      "فَهْدٌ",
+      "الكِتَابَ"
+    ],
+    "audioPrompt": "فَتَحَ فَهْدٌ الكِتَابَ",
+    "imageEmoji": "📖"
+  },
+  {
+    "id": "sent_21",
+    "letter": "ق",
+    "text": "قَرَأَ قَاسِمٌ القِصَّةَ",
+    "translation": "Qasim read the story",
+    "words": [
+      "قَرَأَ",
+      "قَاسِمٌ",
+      "القِصَّةَ"
+    ],
+    "audioPrompt": "قَرَأَ قَاسِمٌ القِصَّةَ",
+    "imageEmoji": "📚"
+  },
+  {
+    "id": "sent_22",
+    "letter": "ك",
+    "text": "كَتَبَ كَرِيمٌ كَلِمَةً",
+    "translation": "Karim wrote a word",
+    "words": [
+      "كَتَبَ",
+      "كَرِيمٌ",
+      "كَلِمَةً"
+    ],
+    "audioPrompt": "كَتَبَ كَرِيمٌ كَلِمَةً",
+    "imageEmoji": "✍️"
+  },
+  {
+    "id": "sent_23",
+    "letter": "ل",
+    "text": "لَعِبَ لُؤَيٌّ مَعَ أَخِيهِ",
+    "translation": "Luay played with his brother",
+    "words": [
+      "لَعِبَ",
+      "لُؤَيٌّ",
+      "مَعَ",
+      "أَخِيهِ"
+    ],
+    "audioPrompt": "لَعِبَ لُؤَيٌّ مَعَ أَخِيهِ",
+    "imageEmoji": "👦"
+  },
+  {
+    "id": "sent_24",
+    "letter": "م",
+    "text": "مَسَحَ مُحَمَّدٌ يَدَيْهِ",
+    "translation": "Muhammad wiped his hands",
+    "words": [
+      "مَسَحَ",
+      "مُحَمَّدٌ",
+      "يَدَيْهِ"
+    ],
+    "audioPrompt": "مَسَحَ مُحَمَّدٌ يَدَيْهِ",
+    "imageEmoji": "👐"
+  },
+  {
+    "id": "sent_25",
+    "letter": "ن",
+    "text": "نَظَرَ نَادِرٌ إِلَى القَمَرِ",
+    "translation": "Nader looked at the moon",
+    "words": [
+      "نَظَرَ",
+      "نَادِرٌ",
+      "إِلَى",
+      "القَمَرِ"
+    ],
+    "audioPrompt": "نَظَرَ نَادِرٌ إِلَى القَمَرِ",
+    "imageEmoji": "🌙"
+  },
+  {
+    "id": "sent_26",
+    "letter": "هـ",
+    "text": "هَذَا هِلَالٌ جَمِيلٌ",
+    "translation": "This is a beautiful crescent",
+    "words": [
+      "هَذَا",
+      "هِلَالٌ",
+      "جَمِيلٌ"
+    ],
+    "audioPrompt": "هَذَا هِلَالٌ جَمِيلٌ",
+    "imageEmoji": "🌙"
+  },
+  {
+    "id": "sent_27",
+    "letter": "و",
+    "text": "وَجَدَ وَلِيدٌ كِتَابَهُ",
+    "translation": "Walid found his book",
+    "words": [
+      "وَجَدَ",
+      "وَلِيدٌ",
+      "كِتَابَهُ"
+    ],
+    "audioPrompt": "وَجَدَ وَلِيدٌ كِتَابَهُ",
+    "imageEmoji": "📘"
+  },
+  {
+    "id": "sent_28",
+    "letter": "ي",
+    "text": "يَلْعَبُ يَاسِرٌ بِالكُرَةِ",
+    "translation": "Yasser plays with the ball",
+    "words": [
+      "يَلْعَبُ",
+      "يَاسِرٌ",
+      "بِالكُرَةِ"
+    ],
+    "audioPrompt": "يَلْعَبُ يَاسِرٌ بِالكُرَةِ",
+    "imageEmoji": "⚽"
+  }
+]

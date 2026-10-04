@@ -1,0 +1,11 @@
+.english-background {
+  min-height: 100vh;
+  background-image: linear-gradient(rgba(255,255,255,.08), rgba(255,255,255,.10)), var(--english-background-image);
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  background-repeat: no-repeat;
+}
+
+/* Page roots keep their layout and cards; the shared illustration shows through. */
+.english-background > * { background: transparent !important; }

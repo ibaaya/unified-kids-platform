@@ -1,0 +1,80 @@
+[
+  {
+    "id":"en_story_1","title":"The Brave Little Cat","theme":"courage",
+    "pages":[
+      {"text":"There was a small cat named Mimi. She was afraid of the dark.","imageEmoji":"🐱","soundId":""},
+      {"text":"One night, her ball rolled under the bed. The room was very dark.","imageEmoji":"🌙","soundId":""},
+      {"text":"Mimi was brave. She walked slowly into the dark room.","imageEmoji":"🌟","soundId":""},
+      {"text":"She found her ball! She was so happy and proud.","imageEmoji":"🏀","soundId":""}
+    ],
+    "comprehensionQuestions":[
+      {"question":"What was Mimi afraid of?","options":["Dogs","The dark","Water"],"correctIndex":1}
+    ],
+    "newWordIds":[]
+  },
+  {
+    "id":"en_story_2","title":"The Little Red Apple","theme":"sharing",
+    "pages":[
+      {"text":"Sam found a big red apple on the tree.","imageEmoji":"🍎","soundId":""},
+      {"text":"His friend Lily was hungry. She had no food.","imageEmoji":"😟","soundId":""},
+      {"text":"Sam cut the apple in half and gave one half to Lily.","imageEmoji":"✂️","soundId":""},
+      {"text":"They ate together and were both happy.","imageEmoji":"😊","soundId":""}
+    ],
+    "comprehensionQuestions":[
+      {"question":"What did Sam find?","options":["An orange","A red apple","A banana"],"correctIndex":1}
+    ],
+    "newWordIds":[]
+  },
+  {
+    "id":"en_story_3","title":"The Rain and the Sun","theme":"nature",
+    "pages":[
+      {"text":"It rained all morning. The flowers were happy.","imageEmoji":"🌧️","soundId":""},
+      {"text":"The sun came out after the rain. Everything was bright.","imageEmoji":"☀️","soundId":""},
+      {"text":"A beautiful rainbow appeared in the sky.","imageEmoji":"🌈","soundId":""},
+      {"text":"The children ran outside to play in the puddles.","imageEmoji":"👧","soundId":""}
+    ],
+    "comprehensionQuestions":[
+      {"question":"What appeared after the rain?","options":["A rainbow","A cloud","A storm"],"correctIndex":0}
+    ],
+    "newWordIds":[]
+  },
+  {
+    "id":"en_story_4","title":"Best Friends","theme":"friendship",
+    "pages":[
+      {"text":"Tom the rabbit and Ben the bear were best friends.","imageEmoji":"🐇","soundId":""},
+      {"text":"One day, Ben hurt his paw and could not walk.","imageEmoji":"🐻","soundId":""},
+      {"text":"Tom brought him food and sat with him every day.","imageEmoji":"🥕","soundId":""},
+      {"text":"Ben got better. He said: You are my best friend forever!","imageEmoji":"❤️","soundId":""}
+    ],
+    "comprehensionQuestions":[
+      {"question":"Who helped Ben when he was hurt?","options":["A cat","Tom the rabbit","A bird"],"correctIndex":1}
+    ],
+    "newWordIds":[]
+  },
+  {
+    "id":"en_story_5","title":"The Magic Garden","theme":"nature",
+    "pages":[
+      {"text":"Maya found a tiny seed in the park.","imageEmoji":"🌱","soundId":""},
+      {"text":"She planted it in her garden and watered it every day.","imageEmoji":"💧","soundId":""},
+      {"text":"Slowly, a beautiful flower grew tall and bright.","imageEmoji":"🌸","soundId":""},
+      {"text":"Maya learned that with care, small things become wonderful.","imageEmoji":"🌟","soundId":""}
+    ],
+    "comprehensionQuestions":[
+      {"question":"What did Maya plant?","options":["A tree","A seed","A flower"],"correctIndex":1}
+    ],
+    "newWordIds":[]
+  },
+  {
+    "id":"en_story_6","title":"A Day at the Zoo","theme":"animals",
+    "pages":[
+      {"text":"Ali and his dad went to the zoo on a sunny day.","imageEmoji":"🦁","soundId":""},
+      {"text":"They saw a tall giraffe eating leaves from a tree.","imageEmoji":"🦒","soundId":""},
+      {"text":"Then they saw a funny penguin sliding on the ice.","imageEmoji":"🐧","soundId":""},
+      {"text":"Ali said: I love animals! Can we come back tomorrow?","imageEmoji":"😄","soundId":""}
+    ],
+    "comprehensionQuestions":[
+      {"question":"What was the giraffe eating?","options":["Fish","Leaves","Fruit"],"correctIndex":1}
+    ],
+    "newWordIds":[]
+  }
+]

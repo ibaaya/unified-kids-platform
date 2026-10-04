@@ -1,0 +1,22 @@
+[
+  {"id":"short_a","symbol":"a","name":"Short A","example":"apple","imageEmoji":"🍎","soundId":"en_phonic_short_a","description":"/æ/ — mouth wide open"},
+  {"id":"short_e","symbol":"e","name":"Short E","example":"egg","imageEmoji":"🥚","soundId":"en_phonic_short_e","description":"/ɛ/ — smile slightly"},
+  {"id":"short_i","symbol":"i","name":"Short I","example":"ink","imageEmoji":"🖊️","soundId":"en_phonic_short_i","description":"/ɪ/ — short quick sound"},
+  {"id":"short_o","symbol":"o","name":"Short O","example":"orange","imageEmoji":"🍊","soundId":"en_phonic_short_o","description":"/ɒ/ — round mouth"},
+  {"id":"short_u","symbol":"u","name":"Short U","example":"umbrella","imageEmoji":"☂️","soundId":"en_phonic_short_u","description":"/ʌ/ — relaxed sound"},
+  {"id":"long_a","symbol":"a-e","name":"Long A","example":"cake","imageEmoji":"🎂","soundId":"en_phonic_long_a","description":"/eɪ/ — say your name"},
+  {"id":"long_e","symbol":"ee","name":"Long E","example":"tree","imageEmoji":"🌳","soundId":"en_phonic_long_e","description":"/iː/ — smile wide"},
+  {"id":"long_i","symbol":"i-e","name":"Long I","example":"kite","imageEmoji":"🪁","soundId":"en_phonic_long_i","description":"/aɪ/ — say letter I"},
+  {"id":"long_o","symbol":"oa","name":"Long O","example":"boat","imageEmoji":"⛵","soundId":"en_phonic_long_o","description":"/əʊ/ — round lips"},
+  {"id":"long_u","symbol":"ue","name":"Long U","example":"cube","imageEmoji":"🧊","soundId":"en_phonic_long_u","description":"/juː/ — say letter U"},
+  {"id":"blend_bl","symbol":"bl","name":"BL blend","example":"blue","imageEmoji":"💙","soundId":"en_phonic_bl","description":"b + l together"},
+  {"id":"blend_cr","symbol":"cr","name":"CR blend","example":"crab","imageEmoji":"🦀","soundId":"en_phonic_cr","description":"c + r together"},
+  {"id":"blend_fl","symbol":"fl","name":"FL blend","example":"flower","imageEmoji":"🌸","soundId":"en_phonic_fl","description":"f + l together"},
+  {"id":"blend_gr","symbol":"gr","name":"GR blend","example":"grape","imageEmoji":"🍇","soundId":"en_phonic_gr","description":"g + r together"},
+  {"id":"blend_st","symbol":"st","name":"ST blend","example":"star","imageEmoji":"⭐","soundId":"en_phonic_st","description":"s + t together"},
+  {"id":"blend_tr","symbol":"tr","name":"TR blend","example":"tree","imageEmoji":"🌳","soundId":"en_phonic_tr","description":"t + r together"},
+  {"id":"digraph_ch","symbol":"ch","name":"CH","example":"chair","imageEmoji":"🪑","soundId":"en_phonic_ch","description":"/tʃ/ — like a sneeze"},
+  {"id":"digraph_sh","symbol":"sh","name":"SH","example":"shell","imageEmoji":"🐚","soundId":"en_phonic_sh","description":"/ʃ/ — quiet sound"},
+  {"id":"digraph_th","symbol":"th","name":"TH","example":"thumb","imageEmoji":"👍","soundId":"en_phonic_th","description":"/θ/ — tongue between teeth"},
+  {"id":"digraph_wh","symbol":"wh","name":"WH","example":"whale","imageEmoji":"🐳","soundId":"en_phonic_wh","description":"/w/ — a puff of air"}
+]

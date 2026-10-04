@@ -1,0 +1,61 @@
+[
+  {
+    "id": "en-letters",
+    "title": "Letters World",
+    "emoji": "🔤",
+    "colorVar": "#4f80e2",
+    "order": 1,
+    "unlockRequirement": null
+  },
+  {
+    "id": "en-phonics",
+    "title": "Sounds World",
+    "emoji": "🎵",
+    "colorVar": "#8b5fbf",
+    "order": 2,
+    "unlockRequirement": {
+      "worldId": "en-letters",
+      "masteryPercent": 70
+    }
+  },
+  {
+    "id": "en-words",
+    "title": "Words World",
+    "emoji": "📝",
+    "colorVar": "#2fb68c",
+    "order": 3,
+    "unlockRequirement": {
+      "worldId": "en-phonics",
+      "masteryPercent": 70
+    }
+  },
+  {
+    "id": "en-sentences",
+    "title": "Sentences World",
+    "emoji": "💬",
+    "colorVar": "#3aa0d9",
+    "order": 4,
+    "unlockRequirement": {
+      "worldId": "en-words",
+      "masteryPercent": 70
+    }
+  },
+  {
+    "id": "en-stories",
+    "title": "Stories World",
+    "emoji": "📚",
+    "colorVar": "#e85d75",
+    "order": 5,
+    "unlockRequirement": {
+      "worldId": "en-sentences",
+      "masteryPercent": 70
+    }
+  },
+  {
+    "id": "en-test",
+    "title": "Final Test 🏆",
+    "emoji": "🏆",
+    "colorVar": "#e85d75",
+    "order": 6
+  }
+]

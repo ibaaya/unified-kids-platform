@@ -1,0 +1,259 @@
+
+/* Scoped visual system for Numbers Adventure only. */
+.numbers-page {
+  min-height: 100%;
+  direction: rtl;
+  background-image: linear-gradient(rgba(255,255,255,.08), rgba(255,255,255,.08)), url("/images/numbers-bg.webp");
+  background-size: cover;
+  background-position: center top;
+  background-attachment: fixed;
+}
+.numbers-page .card {
+  width: min(94vw, 980px);
+  margin-inline: auto;
+  border: 1px solid rgba(255,255,255,.72);
+  border-radius: 2rem;
+  background: rgba(255,255,255,.64);
+  box-shadow: 0 18px 50px rgba(55,32,96,.16);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+.numbers-page .numbers-glass-card {
+  width: min(94vw, 980px);
+  margin-inline: auto;
+  border: 1px solid rgba(255,255,255,.72);
+  border-radius: 2rem;
+  background: rgba(255,255,255,.66);
+  box-shadow: 0 18px 50px rgba(55, 32, 96, .16);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  padding: clamp(1rem, 3vw, 2rem);
+}
+.numbers-page .numbers-content-center {
+  width: 100%;
+  max-width: 980px;
+  margin-inline: auto;
+}
+.numbers-page .numbers-quiz-shell {
+  width: min(96vw, 980px);
+  margin-inline: auto;
+}
+.numbers-page .numbers-quiz-progress {
+  width: min(92vw, 860px);
+  margin: 0 auto .8rem;
+  padding: .65rem 1rem;
+  border: 1px solid rgba(255,255,255,.72);
+  border-radius: 1.25rem;
+  background: rgba(255,255,255,.58);
+  box-shadow: 0 8px 24px rgba(55,32,96,.12);
+  backdrop-filter: blur(8px);
+}
+.numbers-page .numbers-quiz-progress-track {
+  height: .7rem;
+  overflow: hidden;
+  border-radius: 999px;
+  background: rgba(226,232,240,.78);
+}
+.numbers-page .numbers-quiz-progress-fill {
+  height: 100%;
+  border-radius: 999px;
+  background: linear-gradient(90deg,#8b5cf6,#10b981);
+  transition: width .35s ease;
+}
+.numbers-page .numbers-quiz-progress-label {
+  margin-top: .3rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: .95rem;
+  font-weight: 800;
+  color: #5b21b6;
+}
+.numbers-page .numbers-quiz-card {
+  min-height: 360px;
+}
+.numbers-page .numbers-options {
+  width: min(100%, 720px);
+  margin-inline: auto;
+}
+.numbers-page .numbers-option {
+  min-height: 76px;
+  font-size: clamp(1.55rem, 4vw, 2.15rem);
+  font-weight: 900;
+  border-radius: 1.35rem;
+}
+.numbers-page .numbers-practice-hero {
+  width: min(94vw, 980px);
+  margin: 1rem auto;
+}
+.numbers-page .numbers-big-action {
+  min-height: 78px;
+  padding-inline: 2.5rem;
+  font-size: clamp(1.7rem, 4vw, 2.35rem);
+  font-weight: 900;
+}
+.numbers-page .numbers-games-panel {
+  width: min(96vw, 1050px);
+  margin-inline: auto;
+  border-radius: 2.2rem;
+  background: rgba(255,255,255,.42);
+  border: 1px solid rgba(255,255,255,.72);
+  box-shadow: 0 18px 55px rgba(50,30,90,.15);
+  backdrop-filter: blur(10px);
+  padding: clamp(1rem, 3vw, 2rem);
+}
+.numbers-page .numbers-game-card {
+  width: min(94vw, 900px);
+  margin-inline: auto;
+}
+.numbers-page .numbers-game-stage {
+  border-radius: 1.8rem;
+  background: rgba(255,255,255,.42);
+  border: 1px solid rgba(255,255,255,.7);
+  padding: clamp(.8rem, 3vw, 1.5rem);
+}
+.numbers-page .numbers-line {
+  width: min(96vw, 980px);
+  margin-inline: auto;
+  padding: clamp(1rem, 3vw, 2rem);
+  border-radius: 2.2rem;
+  background: rgba(255,255,255,.55);
+  border: 1px solid rgba(255,255,255,.72);
+  box-shadow: 0 18px 50px rgba(55,32,96,.16);
+  backdrop-filter: blur(10px);
+}
+.numbers-page .numbers-line-track {
+  position: relative;
+  width: min(92vw, 860px);
+  margin: 4.5rem auto 2rem;
+  padding-top: 1.25rem;
+}
+.numbers-page .numbers-line-track::before {
+  content: "";
+  position: absolute;
+  left: 2%;
+  right: 2%;
+  top: 1.15rem;
+  height: 8px;
+  border-radius: 999px;
+  background: linear-gradient(90deg,#94a3b8,#8b5cf6,#10b981);
+}
+.numbers-page .numbers-line-tick {
+  position: relative;
+  z-index: 1;
+}
+.numbers-page .numbers-line-rabbit {
+  position: absolute;
+  z-index: 2;
+  top: -3.1rem;
+  transform: translateX(50%);
+  font-size: clamp(2.8rem, 7vw, 4.5rem);
+  filter: drop-shadow(0 5px 4px rgba(0,0,0,.12));
+  transition: right .7s cubic-bezier(.2,.8,.2,1);
+}
+.numbers-page .numbers-line-current {
+  box-shadow: 0 0 0 5px rgba(139,92,246,.18);
+  background: #7c3aed;
+  color: white;
+  transform: scale(1.13);
+}
+.numbers-page .numbers-line-visited {
+  background: #a7f3d0;
+  color: #065f46;
+}
+.numbers-page .numbers-test-summary {
+  width: min(94vw, 980px);
+  margin-inline: auto;
+  border-radius: 2rem;
+  background: rgba(255,255,255,.72);
+  border: 1px solid rgba(255,255,255,.75);
+  padding: 1.25rem;
+  box-shadow: 0 15px 45px rgba(55,32,96,.14);
+  backdrop-filter: blur(10px);
+}
+.numbers-page .numbers-level-grid {
+  display: grid;
+  grid-template-columns: repeat(3,minmax(0,1fr));
+  gap: .8rem;
+}
+.numbers-page .numbers-level-chip {
+  border-radius: 1.25rem;
+  padding: .9rem;
+  background: rgba(255,255,255,.65);
+  border: 1px solid rgba(139,92,246,.16);
+}
+.numbers-page .numbers-accessibility {
+  position: fixed;
+  right: .75rem;
+  bottom: .75rem;
+  z-index: 60;
+  display: flex;
+  align-items: center;
+  gap: .2rem;
+  border-radius: 1.25rem;
+  padding: .3rem;
+  background: rgba(255,255,255,.88);
+  border: 1px solid rgba(124,58,237,.2);
+  box-shadow: 0 8px 24px rgba(0,0,0,.16);
+  backdrop-filter: blur(8px);
+}
+.numbers-page .numbers-accessibility button {
+  min-width: 2.5rem;
+  min-height: 2.5rem;
+  border-radius: .9rem;
+  font-weight: 900;
+  color: #5b21b6;
+}
+.numbers-page.numbers-font-plus-1 { font-size: 1.08em; }
+.numbers-page.numbers-font-plus-2 { font-size: 1.16em; }
+.numbers-page.numbers-font-plus-3 { font-size: 1.24em; }
+.numbers-page.numbers-font-plus-4 { font-size: 1.32em; }
+.numbers-page .numbers-balloon {
+  min-height: 150px;
+  display: grid;
+  place-items: center;
+}
+.numbers-page .numbers-train-car {
+  min-width: 72px;
+  min-height: 64px;
+  display: grid;
+  place-items: center;
+  border-radius: 1rem;
+  color: white;
+  font-size: 2rem;
+  font-weight: 900;
+  box-shadow: 0 7px 0 rgba(0,0,0,.12);
+}
+.numbers-page .numbers-fast-bar {
+  height: 16px;
+  border-radius: 999px;
+  background: rgba(226,232,240,.85);
+  overflow: hidden;
+  border: 2px solid rgba(255,255,255,.8);
+}
+.numbers-page .numbers-fast-fill {
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg,#ef4444,#f59e0b);
+}
+.numbers-page .numbers-help-example {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0,1fr));
+  gap: .5rem;
+  max-width: 360px;
+  margin: 1rem auto;
+}
+.numbers-page .numbers-help-example span {
+  display: grid;
+  place-items: center;
+  min-height: 56px;
+  border-radius: 1rem;
+  background: rgba(239,246,255,.95);
+  border: 2px solid #c4b5fd;
+  font-size: 1.8rem;
+  font-weight: 900;
+}
+@media (max-width: 640px) {
+  .numbers-page .numbers-level-grid { grid-template-columns: 1fr; }
+  .numbers-page .numbers-option { min-height: 68px; }
+}

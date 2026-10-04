@@ -1,0 +1,200 @@
+[
+  {
+    "letterId": "ب",
+    "haraka": "fatha",
+    "form": "بَ",
+    "soundId": "haraka_fatha_ب"
+  },
+  {
+    "letterId": "ت",
+    "haraka": "fatha",
+    "form": "تَ",
+    "soundId": "haraka_fatha_ت"
+  },
+  {
+    "letterId": "م",
+    "haraka": "fatha",
+    "form": "مَ",
+    "soundId": "haraka_fatha_م"
+  },
+  {
+    "letterId": "ب",
+    "haraka": "damma",
+    "form": "بُ",
+    "soundId": "haraka_damma_ب"
+  },
+  {
+    "letterId": "ت",
+    "haraka": "damma",
+    "form": "تُ",
+    "soundId": "haraka_damma_ت"
+  },
+  {
+    "letterId": "م",
+    "haraka": "damma",
+    "form": "مُ",
+    "soundId": "haraka_damma_م"
+  },
+  {
+    "letterId": "ب",
+    "haraka": "kasra",
+    "form": "بِ",
+    "soundId": "haraka_kasra_ب"
+  },
+  {
+    "letterId": "ت",
+    "haraka": "kasra",
+    "form": "تِ",
+    "soundId": "haraka_kasra_ت"
+  },
+  {
+    "letterId": "م",
+    "haraka": "kasra",
+    "form": "مِ",
+    "soundId": "haraka_kasra_م"
+  },
+  {
+    "letterId": "ب",
+    "haraka": "sukun",
+    "form": "بْ",
+    "soundId": "haraka_sukun_ب"
+  },
+  {
+    "letterId": "ت",
+    "haraka": "sukun",
+    "form": "تْ",
+    "soundId": "haraka_sukun_ت"
+  },
+  {
+    "letterId": "م",
+    "haraka": "sukun",
+    "form": "مْ",
+    "soundId": "haraka_sukun_م"
+  },
+  {
+    "letterId": "ب",
+    "haraka": "tanween_fath",
+    "form": "بً",
+    "soundId": "haraka_tanween_fath_ب"
+  },
+  {
+    "letterId": "ت",
+    "haraka": "tanween_fath",
+    "form": "تً",
+    "soundId": "haraka_tanween_fath_ت"
+  },
+  {
+    "letterId": "م",
+    "haraka": "tanween_fath",
+    "form": "مً",
+    "soundId": "haraka_tanween_fath_م"
+  },
+  {
+    "letterId": "ب",
+    "haraka": "tanween_damm",
+    "form": "بٌ",
+    "soundId": "haraka_tanween_damm_ب"
+  },
+  {
+    "letterId": "ت",
+    "haraka": "tanween_damm",
+    "form": "تٌ",
+    "soundId": "haraka_tanween_damm_ت"
+  },
+  {
+    "letterId": "م",
+    "haraka": "tanween_damm",
+    "form": "مٌ",
+    "soundId": "haraka_tanween_damm_م"
+  },
+  {
+    "letterId": "ب",
+    "haraka": "tanween_kasr",
+    "form": "بٍ",
+    "soundId": "haraka_tanween_kasr_ب"
+  },
+  {
+    "letterId": "ت",
+    "haraka": "tanween_kasr",
+    "form": "تٍ",
+    "soundId": "haraka_tanween_kasr_ت"
+  },
+  {
+    "letterId": "م",
+    "haraka": "tanween_kasr",
+    "form": "مٍ",
+    "soundId": "haraka_tanween_kasr_م"
+  },
+  {
+    "letterId": "ب",
+    "haraka": "shadda",
+    "form": "بَّ",
+    "soundId": "haraka_shadda_ب"
+  },
+  {
+    "letterId": "ت",
+    "haraka": "shadda",
+    "form": "تَّ",
+    "soundId": "haraka_shadda_ت"
+  },
+  {
+    "letterId": "م",
+    "haraka": "shadda",
+    "form": "مَّ",
+    "soundId": "haraka_shadda_م"
+  },
+  {
+    "letterId": "ب",
+    "haraka": "madd_alif",
+    "form": "بَا",
+    "soundId": "haraka_madd_alif_ب"
+  },
+  {
+    "letterId": "ت",
+    "haraka": "madd_alif",
+    "form": "تَا",
+    "soundId": "haraka_madd_alif_ت"
+  },
+  {
+    "letterId": "م",
+    "haraka": "madd_alif",
+    "form": "مَا",
+    "soundId": "haraka_madd_alif_م"
+  },
+  {
+    "letterId": "ب",
+    "haraka": "madd_waw",
+    "form": "بُو",
+    "soundId": "haraka_madd_waw_ب"
+  },
+  {
+    "letterId": "ت",
+    "haraka": "madd_waw",
+    "form": "تُو",
+    "soundId": "haraka_madd_waw_ت"
+  },
+  {
+    "letterId": "م",
+    "haraka": "madd_waw",
+    "form": "مُو",
+    "soundId": "haraka_madd_waw_م"
+  },
+  {
+    "letterId": "ب",
+    "haraka": "madd_yaa",
+    "form": "بِي",
+    "soundId": "haraka_madd_yaa_ب"
+  },
+  {
+    "letterId": "ت",
+    "haraka": "madd_yaa",
+    "form": "تِي",
+    "soundId": "haraka_madd_yaa_ت"
+  },
+  {
+    "letterId": "م",
+    "haraka": "madd_yaa",
+    "form": "مِي",
+    "soundId": "haraka_madd_yaa_م"
+  }
+]

@@ -1,0 +1,174 @@
+/* CSS مستقل بمغامرة الأرقام فقط. لا يعتمد على globals.css في المنصة. */
+.numbers-root {
+  --numbers-scale: 1;
+  font-size: calc(16px * var(--numbers-scale));
+  min-height: 100vh;
+  width: 100%;
+  box-sizing: border-box;
+}
+.numbers-root:not(.numbers-page-bg) { padding-bottom: 76px; }
+.numbers-root *, .numbers-root *::before, .numbers-root *::after { box-sizing: border-box; }
+.numbers-fixed-controls {
+  position: fixed;
+  left: 14px;
+  right: 14px;
+  bottom: 14px;
+  top: auto;
+  transform: none;
+  z-index: 1000;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 8px;
+  pointer-events: none;
+}
+.numbers-fixed-controls > * { pointer-events: auto; }
+.numbers-control-left { display:flex; align-items:center; gap:6px; }
+.numbers-control-right { display:flex; align-items:center; }
+.numbers-control-button, .numbers-control-scale {
+  border: 1px solid rgba(255,255,255,.9);
+  background: rgba(255,255,255,.88);
+  color: #4c1d95;
+  min-width: 42px;
+  height: 42px;
+  padding: 0 9px;
+  border-radius: 14px;
+  box-shadow: 0 5px 18px rgba(15,23,42,.14);
+  backdrop-filter: blur(8px);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 900;
+  cursor: pointer;
+  text-decoration: none;
+  user-select: none;
+}
+.numbers-control-button:hover { transform: translateY(-1px); }
+.numbers-parent-gear:hover { animation: numbers-gear-spin .8s linear infinite; }
+@keyframes numbers-gear-spin { to { rotate: 360deg; } }
+.numbers-fixed-controls .numbers-control-button { flex:0 0 auto; }
+.numbers-zoom-button { font-size: 18px; letter-spacing: -.5px; }
+.numbers-control-scale { min-width: 45px; font-size: 12px; color: #64748b; }
+.numbers-page-bg {
+  min-height: 100vh;
+  width: 100%;
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  overflow-x: hidden;
+}
+.numbers-content {
+  width: min(1100px, calc(100% - 24px));
+  min-height: 100vh;
+  margin: 0 auto;
+  padding: 78px 0 76px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.numbers-card {
+  width: min(780px, 100%);
+  margin: 0 auto;
+  border: 1px solid rgba(255,255,255,.65);
+  border-radius: 28px;
+  background: rgba(255,255,255,.78);
+  backdrop-filter: blur(9px);
+  box-shadow: 0 18px 45px rgba(15,23,42,.15);
+  padding: clamp(16px, 2.5vw, 28px);
+}
+.numbers-quiz-card { width: min(760px, 100%); margin: 0 auto; }
+.numbers-quiz-progress { display:flex; align-items:center; gap:10px; margin-bottom:16px; }
+.numbers-quiz-progress-bar { height:9px; flex:1; border-radius:999px; overflow:hidden; background:rgba(148,163,184,.25); }
+.numbers-quiz-progress-fill { height:100%; border-radius:999px; background:linear-gradient(90deg,#8b5cf6,#10b981); transition:width .25s ease; }
+.numbers-option-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:12px; margin-top:16px; }
+.numbers-option {
+  position:relative;
+  z-index:2;
+  pointer-events:auto !important;
+  min-height:72px;
+  width:100%;
+  border:2px solid rgba(124,58,237,.22);
+  border-bottom-width:5px;
+  border-radius:20px;
+  background:rgba(255,255,255,.96);
+  color:#312e81;
+  padding:10px 12px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  cursor:pointer;
+  touch-action:manipulation;
+  font-weight:900;
+  box-shadow:0 5px 14px rgba(15,23,42,.09);
+  transition:transform .12s ease, background .12s ease;
+}
+.numbers-option:hover { transform:translateY(-2px); background:#fff; }
+.numbers-option:active { transform:translateY(1px); }
+.numbers-compact-icon { font-size:clamp(2rem,4vw,3.2rem) !important; line-height:1; }
+.numbers-home-rabbit { font-size:clamp(2.4rem,5vw,3.8rem) !important; line-height:1; }
+.numberline-rabbit { display:block; font-size:3.25rem; line-height:1; filter:drop-shadow(0 5px 3px rgba(76,29,149,.24)); transform:scaleX(-1); }
+.numbers-game-icon { font-size:clamp(1.9rem,3.5vw,2.7rem) !important; line-height:1; }
+.numbers-action-button {
+  min-height:58px !important;
+  padding:12px 28px !important;
+  font-size:calc(1.25rem * var(--numbers-scale)) !important;
+}
+.numbers-stage-grid { grid-template-columns:repeat(2,minmax(0,1fr)); }
+.numbers-stage-tile { min-height:150px !important; }
+.numbers-stage-number { font-size:clamp(3.3rem,7vw,5rem) !important; }
+.numbers-games-grid { grid-template-columns:repeat(2,minmax(0,1fr)); }
+.numbers-game-area { width:min(780px,100%); margin:0 auto; }
+.numbers-game-card { width:100%; }
+.numbers-balloon-area { background:linear-gradient(180deg,rgba(224,242,254,.62),rgba(254,243,199,.62)); border:2px solid rgba(255,255,255,.58); border-radius:24px; padding:20px; backdrop-filter:blur(3px); }
+.numbers-balloon {
+  width:72px; height:88px; border:0; color:#fff; cursor:pointer; position:relative;
+  border-radius:50% 50% 46% 46%; box-shadow:inset -8px -10px 0 rgba(0,0,0,.10), 0 8px 14px rgba(15,23,42,.16);
+  display:flex; align-items:center; justify-content:center; font-weight:900;
+}
+.numbers-balloon::after { content:""; position:absolute; bottom:-8px; width:0; height:0; border-left:5px solid transparent; border-right:5px solid transparent; border-top:10px solid currentColor; filter:brightness(.8); }
+.numbers-balloon-label { font-size:calc(2rem * var(--numbers-scale)); text-shadow:0 2px 3px rgba(0,0,0,.25); }
+.numbers-game-help { max-width:680px; }
+.numbers-train-car { min-width:72px; min-height:62px; display:flex; align-items:center; justify-content:center; border-radius:14px 14px 9px 9px; color:#fff; font-size:calc(1.8rem * var(--numbers-scale)); font-weight:900; box-shadow:inset 0 -6px rgba(0,0,0,.12); }
+.numbers-text-bubble { background:rgba(255,255,255,.9); border-radius:20px; padding:10px 16px; }
+
+.numbers-completion-actions {
+  width:100%; max-width:520px; margin:20px auto 0;
+  display:flex; align-items:center; justify-content:center; gap:12px;
+  flex-wrap:wrap;
+}
+.numbers-next-button, .numbers-replay-button {
+  min-height:52px; border:0; border-radius:18px; padding:10px 22px;
+  display:inline-flex; align-items:center; justify-content:center;
+  font-size:calc(1.15rem * var(--numbers-scale)); font-weight:900; cursor:pointer; text-decoration:none;
+  box-shadow:0 7px 18px rgba(15,23,42,.12); transition:transform .12s ease;
+}
+.numbers-next-button { background:#34d399; color:#fff; min-width:190px; }
+.numbers-replay-button { background:#8b5cf6; color:#fff; min-width:145px; }
+.numbers-next-button:hover, .numbers-replay-button:hover { transform:translateY(-2px); }
+.numbers-level-score { font-size:clamp(3rem,8vw,5rem); font-weight:900; color:#7c3aed; line-height:1; margin:12px 0; }
+.numbers-level-score span { font-size:.45em; color:#64748b; }
+.numbers-level-result { border-radius:20px; padding:16px; background:rgba(241,245,249,.86); }
+.numbers-catch-celebration { font-size:2.4rem; animation:numbers-pop .7s ease both; }
+@keyframes numbers-pop { 0%{transform:scale(.5);opacity:0} 55%{transform:scale(1.2);opacity:1} 100%{transform:scale(1);opacity:1} }
+
+/* تكبير النصوص فعليًا: rem يعتمد على html، لذلك نضبط أحجام Tailwind داخل نطاق الأرقام. */
+.numbers-root .text-xs{font-size:calc(.75rem * var(--numbers-scale)) !important}
+.numbers-root .text-sm{font-size:calc(.875rem * var(--numbers-scale)) !important}
+.numbers-root .text-base{font-size:calc(1rem * var(--numbers-scale)) !important}
+.numbers-root .text-lg{font-size:calc(1.125rem * var(--numbers-scale)) !important}
+.numbers-root .text-xl{font-size:calc(1.25rem * var(--numbers-scale)) !important}
+.numbers-root .text-2xl{font-size:calc(1.5rem * var(--numbers-scale)) !important}
+.numbers-root .text-3xl{font-size:calc(1.875rem * var(--numbers-scale)) !important}
+.numbers-root .text-4xl{font-size:calc(2.25rem * var(--numbers-scale)) !important}
+.numbers-root .text-5xl{font-size:calc(3rem * var(--numbers-scale)) !important}
+.numbers-root .text-6xl{font-size:calc(3.75rem * var(--numbers-scale)) !important}
+.numbers-root .text-7xl{font-size:calc(4.5rem * var(--numbers-scale)) !important}
+.numbers-root .numbers-card { font-size:calc(1rem * var(--numbers-scale)); }
+
+@media (max-width:640px){
+  .numbers-fixed-controls { left:8px; right:8px; bottom:8px; }
+  .numbers-control-button { min-width:38px; height:38px; border-radius:12px; }
+  .numbers-content { width:min(100% - 14px,1100px); padding-top:64px; padding-bottom:68px; }
+  .numbers-option { min-height:64px; }
+  .numbers-stage-grid, .numbers-games-grid { grid-template-columns:repeat(2,minmax(0,1fr)); gap:10px; }
+}

@@ -1,0 +1,96 @@
+{
+  "version": 1,
+  "worlds": [
+    {
+      "id": "letters",
+      "label": "عَالَمُ الْحُرُوفِ",
+      "prompts": [
+        {
+          "id": "letter-position",
+          "label": "تَحْدِيدُ مَوْضِعِ الْحَرْفِ",
+          "template": "أَيْنَ حَرْفُ {letterName} فِي هَذِهِ الْكَلِمَةِ؟",
+          "variantsFrom": "letters"
+        },
+        {
+          "id": "listen-picture",
+          "label": "الِاسْتِمَاعُ وَاخْتِيَارُ الصُّورَةِ",
+          "text": "اِسْتَمِعْ وَاخْتَرِ الصُّورَةَ الصَّحِيحَةَ"
+        },
+        {
+          "id": "find-letter-picture",
+          "label": "اخْتِيَارُ صُورَةٍ لِكَلِمَةٍ تَحْتَوِي الْحَرْفَ",
+          "template": "أَيُّ صُورَةٍ فِيهَا كَلِمَةٌ تَحْتَوِي عَلَى حَرْفِ {letterName}؟",
+          "variantsFrom": "letters"
+        },
+        {
+          "id": "trace-letter",
+          "label": "تَتَبُّعُ الْحَرْفِ",
+          "template": "اُكْتُبْ حَرْفَ {letterName} بِإِصْبَعِكَ فَوْقَ الشَّكْلِ الشَّفَّافِ",
+          "variantsFrom": "letters"
+        }
+      ]
+    },
+    {
+      "id": "harakat",
+      "label": "عَالَمُ الْحَرَكَاتِ",
+      "prompts": [
+        {
+          "id": "haraka-choice",
+          "label": "اخْتِيَارُ شَكْلِ الْحَرَكَةِ",
+          "template": "اِسْتَمِعْ وَاخْتَرْ شَكْلَ الْحَرَكَةِ الصَّحِيحَ: {harakaLabel}",
+          "variants": [
+            { "id": "fatha", "values": { "harakaLabel": "الفَتْحَة" } },
+            { "id": "damma", "values": { "harakaLabel": "الضَّمَّةُ" } },
+            { "id": "kasra", "values": { "harakaLabel": "الْكَسْرَةُ" } },
+            { "id": "sukun", "values": { "harakaLabel": "السُّكُونُ" } },
+            { "id": "tanween_fath", "values": { "harakaLabel": "تَنْوِينُ الْفَتْحِ" } },
+            { "id": "tanween_damm", "values": { "harakaLabel": "تَنْوِينُ الضَّمِّ" } },
+            { "id": "tanween_kasr", "values": { "harakaLabel": "تَنْوِينُ الْكَسْرِ" } },
+            { "id": "shadda", "values": { "harakaLabel": "الشَّدَّةُ" } },
+            { "id": "madd_alif", "values": { "harakaLabel": "الْمَدُّ بِالْأَلِفِ" } },
+            { "id": "madd_waw", "values": { "harakaLabel": "الْمَدُّ بِالْوَاوِ" } },
+            { "id": "madd_yaa", "values": { "harakaLabel": "الْمَدُّ بِالْيَاءِ" } }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "syllables",
+      "label": "عَالَمُ الْمَقَاطِعِ",
+      "prompts": [
+        {
+          "id": "syllable-choice",
+          "label": "اخْتِيَارُ الْمَقْطَعِ الصَّحِيحِ",
+          "text": "اِسْتَمِعْ وَاخْتَرِ الْمَقْطَعَ الصَّحِيحَ"
+        }
+      ]
+    },
+    {
+      "id": "words",
+      "label": "عَالَمُ الْكَلِمَاتِ",
+      "prompts": [
+        {
+          "id": "word-build",
+          "label": "ترتيب الحروف لتكوين الكلمة",
+          "text": "رَتِّبِ الحُرُوفَ لِتَكْوِينِ الكَلِمَةِ"
+        },
+        {
+          "id": "word-trace",
+          "label": "تَتَبُّعُ الْكَلِمَةِ",
+          "text": "اُكْتُبِ الْكَلِمَةَ بِإِصْبَعِكَ فَوْقَ الشَّكْلِ الشَّفَّافِ"
+        }
+      ]
+    },
+    {
+      "id": "sentences",
+      "label": "عَالَمُ الْجُمَلِ",
+      "prompts": [
+        {
+          "id": "sentence-order",
+          "label": "تَرْتِيبُ كَلِمَاتِ الْجُمْلَةِ",
+          "text": "اِسْتَمِعْ إِلَى الْجُمْلَةِ، ثُمَّ رَتِّبِ الْكَلِمَاتِ لِتُكَوِّنَهَا بِشَكْلٍ صَحِيحٍ"
+        }
+      ]
+    }
+  ]
+}

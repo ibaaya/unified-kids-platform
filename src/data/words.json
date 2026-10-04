@@ -1,0 +1,3026 @@
+[
+  {
+    "id": "word_ا_start",
+    "text": "أَسَدٌ",
+    "letterId": "ا",
+    "position": "start",
+    "imageEmoji": "🦁",
+    "soundId": "word_ا_start",
+    "difficulty": 1,
+    "relatedLetterIds": [
+      "ا"
+    ]
+  },
+  {
+    "id": "word_alif_start_02",
+    "text": "أَرْنَبٌ",
+    "letterId": "ا",
+    "position": "start",
+    "imageEmoji": "🐇",
+    "soundId": "word_alif_start_02",
+    "difficulty": 1,
+    "relatedLetterIds": [
+      "ا"
+    ]
+  },
+  {
+    "id": "word_alif_start_03",
+    "text": "أُذُنٌ",
+    "letterId": "ا",
+    "position": "start",
+    "imageEmoji": "👂",
+    "soundId": "word_alif_start_03",
+    "difficulty": 1,
+    "relatedLetterIds": [
+      "ا"
+    ]
+  },
+  {
+    "id": "word_ا_middle",
+    "text": "سَاعَةٌ",
+    "letterId": "ا",
+    "position": "middle",
+    "imageEmoji": "⏰",
+    "soundId": "word_ا_middle",
+    "difficulty": 1,
+    "relatedLetterIds": [
+      "ا"
+    ]
+  },
+  {
+    "id": "word_alif_middle_02",
+    "text": "سَحَابٌ",
+    "letterId": "ا",
+    "position": "middle",
+    "imageEmoji": "☁️",
+    "soundId": "word_alif_middle_02",
+    "difficulty": 2,
+    "relatedLetterIds": [
+      "ا"
+    ]
+  },
+  {
+    "id": "word_alif_middle_03",
+    "text": "مَاءٌ",
+    "letterId": "ا",
+    "position": "middle",
+    "imageEmoji": "💧",
+    "soundId": "word_alif_middle_03",
+    "difficulty": 2,
+    "relatedLetterIds": [
+      "ا"
+    ]
+  },
+  {
+    "id": "word_ا_end",
+    "text": "عَصَا",
+    "letterId": "ا",
+    "position": "end",
+    "imageEmoji": "🦯",
+    "soundId": "word_ا_end",
+    "difficulty": 1,
+    "relatedLetterIds": [
+      "ا"
+    ]
+  },
+  {
+    "id": "word_alif_end_02",
+    "text": "دَعَا",
+    "letterId": "ا",
+    "position": "end",
+    "imageEmoji": "🤲",
+    "soundId": "word_alif_end_02",
+    "difficulty": 2,
+    "relatedLetterIds": [
+      "ا"
+    ]
+  },
+  {
+    "id": "word_alif_end_03",
+    "text": "نَمَا",
+    "letterId": "ا",
+    "position": "end",
+    "imageEmoji": "🌱",
+    "soundId": "word_alif_end_03",
+    "difficulty": 2,
+    "relatedLetterIds": [
+      "ا"
+    ]
+  },
+  {
+    "id": "word_ب_start",
+    "text": "بَطَّةٌ",
+    "letterId": "ب",
+    "position": "start",
+    "imageEmoji": "🦆",
+    "soundId": "word_ب_start",
+    "difficulty": 1,
+    "relatedLetterIds": [
+      "ب"
+    ]
+  },
+  {
+    "id": "word_ba_start_01",
+    "text": "بَيْتٌ",
+    "letterId": "ب",
+    "position": "start",
+    "imageEmoji": "🏠",
+    "soundId": "word_ba_start_01",
+    "difficulty": 1,
+    "relatedLetterIds": [
+      "ب"
+    ]
+  },
+  {
+    "id": "word_ba_start_02",
+    "text": "بَقَرَةٌ",
+    "letterId": "ب",
+    "position": "start",
+    "imageEmoji": "🐄",
+    "soundId": "word_ba_start_02",
+    "difficulty": 1,
+    "relatedLetterIds": [
+      "ب"
+    ]
+  },
+  {
+    "id": "word_ب_middle",
+    "text": "حَبْلٌ",
+    "letterId": "ب",
+    "position": "middle",
+    "imageEmoji": "🪢",
+    "soundId": "word_ب_middle",
+    "difficulty": 1,
+    "relatedLetterIds": [
+      "ب"
+    ]
+  },
+  {
+    "id": "word_ba_middle_02",
+    "text": "لُعْبَةٌ",
+    "letterId": "ب",
+    "position": "middle",
+    "imageEmoji": "🧸",
+    "soundId": "word_ba_middle_02",
+    "difficulty": 1,
+    "relatedLetterIds": [
+      "ب"
+    ]
+  },
+  {
+    "id": "word_ba_middle_03",
+    "text": "سَبَّاحٌ",
+    "letterId": "ب",
+    "position": "middle",
+    "imageEmoji": "🏊",
+    "soundId": "word_ba_middle_03",
+    "difficulty": 2,
+    "relatedLetterIds": [
+      "ب"
+    ]
+  },
+  {
+    "id": "word_ب_end",
+    "text": "كَلْبٌ",
+    "letterId": "ب",
+    "position": "end",
+    "imageEmoji": "🐶",
+    "soundId": "word_ب_end",
+    "difficulty": 1,
+    "relatedLetterIds": [
+      "ب"
+    ]
+  },
+  {
+    "id": "word_ba_end_01",
+    "text": "قَلْبٌ",
+    "letterId": "ب",
+    "position": "end",
+    "imageEmoji": "❤️",
+    "soundId": "word_ba_end_01",
+    "difficulty": 2,
+    "relatedLetterIds": [
+      "ب"
+    ]
+  },
+  {
+    "id": "word_ba_end_02",
+    "text": "عِنَبٌ",
+    "letterId": "ب",
+    "position": "end",
+    "imageEmoji": "🍇",
+    "soundId": "word_ba_end_02",
+    "difficulty": 2,
+    "relatedLetterIds": [
+      "ب"
+    ]
+  },
+  {
+    "id": "word_ت_start",
+    "text": "تَاجٌ",
+    "letterId": "ت",
+    "position": "start",
+    "imageEmoji": "👑",
+    "soundId": "word_ت_start",
+    "difficulty": 1,
+    "relatedLetterIds": [
+      "ت"
+    ]
+  },
+  {
+    "id": "word_ta_start_01",
+    "text": "تِمْسَاحٌ",
+    "letterId": "ت",
+    "position": "start",
+    "imageEmoji": "🐊",
+    "soundId": "word_ta_start_01",
+    "difficulty": 1,
+    "relatedLetterIds": [
+      "ت"
+    ]
+  },
+  {
+    "id": "word_ta_start_02",
+    "text": "تِينٌ",
+    "letterId": "ت",
+    "position": "start",
+    "imageEmoji": "🫐",
+    "soundId": "word_ta_start_02",
+    "difficulty": 1,
+    "relatedLetterIds": [
+      "ت"
+    ]
+  },
+  {
+    "id": "word_ت_middle",
+    "text": "كِتَابٌ",
+    "letterId": "ت",
+    "position": "middle",
+    "imageEmoji": "📖",
+    "soundId": "word_ت_middle",
+    "difficulty": 1,
+    "relatedLetterIds": [
+      "ت"
+    ]
+  },
+  {
+    "id": "word_ta_middle_01",
+    "text": "مِفْتَاحٌ",
+    "letterId": "ت",
+    "position": "middle",
+    "imageEmoji": "🗝️",
+    "soundId": "word_ta_middle_01",
+    "difficulty": 2,
+    "relatedLetterIds": [
+      "ت"
+    ]
+  },
+  {
+    "id": "word_ta_middle_03",
+    "text": "نَبْتَةٌ",
+    "letterId": "ت",
+    "position": "middle",
+    "imageEmoji": "🌱",
+    "soundId": "word_ta_middle_03",
+    "difficulty": 2,
+    "relatedLetterIds": [
+      "ت"
+    ]
+  },
+  {
+    "id": "word_ت_end",
+    "text": "بِنْتٌ",
+    "letterId": "ت",
+    "position": "end",
+    "imageEmoji": "👧",
+    "soundId": "word_ت_end",
+    "difficulty": 1,
+    "relatedLetterIds": [
+      "ت"
+    ]
+  },
+  {
+    "id": "word_ta_end_01",
+    "text": "بَيْتٌ",
+    "letterId": "ت",
+    "position": "end",
+    "imageEmoji": "🏠",
+    "soundId": "word_ta_end_01",
+    "difficulty": 2,
+    "relatedLetterIds": [
+      "ت"
+    ]
+  },
+  {
+    "id": "word_ta_end_02",
+    "text": "وَقْتٌ",
+    "letterId": "ت",
+    "position": "end",
+    "imageEmoji": "⏰",
+    "soundId": "word_ta_end_02",
+    "difficulty": 2,
+    "relatedLetterIds": [
+      "ت"
+    ]
+  },
+  {
+    "id": "word_ث_start",
+    "text": "ثَوْبٌ",
+    "letterId": "ث",
+    "position": "start",
+    "imageEmoji": "👕",
+    "soundId": "word_ث_start",
+    "difficulty": 1,
+    "relatedLetterIds": [
+      "ث"
+    ]
+  },
+  {
+    "id": "word_tha_start_01",
+    "text": "ثَعْلَبٌ",
+    "letterId": "ث",
+    "position": "start",
+    "imageEmoji": "🦊",
+    "soundId": "word_tha_start_01",
+    "difficulty": 1,
+    "relatedLetterIds": [
+      "ث"
+    ]
+  },
+  {
+    "id": "word_tha_start_03",
+    "text": "ثَوْمٌ",
+    "letterId": "ث",
+    "position": "start",
+    "imageEmoji": "🧄",
+    "soundId": "word_tha_start_03",
+    "difficulty": 1,
+    "relatedLetterIds": [
+      "ث"
+    ]
+  },
+  {
+    "id": "word_ث_middle",
+    "text": "مِثْلٌ",
+    "letterId": "ث",
+    "position": "middle",
+    "imageEmoji": "⚖️",
+    "soundId": "word_ث_middle",
+    "difficulty": 1,
+    "relatedLetterIds": [
+      "ث"
+    ]
+  },
+  {
+    "id": "word_tha_middle_01",
+    "text": "مُثَلْثٌ",
+    "letterId": "ث",
+    "position": "middle",
+    "imageEmoji": "📐",
+    "soundId": "word_tha_middle_01",
+    "difficulty": 2,
+    "relatedLetterIds": [
+      "ث"
+    ]
+  },
+  {
+    "id": "word_tha_middle_02",
+    "text": "أَثَرٌ",
+    "letterId": "ث",
+    "position": "middle",
+    "imageEmoji": "👣",
+    "soundId": "word_tha_middle_02",
+    "difficulty": 2,
+    "relatedLetterIds": [
+      "ث"
+    ]
+  },
+  {
+    "id": "word_ث_end",
+    "text": "حَدِيثٌ",
+    "letterId": "ث",
+    "position": "end",
+    "imageEmoji": "💬",
+    "soundId": "word_ث_end",
+    "difficulty": 1,
+    "relatedLetterIds": [
+      "ث"
+    ]
+  },
+  {
+    "id": "word_tha_end_02",
+    "text": "وَرَثَ",
+    "letterId": "ث",
+    "position": "end",
+    "imageEmoji": "📜",
+    "soundId": "word_tha_end_02",
+    "difficulty": 3,
+    "relatedLetterIds": [
+      "ث"
+    ]
+  },
+  {
+    "id": "word_tha_end_03",
+    "text": "بَحَثَ",
+    "letterId": "ث",
+    "position": "end",
+    "imageEmoji": "🔍",
+    "soundId": "word_tha_end_03",
+    "difficulty": 3,
+    "relatedLetterIds": [
+      "ث"
+    ]
+  },
+  {
+    "id": "word_ج_start",
+    "text": "جَمَلٌ",
+    "letterId": "ج",
+    "position": "start",
+    "imageEmoji": "🐫",
+    "soundId": "word_ج_start",
+    "difficulty": 1,
+    "relatedLetterIds": [
+      "ج"
+    ]
+  },
+  {
+    "id": "word_jim_start_02",
+    "text": "جَبَلٌ",
+    "letterId": "ج",
+    "position": "start",
+    "imageEmoji": "⛰️",
+    "soundId": "word_jim_start_02",
+    "difficulty": 1,
+    "relatedLetterIds": [
+      "ج"
+    ]
+  },
+  {
+    "id": "word_jim_start_03",
+    "text": "جَنَّةٌ",
+    "letterId": "ج",
+    "position": "start",
+    "imageEmoji": "🌳",
+    "soundId": "word_jim_start_03",
+    "difficulty": 1,
+    "relatedLetterIds": [
+      "ج"
+    ]
+  },
+  {
+    "id": "word_ج_middle",
+    "text": "شَجَرَةٌ",
+    "letterId": "ج",
+    "position": "middle",
+    "imageEmoji": "🌳",
+    "soundId": "word_ج_middle",
+    "difficulty": 1,
+    "relatedLetterIds": [
+      "ج"
+    ]
+  },
+  {
+    "id": "word_jim_middle_01",
+    "text": "مَسْجِدٌ",
+    "letterId": "ج",
+    "position": "middle",
+    "imageEmoji": "🕌",
+    "soundId": "word_jim_middle_01",
+    "difficulty": 2,
+    "relatedLetterIds": [
+      "ج"
+    ]
+  },
+  {
+    "id": "word_jim_middle_02",
+    "text": "نَجْمَةٌ",
+    "letterId": "ج",
+    "position": "middle",
+    "imageEmoji": "⭐",
+    "soundId": "word_jim_middle_02",
+    "difficulty": 2,
+    "relatedLetterIds": [
+      "ج"
+    ]
+  },
+  {
+    "id": "word_ج_end",
+    "text": "ثَلْجٌ",
+    "letterId": "ج",
+    "position": "end",
+    "imageEmoji": "❄️",
+    "soundId": "word_ج_end",
+    "difficulty": 1,
+    "relatedLetterIds": [
+      "ج"
+    ]
+  },
+  {
+    "id": "word_jim_end_02",
+    "text": "بُرْجٌ",
+    "letterId": "ج",
+    "position": "end",
+    "imageEmoji": "🏰",
+    "soundId": "word_jim_end_02",
+    "difficulty": 2,
+    "relatedLetterIds": [
+      "ج"
+    ]
+  },
+  {
+    "id": "word_jim_end_03",
+    "text": "دَرَجٌ",
+    "letterId": "ج",
+    "position": "end",
+    "imageEmoji": "🪜",
+    "soundId": "word_jim_end_03",
+    "difficulty": 2,
+    "relatedLetterIds": [
+      "ج"
+    ]
+  },
+  {
+    "id": "word_ح_start",
+    "text": "حِصَانٌ",
+    "letterId": "ح",
+    "position": "start",
+    "imageEmoji": "🐴",
+    "soundId": "word_ح_start",
+    "difficulty": 1,
+    "relatedLetterIds": [
+      "ح"
+    ]
+  },
+  {
+    "id": "word_ha_start_01",
+    "text": "حُوْتٌ",
+    "letterId": "ح",
+    "position": "start",
+    "imageEmoji": "🐳",
+    "soundId": "word_ha_start_01",
+    "difficulty": 1,
+    "relatedLetterIds": [
+      "ح"
+    ]
+  },
+  {
+    "id": "word_ha_start_02",
+    "text": "حَجَرٌ",
+    "letterId": "ح",
+    "position": "start",
+    "imageEmoji": "🪨",
+    "soundId": "word_ha_start_02",
+    "difficulty": 1,
+    "relatedLetterIds": [
+      "ح"
+    ]
+  },
+  {
+    "id": "word_ح_middle",
+    "text": "بَحْرٌ",
+    "letterId": "ح",
+    "position": "middle",
+    "imageEmoji": "🌊",
+    "soundId": "word_ح_middle",
+    "difficulty": 1,
+    "relatedLetterIds": [
+      "ح"
+    ]
+  },
+  {
+    "id": "word_ha_middle_01",
+    "text": "مُحَمَّدٌ",
+    "letterId": "ح",
+    "position": "middle",
+    "imageEmoji": "🕌",
+    "soundId": "word_ha_middle_01",
+    "difficulty": 2,
+    "relatedLetterIds": [
+      "ح"
+    ]
+  },
+  {
+    "id": "word_ha_middle_02",
+    "text": "سَحَابٌ",
+    "letterId": "ح",
+    "position": "middle",
+    "imageEmoji": "☁️",
+    "soundId": "word_ha_middle_02",
+    "difficulty": 2,
+    "relatedLetterIds": [
+      "ح"
+    ]
+  },
+  {
+    "id": "word_ح_end",
+    "text": "مِفْتَاحٌ",
+    "letterId": "ح",
+    "position": "end",
+    "imageEmoji": "🔑",
+    "soundId": "word_ح_end",
+    "difficulty": 1,
+    "relatedLetterIds": [
+      "ح"
+    ]
+  },
+  {
+    "id": "word_ha_end_01",
+    "text": "تُفَّاحٌ",
+    "letterId": "ح",
+    "position": "end",
+    "imageEmoji": "🍎",
+    "soundId": "word_ha_end_01",
+    "difficulty": 2,
+    "relatedLetterIds": [
+      "ح"
+    ]
+  },
+  {
+    "id": "word_ha_end_03",
+    "text": "سَبَّاحٌ",
+    "letterId": "ح",
+    "position": "end",
+    "imageEmoji": "🏊",
+    "soundId": "word_ha_end_03",
+    "difficulty": 3,
+    "relatedLetterIds": [
+      "ح"
+    ]
+  },
+  {
+    "id": "word_خ_start",
+    "text": "خُبْزٌ",
+    "letterId": "خ",
+    "position": "start",
+    "imageEmoji": "🍞",
+    "soundId": "word_خ_start",
+    "difficulty": 1,
+    "relatedLetterIds": [
+      "خ"
+    ]
+  },
+  {
+    "id": "word_kha_start_02",
+    "text": "خَيْلٌ",
+    "letterId": "خ",
+    "position": "start",
+    "imageEmoji": "🐎",
+    "soundId": "word_kha_start_02",
+    "difficulty": 1,
+    "relatedLetterIds": [
+      "خ"
+    ]
+  },
+  {
+    "id": "word_kha_start_03",
+    "text": "خَرُوفٌ",
+    "letterId": "خ",
+    "position": "start",
+    "imageEmoji": "🐑",
+    "soundId": "word_kha_start_03",
+    "difficulty": 1,
+    "relatedLetterIds": [
+      "خ"
+    ]
+  },
+  {
+    "id": "word_خ_middle",
+    "text": "بُخَارٌ",
+    "letterId": "خ",
+    "position": "middle",
+    "imageEmoji": "💨",
+    "soundId": "word_خ_middle",
+    "difficulty": 1,
+    "relatedLetterIds": [
+      "خ"
+    ]
+  },
+  {
+    "id": "word_kha_middle_01",
+    "text": "نَخْلَةٌ",
+    "letterId": "خ",
+    "position": "middle",
+    "imageEmoji": "🌴",
+    "soundId": "word_kha_middle_01",
+    "difficulty": 2,
+    "relatedLetterIds": [
+      "خ"
+    ]
+  },
+  {
+    "id": "word_kha_middle_02",
+    "text": "بَخِيلٌ",
+    "letterId": "خ",
+    "position": "middle",
+    "imageEmoji": "💰",
+    "soundId": "word_kha_middle_02",
+    "difficulty": 2,
+    "relatedLetterIds": [
+      "خ"
+    ]
+  },
+  {
+    "id": "word_خ_end",
+    "text": "بَطِّيخٌ",
+    "letterId": "خ",
+    "position": "end",
+    "imageEmoji": "🍉",
+    "soundId": "word_خ_end",
+    "difficulty": 1,
+    "relatedLetterIds": [
+      "خ"
+    ]
+  },
+  {
+    "id": "word_kha_end_01",
+    "text": "تَارِيخٌ",
+    "letterId": "خ",
+    "position": "end",
+    "imageEmoji": "📅",
+    "soundId": "word_kha_end_01",
+    "difficulty": 3,
+    "relatedLetterIds": [
+      "خ"
+    ]
+  },
+  {
+    "id": "word_kha_end_03",
+    "text": "طَبَخَ",
+    "letterId": "خ",
+    "position": "end",
+    "imageEmoji": "🍳",
+    "soundId": "word_kha_end_03",
+    "difficulty": 3,
+    "relatedLetterIds": [
+      "خ"
+    ]
+  },
+  {
+    "id": "word_د_start",
+    "text": "دِيكٌ",
+    "letterId": "د",
+    "position": "start",
+    "imageEmoji": "🐓",
+    "soundId": "word_د_start",
+    "difficulty": 1,
+    "relatedLetterIds": [
+      "د"
+    ]
+  },
+  {
+    "id": "word_dal_start_01",
+    "text": "دَجَاجَةٌ",
+    "letterId": "د",
+    "position": "start",
+    "imageEmoji": "🐔",
+    "soundId": "word_dal_start_01",
+    "difficulty": 1,
+    "relatedLetterIds": [
+      "د"
+    ]
+  },
+  {
+    "id": "word_dal_start_02",
+    "text": "دُبٌّ",
+    "letterId": "د",
+    "position": "start",
+    "imageEmoji": "🐻",
+    "soundId": "word_dal_start_02",
+    "difficulty": 1,
+    "relatedLetterIds": [
+      "د"
+    ]
+  },
+  {
+    "id": "word_د_middle",
+    "text": "هَدِيَّةٌ",
+    "letterId": "د",
+    "position": "middle",
+    "imageEmoji": "🎁",
+    "soundId": "word_د_middle",
+    "difficulty": 1,
+    "relatedLetterIds": [
+      "د"
+    ]
+  },
+  {
+    "id": "word_dal_middle_01",
+    "text": "مَدْرَسَةٌ",
+    "letterId": "د",
+    "position": "middle",
+    "imageEmoji": "🏫",
+    "soundId": "word_dal_middle_01",
+    "difficulty": 2,
+    "relatedLetterIds": [
+      "د"
+    ]
+  },
+  {
+    "id": "word_dal_middle_02",
+    "text": "قِنْدِيلٌ",
+    "letterId": "د",
+    "position": "middle",
+    "imageEmoji": "🪔",
+    "soundId": "word_dal_middle_02",
+    "difficulty": 2,
+    "relatedLetterIds": [
+      "د"
+    ]
+  },
+  {
+    "id": "word_د_end",
+    "text": "يَدٌ",
+    "letterId": "د",
+    "position": "end",
+    "imageEmoji": "✋",
+    "soundId": "word_د_end",
+    "difficulty": 1,
+    "relatedLetterIds": [
+      "د"
+    ]
+  },
+  {
+    "id": "word_dal_end_01",
+    "text": "وَلَدٌ",
+    "letterId": "د",
+    "position": "end",
+    "imageEmoji": "👦",
+    "soundId": "word_dal_end_01",
+    "difficulty": 2,
+    "relatedLetterIds": [
+      "د"
+    ]
+  },
+  {
+    "id": "word_dal_end_02",
+    "text": "أُسُودٌ",
+    "letterId": "د",
+    "position": "end",
+    "imageEmoji": "🦁",
+    "soundId": "word_dal_end_02",
+    "difficulty": 2,
+    "relatedLetterIds": [
+      "د"
+    ]
+  },
+  {
+    "id": "word_ذ_start",
+    "text": "ذُبَابَةٌ",
+    "letterId": "ذ",
+    "position": "start",
+    "imageEmoji": "🪰",
+    "soundId": "word_ذ_start",
+    "difficulty": 1,
+    "relatedLetterIds": [
+      "ذ"
+    ]
+  },
+  {
+    "id": "word_dhal_start_01",
+    "text": "ذِئْبٌ",
+    "letterId": "ذ",
+    "position": "start",
+    "imageEmoji": "🐺",
+    "soundId": "word_dhal_start_01",
+    "difficulty": 1,
+    "relatedLetterIds": [
+      "ذ"
+    ]
+  },
+  {
+    "id": "word_dhal_start_02",
+    "text": "ذَهَبٌ",
+    "letterId": "ذ",
+    "position": "start",
+    "imageEmoji": "🥇",
+    "soundId": "word_dhal_start_02",
+    "difficulty": 1,
+    "relatedLetterIds": [
+      "ذ"
+    ]
+  },
+  {
+    "id": "word_ذ_middle",
+    "text": "أُذُنٌ",
+    "letterId": "ذ",
+    "position": "middle",
+    "imageEmoji": "👂",
+    "soundId": "word_ذ_middle",
+    "difficulty": 1,
+    "relatedLetterIds": [
+      "ذ"
+    ]
+  },
+  {
+    "id": "word_dhal_middle_03",
+    "text": "جَذْرٌ",
+    "letterId": "ذ",
+    "position": "middle",
+    "imageEmoji": "🌱",
+    "soundId": "word_dhal_middle_03",
+    "difficulty": 2,
+    "relatedLetterIds": [
+      "ذ"
+    ]
+  },
+  {
+    "id": "word_dhal_middle_04",
+    "text": "بَذْرٌ",
+    "letterId": "ذ",
+    "position": "middle",
+    "imageEmoji": "🌱",
+    "soundId": "word_dhal_middle_04",
+    "difficulty": 2,
+    "relatedLetterIds": [
+      "ذ"
+    ]
+  },
+  {
+    "id": "word_ذ_end",
+    "text": "تِلْمِيذٌ",
+    "letterId": "ذ",
+    "position": "end",
+    "imageEmoji": "🧑‍🎓",
+    "soundId": "word_ذ_end",
+    "difficulty": 1,
+    "relatedLetterIds": [
+      "ذ"
+    ]
+  },
+  {
+    "id": "word_dhal_end_02",
+    "text": "أُسْتَاذٌ",
+    "letterId": "ذ",
+    "position": "end",
+    "imageEmoji": "🧑‍🏫",
+    "soundId": "word_dhal_end_02",
+    "difficulty": 3,
+    "relatedLetterIds": [
+      "ذ"
+    ]
+  },
+  {
+    "id": "word_dhal_end_03",
+    "text": "أَخَذَ",
+    "letterId": "ذ",
+    "position": "end",
+    "imageEmoji": "🤲",
+    "soundId": "word_dhal_end_03",
+    "difficulty": 3,
+    "relatedLetterIds": [
+      "ذ"
+    ]
+  },
+  {
+    "id": "word_ر_start",
+    "text": "رُمَّانٌ",
+    "letterId": "ر",
+    "position": "start",
+    "imageEmoji": "🍎",
+    "soundId": "word_ر_start",
+    "difficulty": 1,
+    "relatedLetterIds": [
+      "ر"
+    ]
+  },
+  {
+    "id": "word_ra_start_01",
+    "text": "رَجُلٌ",
+    "letterId": "ر",
+    "position": "start",
+    "imageEmoji": "🧔",
+    "soundId": "word_ra_start_01",
+    "difficulty": 1,
+    "relatedLetterIds": [
+      "ر"
+    ]
+  },
+  {
+    "id": "word_ra_start_03",
+    "text": "رِيشَةٌ",
+    "letterId": "ر",
+    "position": "start",
+    "imageEmoji": "🪶",
+    "soundId": "word_ra_start_03",
+    "difficulty": 1,
+    "relatedLetterIds": [
+      "ر"
+    ]
+  },
+  {
+    "id": "word_ر_middle",
+    "text": "جَرَسٌ",
+    "letterId": "ر",
+    "position": "middle",
+    "imageEmoji": "🔔",
+    "soundId": "word_ر_middle",
+    "difficulty": 1,
+    "relatedLetterIds": [
+      "ر"
+    ]
+  },
+  {
+    "id": "word_ra_middle_01",
+    "text": "قُرْآنٌ",
+    "letterId": "ر",
+    "position": "middle",
+    "imageEmoji": "📖",
+    "soundId": "word_ra_middle_01",
+    "difficulty": 2,
+    "relatedLetterIds": [
+      "ر"
+    ]
+  },
+  {
+    "id": "word_ra_middle_02",
+    "text": "بَرْقٌ",
+    "letterId": "ر",
+    "position": "middle",
+    "imageEmoji": "⚡",
+    "soundId": "word_ra_middle_02",
+    "difficulty": 2,
+    "relatedLetterIds": [
+      "ر"
+    ]
+  },
+  {
+    "id": "word_ر_end",
+    "text": "قَمَرٌ",
+    "letterId": "ر",
+    "position": "end",
+    "imageEmoji": "🌙",
+    "soundId": "word_ر_end",
+    "difficulty": 1,
+    "relatedLetterIds": [
+      "ر"
+    ]
+  },
+  {
+    "id": "word_ra_end_01",
+    "text": "نَهْرٌ",
+    "letterId": "ر",
+    "position": "end",
+    "imageEmoji": "🏞️",
+    "soundId": "word_ra_end_01",
+    "difficulty": 2,
+    "relatedLetterIds": [
+      "ر"
+    ]
+  },
+  {
+    "id": "word_ra_end_03",
+    "text": "طَائِرٌ",
+    "letterId": "ر",
+    "position": "end",
+    "imageEmoji": "🐦",
+    "soundId": "word_ra_end_03",
+    "difficulty": 2,
+    "relatedLetterIds": [
+      "ر"
+    ]
+  },
+  {
+    "id": "word_ز_start",
+    "text": "زَهْرَةٌ",
+    "letterId": "ز",
+    "position": "start",
+    "imageEmoji": "🌸",
+    "soundId": "word_ز_start",
+    "difficulty": 1,
+    "relatedLetterIds": [
+      "ز"
+    ]
+  },
+  {
+    "id": "word_zay_start_02",
+    "text": "زَرَافَةٌ",
+    "letterId": "ز",
+    "position": "start",
+    "imageEmoji": "🦒",
+    "soundId": "word_zay_start_02",
+    "difficulty": 1,
+    "relatedLetterIds": [
+      "ز"
+    ]
+  },
+  {
+    "id": "word_zay_start_03",
+    "text": "زَيْتُونٌ",
+    "letterId": "ز",
+    "position": "start",
+    "imageEmoji": "🫒",
+    "soundId": "word_zay_start_03",
+    "difficulty": 1,
+    "relatedLetterIds": [
+      "ز"
+    ]
+  },
+  {
+    "id": "word_ز_middle",
+    "text": "مَاعِزٌ",
+    "letterId": "ز",
+    "position": "middle",
+    "imageEmoji": "🐐",
+    "soundId": "word_ز_middle",
+    "difficulty": 1,
+    "relatedLetterIds": [
+      "ز"
+    ]
+  },
+  {
+    "id": "word_zay_middle_02",
+    "text": "جَزَرٌ",
+    "letterId": "ز",
+    "position": "middle",
+    "imageEmoji": "🥕",
+    "soundId": "word_zay_middle_02",
+    "difficulty": 2,
+    "relatedLetterIds": [
+      "ز"
+    ]
+  },
+  {
+    "id": "word_zay_middle_03",
+    "text": "مَنْزِلٌ",
+    "letterId": "ز",
+    "position": "middle",
+    "imageEmoji": "🏠",
+    "soundId": "word_zay_middle_03",
+    "difficulty": 1,
+    "relatedLetterIds": [
+      "ز"
+    ]
+  },
+  {
+    "id": "word_ز_end",
+    "text": "أَرُزٌّ",
+    "letterId": "ز",
+    "position": "end",
+    "imageEmoji": "🍚",
+    "soundId": "word_ز_end",
+    "difficulty": 1,
+    "relatedLetterIds": [
+      "ز"
+    ]
+  },
+  {
+    "id": "word_zay_end_01",
+    "text": "خُبْزٌ",
+    "letterId": "ز",
+    "position": "end",
+    "imageEmoji": "🍞",
+    "soundId": "word_zay_end_01",
+    "difficulty": 2,
+    "relatedLetterIds": [
+      "ز"
+    ]
+  },
+  {
+    "id": "word_zay_end_03",
+    "text": "مَوْزٌ",
+    "letterId": "ز",
+    "position": "end",
+    "imageEmoji": "🍌",
+    "soundId": "word_zay_end_03",
+    "difficulty": 2,
+    "relatedLetterIds": [
+      "ز"
+    ]
+  },
+  {
+    "id": "word_س_start",
+    "text": "سَمَكٌ",
+    "letterId": "س",
+    "position": "start",
+    "imageEmoji": "🐟",
+    "soundId": "word_س_start",
+    "difficulty": 1,
+    "relatedLetterIds": [
+      "س"
+    ]
+  },
+  {
+    "id": "word_sin_start_01",
+    "text": "سَمَكَةٌ",
+    "letterId": "س",
+    "position": "start",
+    "imageEmoji": "🐟",
+    "soundId": "word_sin_start_01",
+    "difficulty": 1,
+    "relatedLetterIds": [
+      "س"
+    ]
+  },
+  {
+    "id": "word_sin_start_02",
+    "text": "سَمَاءٌ",
+    "letterId": "س",
+    "position": "start",
+    "imageEmoji": "🌌",
+    "soundId": "word_sin_start_02",
+    "difficulty": 1,
+    "relatedLetterIds": [
+      "س"
+    ]
+  },
+  {
+    "id": "word_س_middle",
+    "text": "عَسَلٌ",
+    "letterId": "س",
+    "position": "middle",
+    "imageEmoji": "🍯",
+    "soundId": "word_س_middle",
+    "difficulty": 1,
+    "relatedLetterIds": [
+      "س"
+    ]
+  },
+  {
+    "id": "word_sin_middle_01",
+    "text": "مَسْجِدٌ",
+    "letterId": "س",
+    "position": "middle",
+    "imageEmoji": "🕌",
+    "soundId": "word_sin_middle_01",
+    "difficulty": 2,
+    "relatedLetterIds": [
+      "س"
+    ]
+  },
+  {
+    "id": "word_sin_middle_02",
+    "text": "أُسْتَاذٌ",
+    "letterId": "س",
+    "position": "middle",
+    "imageEmoji": "👨‍🏫",
+    "soundId": "word_sin_middle_02",
+    "difficulty": 2,
+    "relatedLetterIds": [
+      "س"
+    ]
+  },
+  {
+    "id": "word_س_end",
+    "text": "جَرَسٌ",
+    "letterId": "س",
+    "position": "end",
+    "imageEmoji": "🔔",
+    "soundId": "word_س_end",
+    "difficulty": 1,
+    "relatedLetterIds": [
+      "س"
+    ]
+  },
+  {
+    "id": "word_sin_end_01",
+    "text": "شَمْسٌ",
+    "letterId": "س",
+    "position": "end",
+    "imageEmoji": "☀️",
+    "soundId": "word_sin_end_01",
+    "difficulty": 2,
+    "relatedLetterIds": [
+      "س"
+    ]
+  },
+  {
+    "id": "word_sin_end_02",
+    "text": "أُنْسٌ",
+    "letterId": "س",
+    "position": "end",
+    "imageEmoji": "😊",
+    "soundId": "word_sin_end_02",
+    "difficulty": 2,
+    "relatedLetterIds": [
+      "س"
+    ]
+  },
+  {
+    "id": "word_ش_start",
+    "text": "شَمْسٌ",
+    "letterId": "ش",
+    "position": "start",
+    "imageEmoji": "☀️",
+    "soundId": "word_ش_start",
+    "difficulty": 1,
+    "relatedLetterIds": [
+      "ش"
+    ]
+  },
+  {
+    "id": "word_shin_start_02",
+    "text": "شَجَرَةٌ",
+    "letterId": "ش",
+    "position": "start",
+    "imageEmoji": "🌳",
+    "soundId": "word_shin_start_02",
+    "difficulty": 1,
+    "relatedLetterIds": [
+      "ش"
+    ]
+  },
+  {
+    "id": "word_shin_start_03",
+    "text": "شَرِيكٌ",
+    "letterId": "ش",
+    "position": "start",
+    "imageEmoji": "🤝",
+    "soundId": "word_shin_start_03",
+    "difficulty": 1,
+    "relatedLetterIds": [
+      "ش"
+    ]
+  },
+  {
+    "id": "word_ش_middle",
+    "text": "فَرَاشَةٌ",
+    "letterId": "ش",
+    "position": "middle",
+    "imageEmoji": "🦋",
+    "soundId": "word_ش_middle",
+    "difficulty": 1,
+    "relatedLetterIds": [
+      "ش"
+    ]
+  },
+  {
+    "id": "word_shin_middle_01",
+    "text": "مَشْرُوبٌ",
+    "letterId": "ش",
+    "position": "middle",
+    "imageEmoji": "🥤",
+    "soundId": "word_shin_middle_01",
+    "difficulty": 2,
+    "relatedLetterIds": [
+      "ش"
+    ]
+  },
+  {
+    "id": "word_shin_middle_02",
+    "text": "عَشَرَةٌ",
+    "letterId": "ش",
+    "position": "middle",
+    "imageEmoji": "🔟",
+    "soundId": "word_shin_middle_02",
+    "difficulty": 2,
+    "relatedLetterIds": [
+      "ش"
+    ]
+  },
+  {
+    "id": "word_ش_end",
+    "text": "رِيشٌ",
+    "letterId": "ش",
+    "position": "end",
+    "imageEmoji": "🪶",
+    "soundId": "word_ش_end",
+    "difficulty": 1,
+    "relatedLetterIds": [
+      "ش"
+    ]
+  },
+  {
+    "id": "word_shin_end_01",
+    "text": "عَرْشٌ",
+    "letterId": "ش",
+    "position": "end",
+    "imageEmoji": "👑",
+    "soundId": "word_shin_end_01",
+    "difficulty": 2,
+    "relatedLetterIds": [
+      "ش"
+    ]
+  },
+  {
+    "id": "word_shin_end_03",
+    "text": "عَاشَ",
+    "letterId": "ش",
+    "position": "end",
+    "imageEmoji": "❤️",
+    "soundId": "word_shin_end_03",
+    "difficulty": 3,
+    "relatedLetterIds": [
+      "ش"
+    ]
+  },
+  {
+    "id": "word_ص_start",
+    "text": "صَقْرٌ",
+    "letterId": "ص",
+    "position": "start",
+    "imageEmoji": "🦅",
+    "soundId": "word_ص_start",
+    "difficulty": 1,
+    "relatedLetterIds": [
+      "ص"
+    ]
+  },
+  {
+    "id": "word_sad_start_02",
+    "text": "صَابُونٌ",
+    "letterId": "ص",
+    "position": "start",
+    "imageEmoji": "🧼",
+    "soundId": "word_sad_start_02",
+    "difficulty": 1,
+    "relatedLetterIds": [
+      "ص"
+    ]
+  },
+  {
+    "id": "word_sad_start_03",
+    "text": "صَلَاةٌ",
+    "letterId": "ص",
+    "position": "start",
+    "imageEmoji": "🕌",
+    "soundId": "word_sad_start_03",
+    "difficulty": 1,
+    "relatedLetterIds": [
+      "ص"
+    ]
+  },
+  {
+    "id": "word_ص_middle",
+    "text": "عَصَافِيرُ",
+    "letterId": "ص",
+    "position": "middle",
+    "imageEmoji": "🐦",
+    "soundId": "word_ص_middle",
+    "difficulty": 1,
+    "relatedLetterIds": [
+      "ص"
+    ]
+  },
+  {
+    "id": "word_sad_middle_01",
+    "text": "مَصْبَاحٌ",
+    "letterId": "ص",
+    "position": "middle",
+    "imageEmoji": "💡",
+    "soundId": "word_sad_middle_01",
+    "difficulty": 2,
+    "relatedLetterIds": [
+      "ص"
+    ]
+  },
+  {
+    "id": "word_sad_middle_02",
+    "text": "عَصِيرٌ",
+    "letterId": "ص",
+    "position": "middle",
+    "imageEmoji": "🧃",
+    "soundId": "word_sad_middle_02",
+    "difficulty": 2,
+    "relatedLetterIds": [
+      "ص"
+    ]
+  },
+  {
+    "id": "word_ص_end",
+    "text": "قَفَصٌ",
+    "letterId": "ص",
+    "position": "end",
+    "imageEmoji": "🥅",
+    "soundId": "word_ص_end",
+    "difficulty": 1,
+    "relatedLetterIds": [
+      "ص"
+    ]
+  },
+  {
+    "id": "word_sad_end_01",
+    "text": "قَمِيصٌ",
+    "letterId": "ص",
+    "position": "end",
+    "imageEmoji": "👔",
+    "soundId": "word_sad_end_01",
+    "difficulty": 2,
+    "relatedLetterIds": [
+      "ص"
+    ]
+  },
+  {
+    "id": "word_sad_end_03",
+    "text": "مِقَصٌّ",
+    "letterId": "ص",
+    "position": "end",
+    "imageEmoji": "✂️",
+    "soundId": "word_sad_end_03",
+    "difficulty": 2,
+    "relatedLetterIds": [
+      "ص"
+    ]
+  },
+  {
+    "id": "word_ض_start",
+    "text": "ضِفْدَعٌ",
+    "letterId": "ض",
+    "position": "start",
+    "imageEmoji": "🐸",
+    "soundId": "word_ض_start",
+    "difficulty": 1,
+    "relatedLetterIds": [
+      "ض"
+    ]
+  },
+  {
+    "id": "word_dad_start_02",
+    "text": "ضَوْءٌ",
+    "letterId": "ض",
+    "position": "start",
+    "imageEmoji": "💡",
+    "soundId": "word_dad_start_02",
+    "difficulty": 1,
+    "relatedLetterIds": [
+      "ض"
+    ]
+  },
+  {
+    "id": "word_dad_start_03",
+    "text": "ضَيْفٌ",
+    "letterId": "ض",
+    "position": "start",
+    "imageEmoji": "🚪",
+    "soundId": "word_dad_start_03",
+    "difficulty": 1,
+    "relatedLetterIds": [
+      "ض"
+    ]
+  },
+  {
+    "id": "word_ض_middle",
+    "text": "بَيْضَةٌ",
+    "letterId": "ض",
+    "position": "middle",
+    "imageEmoji": "🥚",
+    "soundId": "word_ض_middle",
+    "difficulty": 1,
+    "relatedLetterIds": [
+      "ض"
+    ]
+  },
+  {
+    "id": "word_dad_middle_01",
+    "text": "مَضْرُوبٌ",
+    "letterId": "ض",
+    "position": "middle",
+    "imageEmoji": "🥊",
+    "soundId": "word_dad_middle_01",
+    "difficulty": 2,
+    "relatedLetterIds": [
+      "ض"
+    ]
+  },
+  {
+    "id": "word_dad_middle_03",
+    "text": "خُضَارٌ",
+    "letterId": "ض",
+    "position": "middle",
+    "imageEmoji": "🥬",
+    "soundId": "word_dad_middle_03",
+    "difficulty": 2,
+    "relatedLetterIds": [
+      "ض"
+    ]
+  },
+  {
+    "id": "word_ض_end",
+    "text": "بَيْضٌ",
+    "letterId": "ض",
+    "position": "end",
+    "imageEmoji": "🥚",
+    "soundId": "word_ض_end",
+    "difficulty": 1,
+    "relatedLetterIds": [
+      "ض"
+    ]
+  },
+  {
+    "id": "word_dad_end_01",
+    "text": "أَرْضٌ",
+    "letterId": "ض",
+    "position": "end",
+    "imageEmoji": "🌍",
+    "soundId": "word_dad_end_01",
+    "difficulty": 2,
+    "relatedLetterIds": [
+      "ض"
+    ]
+  },
+  {
+    "id": "word_dad_end_03",
+    "text": "مَرِيضٌ",
+    "letterId": "ض",
+    "position": "end",
+    "imageEmoji": "🤒",
+    "soundId": "word_dad_end_03",
+    "difficulty": 2,
+    "relatedLetterIds": [
+      "ض"
+    ]
+  },
+  {
+    "id": "word_ط_start",
+    "text": "طَائِرٌ",
+    "letterId": "ط",
+    "position": "start",
+    "imageEmoji": "🐦",
+    "soundId": "word_ط_start",
+    "difficulty": 1,
+    "relatedLetterIds": [
+      "ط"
+    ]
+  },
+  {
+    "id": "word_ta2_start_02",
+    "text": "طَعَامٌ",
+    "letterId": "ط",
+    "position": "start",
+    "imageEmoji": "🍽️",
+    "soundId": "word_ta2_start_02",
+    "difficulty": 1,
+    "relatedLetterIds": [
+      "ط"
+    ]
+  },
+  {
+    "id": "word_ta2_start_03",
+    "text": "طَبِيبٌ",
+    "letterId": "ط",
+    "position": "start",
+    "imageEmoji": "👨‍⚕️",
+    "soundId": "word_ta2_start_03",
+    "difficulty": 1,
+    "relatedLetterIds": [
+      "ط"
+    ]
+  },
+  {
+    "id": "word_ط_middle",
+    "text": "قِطَارٌ",
+    "letterId": "ط",
+    "position": "middle",
+    "imageEmoji": "🚆",
+    "soundId": "word_ط_middle",
+    "difficulty": 1,
+    "relatedLetterIds": [
+      "ط"
+    ]
+  },
+  {
+    "id": "word_ta2_middle_01",
+    "text": "مَطْبَخٌ",
+    "letterId": "ط",
+    "position": "middle",
+    "imageEmoji": "🍳",
+    "soundId": "word_ta2_middle_01",
+    "difficulty": 2,
+    "relatedLetterIds": [
+      "ط"
+    ]
+  },
+  {
+    "id": "word_ta2_middle_02",
+    "text": "بَطَّةٌ",
+    "letterId": "ط",
+    "position": "middle",
+    "imageEmoji": "🦆",
+    "soundId": "word_ta2_middle_02",
+    "difficulty": 2,
+    "relatedLetterIds": [
+      "ط"
+    ]
+  },
+  {
+    "id": "word_ط_end",
+    "text": "خَيْطٌ",
+    "letterId": "ط",
+    "position": "end",
+    "imageEmoji": "🧵",
+    "soundId": "word_ط_end",
+    "difficulty": 1,
+    "relatedLetterIds": [
+      "ط"
+    ]
+  },
+  {
+    "id": "word_ta2_end_01",
+    "text": "قِطٌّ",
+    "letterId": "ط",
+    "position": "end",
+    "imageEmoji": "🐱",
+    "soundId": "word_ta2_end_01",
+    "difficulty": 2,
+    "relatedLetterIds": [
+      "ط"
+    ]
+  },
+  {
+    "id": "word_ta2_end_02",
+    "text": "خَطٌّ",
+    "letterId": "ط",
+    "position": "end",
+    "imageEmoji": "✏️",
+    "soundId": "word_ta2_end_02",
+    "difficulty": 2,
+    "relatedLetterIds": [
+      "ط"
+    ]
+  },
+  {
+    "id": "word_ظ_start",
+    "text": "ظَرْفٌ",
+    "letterId": "ظ",
+    "position": "start",
+    "imageEmoji": "✉️",
+    "soundId": "word_ظ_start",
+    "difficulty": 1,
+    "relatedLetterIds": [
+      "ظ"
+    ]
+  },
+  {
+    "id": "word_dha_start_01",
+    "text": "ظَبْيٌ",
+    "letterId": "ظ",
+    "position": "start",
+    "imageEmoji": "🦌",
+    "soundId": "word_dha_start_01",
+    "difficulty": 1,
+    "relatedLetterIds": [
+      "ظ"
+    ]
+  },
+  {
+    "id": "word_dha_start_02",
+    "text": "ظِلٌّ",
+    "letterId": "ظ",
+    "position": "start",
+    "imageEmoji": "🌳",
+    "soundId": "word_dha_start_02",
+    "difficulty": 1,
+    "relatedLetterIds": [
+      "ظ"
+    ]
+  },
+  {
+    "id": "word_ظ_middle",
+    "text": "مِظَلَّةٌ",
+    "letterId": "ظ",
+    "position": "middle",
+    "imageEmoji": "☂️",
+    "soundId": "word_ظ_middle",
+    "difficulty": 1,
+    "relatedLetterIds": [
+      "ظ"
+    ]
+  },
+  {
+    "id": "word_dha_middle_01",
+    "text": "مَظْلُومٌ",
+    "letterId": "ظ",
+    "position": "middle",
+    "imageEmoji": "😢",
+    "soundId": "word_dha_middle_01",
+    "difficulty": 2,
+    "relatedLetterIds": [
+      "ظ"
+    ]
+  },
+  {
+    "id": "word_dha_middle_02",
+    "text": "نَظَرَ",
+    "letterId": "ظ",
+    "position": "middle",
+    "imageEmoji": "👀",
+    "soundId": "word_dha_middle_02",
+    "difficulty": 2,
+    "relatedLetterIds": [
+      "ظ"
+    ]
+  },
+  {
+    "id": "word_ظ_end",
+    "text": "حَافِظٌ",
+    "letterId": "ظ",
+    "position": "end",
+    "imageEmoji": "🛡️",
+    "soundId": "word_ظ_end",
+    "difficulty": 1,
+    "relatedLetterIds": [
+      "ظ"
+    ]
+  },
+  {
+    "id": "word_dha_end_01",
+    "text": "حَفِظَ",
+    "letterId": "ظ",
+    "position": "end",
+    "imageEmoji": "🧠",
+    "soundId": "word_dha_end_01",
+    "difficulty": 3,
+    "relatedLetterIds": [
+      "ظ"
+    ]
+  },
+  {
+    "id": "word_dha_end_02",
+    "text": "لَفَظَ",
+    "letterId": "ظ",
+    "position": "end",
+    "imageEmoji": "🗣️",
+    "soundId": "word_dha_end_02",
+    "difficulty": 3,
+    "relatedLetterIds": [
+      "ظ"
+    ]
+  },
+  {
+    "id": "word_ع_start",
+    "text": "عَيْنٌ",
+    "letterId": "ع",
+    "position": "start",
+    "imageEmoji": "👁️",
+    "soundId": "word_ع_start",
+    "difficulty": 1,
+    "relatedLetterIds": [
+      "ع"
+    ]
+  },
+  {
+    "id": "word_ain_start_02",
+    "text": "عَسَلٌ",
+    "letterId": "ع",
+    "position": "start",
+    "imageEmoji": "🍯",
+    "soundId": "word_ain_start_02",
+    "difficulty": 1,
+    "relatedLetterIds": [
+      "ع"
+    ]
+  },
+  {
+    "id": "word_ain_start_03",
+    "text": "عُصْفُورٌ",
+    "letterId": "ع",
+    "position": "start",
+    "imageEmoji": "🐦",
+    "soundId": "word_ain_start_03",
+    "difficulty": 1,
+    "relatedLetterIds": [
+      "ع"
+    ]
+  },
+  {
+    "id": "word_ع_middle",
+    "text": "لُعْبَةٌ",
+    "letterId": "ع",
+    "position": "middle",
+    "imageEmoji": "🧸",
+    "soundId": "word_ع_middle",
+    "difficulty": 1,
+    "relatedLetterIds": [
+      "ع"
+    ]
+  },
+  {
+    "id": "word_ain_middle_01",
+    "text": "مَعْلُومَةٌ",
+    "letterId": "ع",
+    "position": "middle",
+    "imageEmoji": "💡",
+    "soundId": "word_ain_middle_01",
+    "difficulty": 2,
+    "relatedLetterIds": [
+      "ع"
+    ]
+  },
+  {
+    "id": "word_ain_middle_02",
+    "text": "سَعَادَةٌ",
+    "letterId": "ع",
+    "position": "middle",
+    "imageEmoji": "😊",
+    "soundId": "word_ain_middle_02",
+    "difficulty": 2,
+    "relatedLetterIds": [
+      "ع"
+    ]
+  },
+  {
+    "id": "word_ع_end",
+    "text": "شَمْعٌ",
+    "letterId": "ع",
+    "position": "end",
+    "imageEmoji": "🕯️",
+    "soundId": "word_ع_end",
+    "difficulty": 1,
+    "relatedLetterIds": [
+      "ع"
+    ]
+  },
+  {
+    "id": "word_ain_end_02",
+    "text": "جَمَعَ",
+    "letterId": "ع",
+    "position": "end",
+    "imageEmoji": "🤲",
+    "soundId": "word_ain_end_02",
+    "difficulty": 3,
+    "relatedLetterIds": [
+      "ع"
+    ]
+  },
+  {
+    "id": "word_ain_end_03",
+    "text": "رَكَعَ",
+    "letterId": "ع",
+    "position": "end",
+    "imageEmoji": "🕌",
+    "soundId": "word_ain_end_03",
+    "difficulty": 3,
+    "relatedLetterIds": [
+      "ع"
+    ]
+  },
+  {
+    "id": "word_غ_start",
+    "text": "غُرْفَةٌ",
+    "letterId": "غ",
+    "position": "start",
+    "imageEmoji": "🛋️",
+    "soundId": "word_غ_start",
+    "difficulty": 1,
+    "relatedLetterIds": [
+      "غ"
+    ]
+  },
+  {
+    "id": "word_ghain_start_01",
+    "text": "غَنَمٌ",
+    "letterId": "غ",
+    "position": "start",
+    "imageEmoji": "🐑",
+    "soundId": "word_ghain_start_01",
+    "difficulty": 1,
+    "relatedLetterIds": [
+      "غ"
+    ]
+  },
+  {
+    "id": "word_ghain_start_02",
+    "text": "غُرَابٌ",
+    "letterId": "غ",
+    "position": "start",
+    "imageEmoji": "🐦‍⬛",
+    "soundId": "word_ghain_start_02",
+    "difficulty": 1,
+    "relatedLetterIds": [
+      "غ"
+    ]
+  },
+  {
+    "id": "word_غ_middle",
+    "text": "صَغِيرٌ",
+    "letterId": "غ",
+    "position": "middle",
+    "imageEmoji": "🐥",
+    "soundId": "word_غ_middle",
+    "difficulty": 1,
+    "relatedLetterIds": [
+      "غ"
+    ]
+  },
+  {
+    "id": "word_ghain_middle_01",
+    "text": "مَغْرِبٌ",
+    "letterId": "غ",
+    "position": "middle",
+    "imageEmoji": "🌇",
+    "soundId": "word_ghain_middle_01",
+    "difficulty": 2,
+    "relatedLetterIds": [
+      "غ"
+    ]
+  },
+  {
+    "id": "word_ghain_middle_02",
+    "text": "بَغْلٌ",
+    "letterId": "غ",
+    "position": "middle",
+    "imageEmoji": "🐴",
+    "soundId": "word_ghain_middle_02",
+    "difficulty": 2,
+    "relatedLetterIds": [
+      "غ"
+    ]
+  },
+  {
+    "id": "word_غ_end",
+    "text": "فَرَاغٌ",
+    "letterId": "غ",
+    "position": "end",
+    "imageEmoji": "🕳️",
+    "soundId": "word_غ_end",
+    "difficulty": 1,
+    "relatedLetterIds": [
+      "غ"
+    ]
+  },
+  {
+    "id": "word_ghain_end_02",
+    "text": "بَلَغَ",
+    "letterId": "غ",
+    "position": "end",
+    "imageEmoji": "🎯",
+    "soundId": "word_ghain_end_02",
+    "difficulty": 3,
+    "relatedLetterIds": [
+      "غ"
+    ]
+  },
+  {
+    "id": "word_ghain_end_03",
+    "text": "صَبَغَ",
+    "letterId": "غ",
+    "position": "end",
+    "imageEmoji": "🎨",
+    "soundId": "word_ghain_end_03",
+    "difficulty": 3,
+    "relatedLetterIds": [
+      "غ"
+    ]
+  },
+  {
+    "id": "word_ف_start",
+    "text": "فَمٌ",
+    "letterId": "ف",
+    "position": "start",
+    "imageEmoji": "👄",
+    "soundId": "word_ف_start",
+    "difficulty": 1,
+    "relatedLetterIds": [
+      "ف"
+    ]
+  },
+  {
+    "id": "word_fa_start_01",
+    "text": "فِيلٌ",
+    "letterId": "ف",
+    "position": "start",
+    "imageEmoji": "🐘",
+    "soundId": "word_fa_start_01",
+    "difficulty": 1,
+    "relatedLetterIds": [
+      "ف"
+    ]
+  },
+  {
+    "id": "word_fa_start_02",
+    "text": "فَرَاشَةٌ",
+    "letterId": "ف",
+    "position": "start",
+    "imageEmoji": "🦋",
+    "soundId": "word_fa_start_02",
+    "difficulty": 1,
+    "relatedLetterIds": [
+      "ف"
+    ]
+  },
+  {
+    "id": "word_ف_middle",
+    "text": "مَفْتَاحٌ",
+    "letterId": "ف",
+    "position": "middle",
+    "imageEmoji": "🔑",
+    "soundId": "word_ف_middle",
+    "difficulty": 1,
+    "relatedLetterIds": [
+      "ف"
+    ]
+  },
+  {
+    "id": "word_fa_middle_01",
+    "text": "مِفْتَاحٌ",
+    "letterId": "ف",
+    "position": "middle",
+    "imageEmoji": "🔑",
+    "soundId": "word_fa_middle_01",
+    "difficulty": 2,
+    "relatedLetterIds": [
+      "ف"
+    ]
+  },
+  {
+    "id": "word_fa_middle_02",
+    "text": "تُفَّاحٌ",
+    "letterId": "ف",
+    "position": "middle",
+    "imageEmoji": "🍎",
+    "soundId": "word_fa_middle_02",
+    "difficulty": 2,
+    "relatedLetterIds": [
+      "ف"
+    ]
+  },
+  {
+    "id": "word_ف_end",
+    "text": "خَرُوفٌ",
+    "letterId": "ف",
+    "position": "end",
+    "imageEmoji": "🐑",
+    "soundId": "word_ف_end",
+    "difficulty": 1,
+    "relatedLetterIds": [
+      "ف"
+    ]
+  },
+  {
+    "id": "word_fa_end_01",
+    "text": "سَيْفٌ",
+    "letterId": "ف",
+    "position": "end",
+    "imageEmoji": "⚔️",
+    "soundId": "word_fa_end_01",
+    "difficulty": 2,
+    "relatedLetterIds": [
+      "ف"
+    ]
+  },
+  {
+    "id": "word_fa_end_02",
+    "text": "صَدَفٌ",
+    "letterId": "ف",
+    "position": "end",
+    "imageEmoji": "🐚",
+    "soundId": "word_fa_end_02",
+    "difficulty": 3,
+    "relatedLetterIds": [
+      "ف"
+    ]
+  },
+  {
+    "id": "word_ق_start",
+    "text": "قَلَمٌ",
+    "letterId": "ق",
+    "position": "start",
+    "imageEmoji": "✏️",
+    "soundId": "word_ق_start",
+    "difficulty": 1,
+    "relatedLetterIds": [
+      "ق"
+    ]
+  },
+  {
+    "id": "word_qaf_start_01",
+    "text": "قَمَرٌ",
+    "letterId": "ق",
+    "position": "start",
+    "imageEmoji": "🌙",
+    "soundId": "word_qaf_start_01",
+    "difficulty": 1,
+    "relatedLetterIds": [
+      "ق"
+    ]
+  },
+  {
+    "id": "word_qaf_start_02",
+    "text": "قِطٌّ",
+    "letterId": "ق",
+    "position": "start",
+    "imageEmoji": "🐱",
+    "soundId": "word_qaf_start_02",
+    "difficulty": 1,
+    "relatedLetterIds": [
+      "ق"
+    ]
+  },
+  {
+    "id": "word_ق_middle",
+    "text": "بَقَرَةٌ",
+    "letterId": "ق",
+    "position": "middle",
+    "imageEmoji": "🐄",
+    "soundId": "word_ق_middle",
+    "difficulty": 1,
+    "relatedLetterIds": [
+      "ق"
+    ]
+  },
+  {
+    "id": "word_qaf_middle_02",
+    "text": "عَقْرَبٌ",
+    "letterId": "ق",
+    "position": "middle",
+    "imageEmoji": "🦂",
+    "soundId": "word_qaf_middle_02",
+    "difficulty": 2,
+    "relatedLetterIds": [
+      "ق"
+    ]
+  },
+  {
+    "id": "word_qaf_middle_03",
+    "text": "حَقِيبَةٌ",
+    "letterId": "ق",
+    "position": "middle",
+    "imageEmoji": "🎒",
+    "soundId": "word_qaf_middle_03",
+    "difficulty": 2,
+    "relatedLetterIds": [
+      "ق"
+    ]
+  },
+  {
+    "id": "word_ق_end",
+    "text": "طَرِيقٌ",
+    "letterId": "ق",
+    "position": "end",
+    "imageEmoji": "🛣️",
+    "soundId": "word_ق_end",
+    "difficulty": 1,
+    "relatedLetterIds": [
+      "ق"
+    ]
+  },
+  {
+    "id": "word_qaf_end_01",
+    "text": "حَقٌّ",
+    "letterId": "ق",
+    "position": "end",
+    "imageEmoji": "⚖️",
+    "soundId": "word_qaf_end_01",
+    "difficulty": 2,
+    "relatedLetterIds": [
+      "ق"
+    ]
+  },
+  {
+    "id": "word_qaf_end_02",
+    "text": "وَرَقٌ",
+    "letterId": "ق",
+    "position": "end",
+    "imageEmoji": "📄",
+    "soundId": "word_qaf_end_02",
+    "difficulty": 2,
+    "relatedLetterIds": [
+      "ق"
+    ]
+  },
+  {
+    "id": "word_ك_start",
+    "text": "كِتَابٌ",
+    "letterId": "ك",
+    "position": "start",
+    "imageEmoji": "📖",
+    "soundId": "word_ك_start",
+    "difficulty": 1,
+    "relatedLetterIds": [
+      "ك"
+    ]
+  },
+  {
+    "id": "word_kaf_start_02",
+    "text": "كَلْبٌ",
+    "letterId": "ك",
+    "position": "start",
+    "imageEmoji": "🐕",
+    "soundId": "word_kaf_start_02",
+    "difficulty": 1,
+    "relatedLetterIds": [
+      "ك"
+    ]
+  },
+  {
+    "id": "word_kaf_start_03",
+    "text": "كَلْبٌ",
+    "letterId": "ك",
+    "position": "start",
+    "imageEmoji": "🐕",
+    "soundId": "word_kaf_start_03",
+    "difficulty": 1,
+    "relatedLetterIds": [
+      "ك"
+    ]
+  },
+  {
+    "id": "word_ك_middle",
+    "text": "مَكْتَبٌ",
+    "letterId": "ك",
+    "position": "middle",
+    "imageEmoji": "🗄️",
+    "soundId": "word_ك_middle",
+    "difficulty": 1,
+    "relatedLetterIds": [
+      "ك"
+    ]
+  },
+  {
+    "id": "word_kaf_middle_01",
+    "text": "سُكَّرٌ",
+    "letterId": "ك",
+    "position": "middle",
+    "imageEmoji": "🍬",
+    "soundId": "word_kaf_middle_01",
+    "difficulty": 2,
+    "relatedLetterIds": [
+      "ك"
+    ]
+  },
+  {
+    "id": "word_kaf_middle_02",
+    "text": "بَكَرَةٌ",
+    "letterId": "ك",
+    "position": "middle",
+    "imageEmoji": "⚙️",
+    "soundId": "word_kaf_middle_02",
+    "difficulty": 2,
+    "relatedLetterIds": [
+      "ك"
+    ]
+  },
+  {
+    "id": "word_ك_end",
+    "text": "سَمَكٌ",
+    "letterId": "ك",
+    "position": "end",
+    "imageEmoji": "🐟",
+    "soundId": "word_ك_end",
+    "difficulty": 1,
+    "relatedLetterIds": [
+      "ك"
+    ]
+  },
+  {
+    "id": "word_kaf_end_02",
+    "text": "مَلِكٌ",
+    "letterId": "ك",
+    "position": "end",
+    "imageEmoji": "👑",
+    "soundId": "word_kaf_end_02",
+    "difficulty": 2,
+    "relatedLetterIds": [
+      "ك"
+    ]
+  },
+  {
+    "id": "word_kaf_end_03",
+    "text": "ضَحِكَ",
+    "letterId": "ك",
+    "position": "end",
+    "imageEmoji": "😂",
+    "soundId": "word_kaf_end_03",
+    "difficulty": 3,
+    "relatedLetterIds": [
+      "ك"
+    ]
+  },
+  {
+    "id": "word_ل_start",
+    "text": "لَبَنٌ",
+    "letterId": "ل",
+    "position": "start",
+    "imageEmoji": "🥛",
+    "soundId": "word_ل_start",
+    "difficulty": 1,
+    "relatedLetterIds": [
+      "ل"
+    ]
+  },
+  {
+    "id": "word_lam_start_01",
+    "text": "لَيْمُونٌ",
+    "letterId": "ل",
+    "position": "start",
+    "imageEmoji": "🍋",
+    "soundId": "word_lam_start_01",
+    "difficulty": 1,
+    "relatedLetterIds": [
+      "ل"
+    ]
+  },
+  {
+    "id": "word_lam_start_02",
+    "text": "لَعِبٌ",
+    "letterId": "ل",
+    "position": "start",
+    "imageEmoji": "⚽",
+    "soundId": "word_lam_start_02",
+    "difficulty": 1,
+    "relatedLetterIds": [
+      "ل"
+    ]
+  },
+  {
+    "id": "word_ل_middle",
+    "text": "قَلَمٌ",
+    "letterId": "ل",
+    "position": "middle",
+    "imageEmoji": "✏️",
+    "soundId": "word_ل_middle",
+    "difficulty": 1,
+    "relatedLetterIds": [
+      "ل"
+    ]
+  },
+  {
+    "id": "word_lam_middle_01",
+    "text": "مَلِيكٌ",
+    "letterId": "ل",
+    "position": "middle",
+    "imageEmoji": "👑",
+    "soundId": "word_lam_middle_01",
+    "difficulty": 2,
+    "relatedLetterIds": [
+      "ل"
+    ]
+  },
+  {
+    "id": "word_lam_middle_03",
+    "text": "سَلَامٌ",
+    "letterId": "ل",
+    "position": "middle",
+    "imageEmoji": "🕊️",
+    "soundId": "word_lam_middle_03",
+    "difficulty": 2,
+    "relatedLetterIds": [
+      "ل"
+    ]
+  },
+  {
+    "id": "word_ل_end",
+    "text": "جَمَلٌ",
+    "letterId": "ل",
+    "position": "end",
+    "imageEmoji": "🐫",
+    "soundId": "word_ل_end",
+    "difficulty": 1,
+    "relatedLetterIds": [
+      "ل"
+    ]
+  },
+  {
+    "id": "word_lam_end_02",
+    "text": "عَسَلٌ",
+    "letterId": "ل",
+    "position": "end",
+    "imageEmoji": "🍯",
+    "soundId": "word_lam_end_02",
+    "difficulty": 2,
+    "relatedLetterIds": [
+      "ل"
+    ]
+  },
+  {
+    "id": "word_lam_end_03",
+    "text": "أَكَلَ",
+    "letterId": "ل",
+    "position": "end",
+    "imageEmoji": "🍽️",
+    "soundId": "word_lam_end_03",
+    "difficulty": 3,
+    "relatedLetterIds": [
+      "ل"
+    ]
+  },
+  {
+    "id": "word_م_start",
+    "text": "مَاءٌ",
+    "letterId": "م",
+    "position": "start",
+    "imageEmoji": "💧",
+    "soundId": "word_م_start",
+    "difficulty": 1,
+    "relatedLetterIds": [
+      "م"
+    ]
+  },
+  {
+    "id": "word_mim_start_02",
+    "text": "مَدْرَسَةٌ",
+    "letterId": "م",
+    "position": "start",
+    "imageEmoji": "🏫",
+    "soundId": "word_mim_start_02",
+    "difficulty": 1,
+    "relatedLetterIds": [
+      "م"
+    ]
+  },
+  {
+    "id": "word_mim_start_03",
+    "text": "مِفْتَاحٌ",
+    "letterId": "م",
+    "position": "start",
+    "imageEmoji": "🔑",
+    "soundId": "word_mim_start_03",
+    "difficulty": 1,
+    "relatedLetterIds": [
+      "م"
+    ]
+  },
+  {
+    "id": "word_م_middle",
+    "text": "جَمَلٌ",
+    "letterId": "م",
+    "position": "middle",
+    "imageEmoji": "🐫",
+    "soundId": "word_م_middle",
+    "difficulty": 1,
+    "relatedLetterIds": [
+      "م"
+    ]
+  },
+  {
+    "id": "word_mim_middle_01",
+    "text": "لَيْمُونٌ",
+    "letterId": "م",
+    "position": "middle",
+    "imageEmoji": "🍋",
+    "soundId": "word_mim_middle_01",
+    "difficulty": 2,
+    "relatedLetterIds": [
+      "م"
+    ]
+  },
+  {
+    "id": "word_mim_middle_03",
+    "text": "نَمْلَةٌ",
+    "letterId": "م",
+    "position": "middle",
+    "imageEmoji": "🐜",
+    "soundId": "word_mim_middle_03",
+    "difficulty": 2,
+    "relatedLetterIds": [
+      "م"
+    ]
+  },
+  {
+    "id": "word_م_end",
+    "text": "عَلَمٌ",
+    "letterId": "م",
+    "position": "end",
+    "imageEmoji": "🚩",
+    "soundId": "word_م_end",
+    "difficulty": 1,
+    "relatedLetterIds": [
+      "م"
+    ]
+  },
+  {
+    "id": "word_mim_end_01",
+    "text": "قَلَمٌ",
+    "letterId": "م",
+    "position": "end",
+    "imageEmoji": "🖊️",
+    "soundId": "word_mim_end_01",
+    "difficulty": 2,
+    "relatedLetterIds": [
+      "م"
+    ]
+  },
+  {
+    "id": "word_mim_end_03",
+    "text": "لَحْمٌ",
+    "letterId": "م",
+    "position": "end",
+    "imageEmoji": "🍖",
+    "soundId": "word_mim_end_03",
+    "difficulty": 2,
+    "relatedLetterIds": [
+      "م"
+    ]
+  },
+  {
+    "id": "word_ن_start",
+    "text": "نَجْمٌ",
+    "letterId": "ن",
+    "position": "start",
+    "imageEmoji": "⭐",
+    "soundId": "word_ن_start",
+    "difficulty": 1,
+    "relatedLetterIds": [
+      "ن"
+    ]
+  },
+  {
+    "id": "word_nun_start_01",
+    "text": "نَجْمَةٌ",
+    "letterId": "ن",
+    "position": "start",
+    "imageEmoji": "⭐",
+    "soundId": "word_nun_start_01",
+    "difficulty": 1,
+    "relatedLetterIds": [
+      "ن"
+    ]
+  },
+  {
+    "id": "word_nun_start_02",
+    "text": "نَهْرٌ",
+    "letterId": "ن",
+    "position": "start",
+    "imageEmoji": "🏞️",
+    "soundId": "word_nun_start_02",
+    "difficulty": 1,
+    "relatedLetterIds": [
+      "ن"
+    ]
+  },
+  {
+    "id": "word_ن_middle",
+    "text": "عِنَبٌ",
+    "letterId": "ن",
+    "position": "middle",
+    "imageEmoji": "🍇",
+    "soundId": "word_ن_middle",
+    "difficulty": 1,
+    "relatedLetterIds": [
+      "ن"
+    ]
+  },
+  {
+    "id": "word_nun_middle_01",
+    "text": "مِنْدِيلٌ",
+    "letterId": "ن",
+    "position": "middle",
+    "imageEmoji": "🧻",
+    "soundId": "word_nun_middle_01",
+    "difficulty": 2,
+    "relatedLetterIds": [
+      "ن"
+    ]
+  },
+  {
+    "id": "word_nun_middle_02",
+    "text": "بِنْتٌ",
+    "letterId": "ن",
+    "position": "middle",
+    "imageEmoji": "👧",
+    "soundId": "word_nun_middle_02",
+    "difficulty": 2,
+    "relatedLetterIds": [
+      "ن"
+    ]
+  },
+  {
+    "id": "word_ن_end",
+    "text": "لَوْنٌ",
+    "letterId": "ن",
+    "position": "end",
+    "imageEmoji": "🎨",
+    "soundId": "word_ن_end",
+    "difficulty": 1,
+    "relatedLetterIds": [
+      "ن"
+    ]
+  },
+  {
+    "id": "word_nun_end_01",
+    "text": "لَبَنٌ",
+    "letterId": "ن",
+    "position": "end",
+    "imageEmoji": "🥛",
+    "soundId": "word_nun_end_01",
+    "difficulty": 2,
+    "relatedLetterIds": [
+      "ن"
+    ]
+  },
+  {
+    "id": "word_nun_end_03",
+    "text": "سَكَنَ",
+    "letterId": "ن",
+    "position": "end",
+    "imageEmoji": "🏠",
+    "soundId": "word_nun_end_03",
+    "difficulty": 3,
+    "relatedLetterIds": [
+      "ن"
+    ]
+  },
+  {
+    "id": "word_ه_start",
+    "text": "هِلَالٌ",
+    "letterId": "ه",
+    "position": "start",
+    "imageEmoji": "🌒",
+    "soundId": "word_ه_start",
+    "difficulty": 1,
+    "relatedLetterIds": [
+      "ه"
+    ]
+  },
+  {
+    "id": "word_ha2_start_02",
+    "text": "هَدِيَّةٌ",
+    "letterId": "ه",
+    "position": "start",
+    "imageEmoji": "🎁",
+    "soundId": "word_ha2_start_02",
+    "difficulty": 1,
+    "relatedLetterIds": [
+      "ه"
+    ]
+  },
+  {
+    "id": "word_ha2_start_03",
+    "text": "هَوَاءٌ",
+    "letterId": "ه",
+    "position": "start",
+    "imageEmoji": "💨",
+    "soundId": "word_ha2_start_03",
+    "difficulty": 1,
+    "relatedLetterIds": [
+      "ه"
+    ]
+  },
+  {
+    "id": "word_ه_middle",
+    "text": "ذَهَبٌ",
+    "letterId": "ه",
+    "position": "middle",
+    "imageEmoji": "🪙",
+    "soundId": "word_ه_middle",
+    "difficulty": 1,
+    "relatedLetterIds": [
+      "ه"
+    ]
+  },
+  {
+    "id": "word_ha2_middle_01",
+    "text": "مَهْرٌ",
+    "letterId": "ه",
+    "position": "middle",
+    "imageEmoji": "💍",
+    "soundId": "word_ha2_middle_01",
+    "difficulty": 2,
+    "relatedLetterIds": [
+      "ه"
+    ]
+  },
+  {
+    "id": "word_ha2_middle_02",
+    "text": "شَهْرٌ",
+    "letterId": "ه",
+    "position": "middle",
+    "imageEmoji": "📅",
+    "soundId": "word_ha2_middle_02",
+    "difficulty": 2,
+    "relatedLetterIds": [
+      "ه"
+    ]
+  },
+  {
+    "id": "word_ه_end",
+    "text": "وَجْهٌ",
+    "letterId": "ه",
+    "position": "end",
+    "imageEmoji": "😊",
+    "soundId": "word_ه_end",
+    "difficulty": 1,
+    "relatedLetterIds": [
+      "ه"
+    ]
+  },
+  {
+    "id": "word_ha2_end_02",
+    "text": "مِيَاهٌ",
+    "letterId": "ه",
+    "position": "end",
+    "imageEmoji": "💧",
+    "soundId": "word_ha2_end_02",
+    "difficulty": 1,
+    "relatedLetterIds": [
+      "ه"
+    ]
+  },
+  {
+    "id": "word_ha2_end_03",
+    "text": "فَوَاكِهُ",
+    "letterId": "ه",
+    "position": "end",
+    "imageEmoji": "🍎",
+    "soundId": "word_ha2_end_03",
+    "difficulty": 2,
+    "relatedLetterIds": [
+      "ه"
+    ]
+  },
+  {
+    "id": "word_و_start",
+    "text": "وَرَقَةٌ",
+    "letterId": "و",
+    "position": "start",
+    "imageEmoji": "📄",
+    "soundId": "word_و_start",
+    "difficulty": 1,
+    "relatedLetterIds": [
+      "و"
+    ]
+  },
+  {
+    "id": "word_waw_start_01",
+    "text": "وَرْدَةٌ",
+    "letterId": "و",
+    "position": "start",
+    "imageEmoji": "🌹",
+    "soundId": "word_waw_start_01",
+    "difficulty": 1,
+    "relatedLetterIds": [
+      "و"
+    ]
+  },
+  {
+    "id": "word_waw_start_02",
+    "text": "وَلَدٌ",
+    "letterId": "و",
+    "position": "start",
+    "imageEmoji": "👦",
+    "soundId": "word_waw_start_02",
+    "difficulty": 1,
+    "relatedLetterIds": [
+      "و"
+    ]
+  },
+  {
+    "id": "word_و_middle",
+    "text": "جَوْزٌ",
+    "letterId": "و",
+    "position": "middle",
+    "imageEmoji": "🌰",
+    "soundId": "word_و_middle",
+    "difficulty": 1,
+    "relatedLetterIds": [
+      "و"
+    ]
+  },
+  {
+    "id": "word_waw_middle_01",
+    "text": "مَوْزٌ",
+    "letterId": "و",
+    "position": "middle",
+    "imageEmoji": "🍌",
+    "soundId": "word_waw_middle_01",
+    "difficulty": 2,
+    "relatedLetterIds": [
+      "و"
+    ]
+  },
+  {
+    "id": "word_waw_middle_02",
+    "text": "جَوَادٌ",
+    "letterId": "و",
+    "position": "middle",
+    "imageEmoji": "🐎",
+    "soundId": "word_waw_middle_02",
+    "difficulty": 2,
+    "relatedLetterIds": [
+      "و"
+    ]
+  },
+  {
+    "id": "word_و_end",
+    "text": "دَلْوٌ",
+    "letterId": "و",
+    "position": "end",
+    "imageEmoji": "🪣",
+    "soundId": "word_و_end",
+    "difficulty": 1,
+    "relatedLetterIds": [
+      "و"
+    ]
+  },
+  {
+    "id": "word_waw_end_02",
+    "text": "يَدْعُو",
+    "letterId": "و",
+    "position": "end",
+    "imageEmoji": "🤲",
+    "soundId": "word_waw_end_02",
+    "difficulty": 2,
+    "relatedLetterIds": [
+      "و"
+    ]
+  },
+  {
+    "id": "word_waw_end_03",
+    "text": "يَرْجُو",
+    "letterId": "و",
+    "position": "end",
+    "imageEmoji": "🌟",
+    "soundId": "word_waw_end_03",
+    "difficulty": 2,
+    "relatedLetterIds": [
+      "و"
+    ]
+  },
+  {
+    "id": "word_ي_start",
+    "text": "يَدٌ",
+    "letterId": "ي",
+    "position": "start",
+    "imageEmoji": "✋",
+    "soundId": "word_ي_start",
+    "difficulty": 1,
+    "relatedLetterIds": [
+      "ي"
+    ]
+  },
+  {
+    "id": "word_ya_start_02",
+    "text": "يَمَامَةٌ",
+    "letterId": "ي",
+    "position": "start",
+    "imageEmoji": "🕊️",
+    "soundId": "word_ya_start_02",
+    "difficulty": 1,
+    "relatedLetterIds": [
+      "ي"
+    ]
+  },
+  {
+    "id": "word_ya_start_03",
+    "text": "يَدٌ",
+    "letterId": "ي",
+    "position": "start",
+    "imageEmoji": "✋",
+    "soundId": "word_ya_start_03",
+    "difficulty": 1,
+    "relatedLetterIds": [
+      "ي"
+    ]
+  },
+  {
+    "id": "word_ي_middle",
+    "text": "بَيْتٌ",
+    "letterId": "ي",
+    "position": "middle",
+    "imageEmoji": "🏠",
+    "soundId": "word_ي_middle",
+    "difficulty": 1,
+    "relatedLetterIds": [
+      "ي"
+    ]
+  },
+  {
+    "id": "word_ya_middle_02",
+    "text": "خَيْلٌ",
+    "letterId": "ي",
+    "position": "middle",
+    "imageEmoji": "🐎",
+    "soundId": "word_ya_middle_02",
+    "difficulty": 2,
+    "relatedLetterIds": [
+      "ي"
+    ]
+  },
+  {
+    "id": "word_ya_middle_03",
+    "text": "زَيْتُونٌ",
+    "letterId": "ي",
+    "position": "middle",
+    "imageEmoji": "🫒",
+    "soundId": "word_ya_middle_03",
+    "difficulty": 2,
+    "relatedLetterIds": [
+      "ي"
+    ]
+  },
+  {
+    "id": "word_ي_end",
+    "text": "كُرْسِيٌّ",
+    "letterId": "ي",
+    "position": "end",
+    "imageEmoji": "🪑",
+    "soundId": "word_ي_end",
+    "difficulty": 1,
+    "relatedLetterIds": [
+      "ي"
+    ]
+  },
+  {
+    "id": "word_ya_end_02",
+    "text": "نَبِيٌّ",
+    "letterId": "ي",
+    "position": "end",
+    "imageEmoji": "🕌",
+    "soundId": "word_ya_end_02",
+    "difficulty": 3,
+    "relatedLetterIds": [
+      "ي"
+    ]
+  },
+  {
+    "id": "word_ya_end_03",
+    "text": "صَبِيٌّ",
+    "letterId": "ي",
+    "position": "end",
+    "imageEmoji": "👦",
+    "soundId": "word_ya_end_03",
+    "difficulty": 1,
+    "relatedLetterIds": [
+      "ي"
+    ]
+  }
+]
