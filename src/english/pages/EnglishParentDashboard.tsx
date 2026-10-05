@@ -11,6 +11,7 @@ import { Link } from 'react-router-dom'
 import wordsData from '../data/words.json'
 import sentencesData from '../data/sentences.json'
 import storiesData from '../data/stories.json'
+import { STUDIO_ENABLED } from '../../config/features'
 
 // ——— نوع إعدادات تعلم الإنجليزية ———
 export type EnglishSettings = {
@@ -278,7 +279,7 @@ export function EnglishParentDashboard() {
         </section>
 
         {/* ——— استوديو الصوت ——— */}
-        <section className="mb-5 rounded-3xl border-2 border-purple-100 bg-white/80 p-4 shadow-lg">
+        {STUDIO_ENABLED && <section className="mb-5 rounded-3xl border-2 border-purple-100 bg-white/80 p-4 shadow-lg">
           <h2 className="mb-2 text-lg font-extrabold text-purple-900">🎙️ Voice Studio</h2>
           <p className="mb-3 text-sm text-gray-500">
             Record custom audio to replace browser speech for all content.
@@ -289,7 +290,7 @@ export function EnglishParentDashboard() {
           >
             🎙️ Open English Voice Studio
           </Link>
-        </section>
+        </section>}
 
         {/* ——— إعادة ضبط التقدم ——— */}
         <section className="mb-6 rounded-3xl border-2 border-red-100 bg-white/80 p-4 shadow-lg">

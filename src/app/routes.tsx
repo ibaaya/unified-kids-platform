@@ -28,6 +28,7 @@ import { StoriesWorld } from '../pages/Worlds/StoriesWorld'
 import { ParentDashboard } from '../pages/ParentDashboard/ParentDashboard'
 import { ProtectedParentRoute } from './ProtectedParentRoute'
 import { WorldGuard } from './WorldGuard'
+import { STUDIO_ENABLED } from '../config/features'
 import { SentencesWorld } from '../pages/Worlds/SentencesWorld'
 import { VoiceStudio } from '../pages/VoiceStudio/VoiceStudio'
 import { LetterWorldBackground } from '../components/ui/LetterWorldBackground'
@@ -79,7 +80,7 @@ export function AppRoutes() {
       <Route path="/parent/arabic" element={<ProtectedParentRoute><ParentDashboard /></ProtectedParentRoute>} />
       <Route path="/parent/english" element={<EnglishBackground page="parent"><ProtectedParentRoute><EnglishParentDashboard /></ProtectedParentRoute></EnglishBackground>} />
       <Route path="/parent/numbers" element={<ProtectedParentRoute><NumbersParentPage /></ProtectedParentRoute>} />
-      <Route path="/voice-studio" element={<ProtectedParentRoute><VoiceStudio /></ProtectedParentRoute>} />
+      {STUDIO_ENABLED && <Route path="/voice-studio" element={<ProtectedParentRoute><VoiceStudio /></ProtectedParentRoute>} />}
 
       {/* ARABIC */}
       <Route path="/arabic" element={<ArabicHome />} />
@@ -134,7 +135,7 @@ export function AppRoutes() {
       <Route path="/english/sentences" element={<EnglishBackground page="sentences"><EnglishSentencesWorld /></EnglishBackground>} />
       <Route path="/english/stories" element={<EnglishBackground page="stories"><EnglishStoriesWorld /></EnglishBackground>} />
       <Route path="/english/test" element={<EnglishBackground page="test"><EnglishFinalTest /></EnglishBackground>} />
-      <Route path="/english/voice-studio" element={<EnglishBackground page="voice-studio"><ProtectedParentRoute><EnglishVoiceStudio /></ProtectedParentRoute></EnglishBackground>} />
+      {STUDIO_ENABLED && <Route path="/english/voice-studio" element={<EnglishBackground page="voice-studio"><ProtectedParentRoute><EnglishVoiceStudio /></ProtectedParentRoute></EnglishBackground>} />}
 
       {/* NUMBERS */}
       <Route path="/numbers" element={<NumbersHome />} />

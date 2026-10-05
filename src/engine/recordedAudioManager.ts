@@ -1,4 +1,9 @@
 import type { AudioManifest, AudioManifestEntry } from '../types/voiceStudio'
+import bundledManifestJson from '../data/audio-manifest.json'
+
+// المانيفست المضمَّن وقت البناء: هو المصدر في الموقع المنشور وفي التطبيق (لا يوجد خادم تطوير هناك).
+const bundledManifest = bundledManifestJson as unknown as AudioManifest
+const IS_DEV = import.meta.env.DEV
 
 let audioManifest: AudioManifest = {}
 let currentAudio: HTMLAudioElement | null = null
@@ -21,10 +26,17 @@ function writeLocalManifest(manifest: AudioManifest): void {
   try { window.localStorage.setItem(STORAGE_KEY, JSON.stringify(manifest)) } catch { /* storage may be unavailable */ }
 }
 
-audioManifest = readLocalManifest()
+// الإنتاج: المانيفست المضمَّن فقط. التطوير: نبدأ بنسخة المتصفح ثم نحدّثها من خادم الاستوديو.
+audioManifest = IS_DEV ? readLocalManifest() : bundledManifest
+manifestLoaded = !IS_DEV
 
 export async function hydrateRecordedAudioManifest(): Promise<void> {
   if (typeof window === 'undefined') return
+  if (!IS_DEV) {
+    audioManifest = bundledManifest
+    manifestLoaded = true
+    return
+  }
   try {
     const response = await fetch(`/__voice-studio/manifest?t=${Date.now()}`, { cache: 'no-store' })
     if (!response.ok) return
@@ -58,7 +70,7 @@ function findRecordedEntry(audioId?: string): AudioManifestEntry | null {
     (candidate) =>
       candidate.status === 'approved' &&
       candidate.relativePath &&
-      (candidate.sourceId === audioId || candidate.itemId === audioId),
+      (candidate.sourceId === audioId || candidate.itemId === audioId || candidate.text === audioId),
   ) ?? null
 }
 

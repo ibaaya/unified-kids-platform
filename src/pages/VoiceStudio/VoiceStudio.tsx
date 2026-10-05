@@ -129,8 +129,9 @@ function processRecording(samples: Float32Array, sampleRate: number): { blob: Bl
   }
 }
 
-export function VoiceStudio() {
+export function VoiceStudio({ section = 'arabic' }: { section?: 'arabic' | 'english' | 'numbers' }) {
   const navigate = useNavigate()
+  const parentDashboardPath = section === 'english' ? '/parent/english' : section === 'numbers' ? '/parent/numbers' : '/parent/arabic'
   const [items, setItems] = useState<VoiceRecordingItem[]>([])
   const [selectedId, setSelectedId] = useState('')
   const [filter, setFilter] = useState<Filter>('all')
@@ -164,7 +165,7 @@ export function VoiceStudio() {
     setLoading(true)
     setError('')
     try {
-      const loaded = await loadVoiceItems()
+      const loaded = (await loadVoiceItems()).filter((item) => item.meta?.section === section)
       setItems(loaded)
       setSelectedId((current) =>
         loaded.some((item) => item.id === current)
@@ -176,7 +177,7 @@ export function VoiceStudio() {
     } finally {
       setLoading(false)
     }
-  }, [])
+  }, [section])
 
   useEffect(() => { void refresh() }, [refresh])
 
@@ -246,10 +247,10 @@ export function VoiceStudio() {
     return { total: items.length, approved, stale, missing: items.length - approved }
   }, [items])
 
-  const groupCounts = useMemo(() => Object.entries(groupLabels).map(([key, label]) => {
+  const groupCounts = useMemo(() => Array.from(new Set(items.map((item) => item.group))).map((key) => {
     const groupItems = items.filter((item) => item.group === key)
     const done = groupItems.filter((item) => item.status === 'approved').length
-    return { key, label, total: groupItems.length, done }
+    return { key, label: groupLabels[key] ?? groupItems[0]?.groupLabel ?? key, total: groupItems.length, done }
   }), [items])
 
   const clearRecordingState = useCallback(() => {
@@ -499,12 +500,12 @@ export function VoiceStudio() {
         <header className="flex flex-wrap items-center justify-between gap-3 mb-6">
           <div>
             <p className="text-sm font-bold text-[var(--color-sky)]">منطقة الإدارة • غير ظاهرة للطفل</p>
-            <h1 className="font-display text-3xl font-extrabold mt-1">🎙️ استوديو التسجيل الصوتي</h1>
+            <h1 className="font-display text-3xl font-extrabold mt-1">🎙️ {section === 'english' ? 'English Voice Studio' : section === 'numbers' ? 'استوديو الأرقام' : 'استوديو التسجيل الصوتي'}</h1>
             <p className="text-[var(--color-ink-soft)] mt-1">
               التسجيل من محتوى المشروع نفسه • MP3 • Trim Silence • Normalize Volume • حفظ مباشر
             </p>
           </div>
-          <Button variant="ghost" onClick={() => navigate('/parent')}>العودة للوحة ولي الأمر</Button>
+          <Button variant="ghost" onClick={() => navigate(parentDashboardPath)}>العودة للوحة ولي الأمر</Button>
         </header>
 
         {error && <Card className="mb-4 p-4 border-2 border-[var(--color-coral)]/30 bg-[var(--color-coral)]/5">

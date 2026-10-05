@@ -69,7 +69,7 @@ export function AppShell() {
         <Link
           to={currentArabicWorld.path}
           aria-label={`العودة إلى ${currentArabicWorld.label}`}
-          className="fixed right-3 top-3 z-[60] inline-flex min-h-11 items-center gap-2 rounded-2xl border-2 border-white/90 bg-sky-800/90 px-3 py-2 font-display text-sm font-extrabold text-white shadow-xl backdrop-blur-md transition hover:-translate-y-0.5 hover:bg-sky-900 focus-visible:outline focus-visible:outline-4 focus-visible:outline-offset-2 focus-visible:outline-amber-300 sm:right-4 sm:top-4"
+          className="fixed app-shell-nav app-shell-nav-end z-[60] inline-flex min-h-11 items-center gap-2 rounded-2xl border-2 border-white/90 bg-sky-800/90 px-3 py-2 font-display text-sm font-extrabold text-white shadow-xl backdrop-blur-md transition hover:-translate-y-0.5 hover:bg-sky-900 focus-visible:outline focus-visible:outline-4 focus-visible:outline-offset-2 focus-visible:outline-amber-300 "
           dir="rtl"
         >
           <span aria-hidden="true">{currentArabicWorld.icon}</span>
@@ -81,7 +81,7 @@ export function AppShell() {
       {isEnglishPage && (
         <Link
           to="/english"
-          className="fixed left-3 top-3 z-[60] inline-flex min-h-11 items-center gap-2 rounded-2xl border-2 border-white/90 bg-blue-800/90 px-3 py-2 text-sm font-extrabold text-white shadow-xl backdrop-blur-md transition hover:-translate-y-0.5 sm:left-4 sm:top-4"
+          className="fixed app-shell-nav app-shell-nav-end z-[60] inline-flex min-h-11 items-center gap-2 rounded-2xl border-2 border-white/90 bg-blue-800/90 px-3 py-2 text-sm font-extrabold text-white shadow-xl backdrop-blur-md transition hover:-translate-y-0.5 "
         >
           🔤 English Menu
         </Link>
@@ -91,7 +91,7 @@ export function AppShell() {
       {isNumbersPage && (
         <Link
           to="/numbers"
-          className="fixed left-3 top-3 z-[60] inline-flex min-h-11 items-center gap-2 rounded-2xl border-2 border-white/90 bg-violet-800/90 px-3 py-2 text-sm font-extrabold text-white shadow-xl backdrop-blur-md transition hover:-translate-y-0.5 sm:left-4 sm:top-4"
+          className="fixed app-shell-nav app-shell-nav-start z-[60] inline-flex min-h-11 items-center gap-2 rounded-2xl border-2 border-white/90 bg-violet-800/90 px-3 py-2 text-sm font-extrabold text-white shadow-xl backdrop-blur-md transition hover:-translate-y-0.5 "
           dir="rtl"
         >
           🔢 الأرقام

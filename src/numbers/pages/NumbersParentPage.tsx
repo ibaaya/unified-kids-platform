@@ -15,6 +15,7 @@ import { fmt, loc } from "../lib/arabic";
 import PinGate from "../components/PinGate";
 import NumbersControls from "../components/NumbersControls";
 import NumbersVoiceStudio from "./NumbersVoiceStudio";
+import { STUDIO_ENABLED } from "../../config/features";
 import "../numbers.css";
 
 // أسماء المهارات
@@ -298,7 +299,8 @@ export function NumbersParentPage() {
               )}
             </div>
 
-            {/* ——— استوديو التسجيل ——— */}
+            {/* ——— استوديو التسجيل (للتطوير فقط) ——— */}
+            {STUDIO_ENABLED && (
             <div className="mb-4 rounded-2xl border-2 border-violet-200 bg-violet-50 px-4 py-4">
               <h3 className="mb-1 text-base font-extrabold text-violet-800">🎙️ استوديو تسجيل الأصوات</h3>
               <p className="mb-3 text-sm text-violet-600">
@@ -312,6 +314,7 @@ export function NumbersParentPage() {
                 🎙️ فتح الاستوديو
               </button>
             </div>
+            )}
 
             {/* ——— إعادة ضبط التقدم ——— */}
             <div className="rounded-2xl border border-red-200 bg-red-50 px-4 py-3">

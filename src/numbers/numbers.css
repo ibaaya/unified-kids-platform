@@ -10,9 +10,9 @@
 .numbers-root *, .numbers-root *::before, .numbers-root *::after { box-sizing: border-box; }
 .numbers-fixed-controls {
   position: fixed;
-  left: 14px;
-  right: 14px;
-  bottom: 14px;
+  left: calc(14px + var(--safe-left, 0px));
+  right: calc(14px + var(--safe-right, 0px));
+  bottom: calc(14px + var(--safe-bottom, 0px));
   top: auto;
   transform: none;
   z-index: 1000;
@@ -166,7 +166,7 @@
 .numbers-root .numbers-card { font-size:calc(1rem * var(--numbers-scale)); }
 
 @media (max-width:640px){
-  .numbers-fixed-controls { left:8px; right:8px; bottom:8px; }
+  .numbers-fixed-controls { left:calc(8px + var(--safe-left, 0px)); right:calc(8px + var(--safe-right, 0px)); bottom:calc(8px + var(--safe-bottom, 0px)); }
   .numbers-control-button { min-width:38px; height:38px; border-radius:12px; }
   .numbers-content { width:min(100% - 14px,1100px); padding-top:64px; padding-bottom:68px; }
   .numbers-option { min-height:64px; }

@@ -1,4 +1,5 @@
 // أسماء الأرقام والأرقام الشرقية والنطق (Web Speech API + Custom Audio)
+import { playRecordedAudio, stopRecordedAudio } from '../../engine/recordedAudioManager'
 export const NAMES = ["", "وَاحِد", "اثْنَان", "ثَلَاثَة", "أَرْبَعَة", "خَمْسَة", "سِتَّة", "سَبْعَة", "ثَمَانِيَة", "تِسْعَة", "عَشَرَة", "أَحَدَ عَشَر", "اثْنَا عَشَر", "ثَلَاثَةَ عَشَر", "أَرْبَعَةَ عَشَر", "خَمْسَةَ عَشَر", "سِتَّةَ عَشَر", "سَبْعَةَ عَشَر", "ثَمَانِيَةَ عَشَر", "تِسْعَةَ عَشَر", "عِشْرُون"];
 export const toEastern = (n: number) => String(n).replace(/\d/g, (d) => "٠١٢٣٤٥٦٧٨٩"[+d]);
 let EAST = true; export const setDigits = (e: boolean) => { EAST = e; };
@@ -47,6 +48,7 @@ let speechRequestId = 0;
  */
 export function stopSpeaking() {
   speechRequestId += 1;
+  stopRecordedAudio();
   // أوقف الصوت المسجّل إن وُجد
   if (currentAudio) {
     try {
@@ -67,6 +69,9 @@ export function speak(text: string, on = true) {
   // 1) أوقف أي صوت جارٍ أولاً (يمنع التداخل بين سؤال وآخر أو تشجيع وسؤال)
   stopSpeaking();
   const requestId = speechRequestId;
+
+  // استخدم ملف MP3 المعتمد أولاً، ثم التسجيلات القديمة في المتصفح.
+  if (playRecordedAudio(text)) return;
 
   // 2) جرّب التسجيل المخصص
   const map = loadAudioMap();

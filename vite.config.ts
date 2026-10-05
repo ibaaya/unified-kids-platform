@@ -1,6 +1,7 @@
 import react from '@vitejs/plugin-react'
 import tailwindcss from '@tailwindcss/vite'
 import { defineConfig, type Plugin } from 'vite'
+import { VitePWA } from 'vite-plugin-pwa'
 import fs from 'node:fs'
 import path from 'node:path'
 import crypto from 'node:crypto'
@@ -296,6 +297,80 @@ function voiceStudioPlugin(): Plugin {
           })
         })
 
+// Keep all language/subject recordings grouped under their own public/audio directory.
+        items.forEach((item) => {
+          item.meta = { ...item.meta, section: 'arabic' }
+          item.relativePath = item.relativePath.replace(/^\/audio\//, '/audio/arabic/')
+        })
+
+        const englishLetters = readJson<Array<Record<string, any>>>(path.join(projectRoot, 'src', 'english', 'data', 'letters.json'))
+        const englishWords = readJson<Array<Record<string, any>>>(path.join(projectRoot, 'src', 'english', 'data', 'words.json'))
+        const englishSentences = readJson<Array<Record<string, any>>>(path.join(projectRoot, 'src', 'english', 'data', 'sentences.json'))
+        const englishStories = readJson<Array<Record<string, any>>>(path.join(projectRoot, 'src', 'english', 'data', 'stories.json'))
+        const addProjectItem = (item: Item) => items.push(item)
+
+        englishLetters.forEach((entry, index) => {
+          const id = `english:letter:${String(entry.id)}`
+          const filename = uniqueFilename(`english_letter_${safeName(String(entry.id))}.mp3`, usedNames)
+          addProjectItem({ id, type: 'prompt', group: 'letters', groupLabel: 'الحروف', text: String(entry.name), filename, relativePath: `/audio/english/letters/${filename}`, sourceId: String(entry.soundId ?? entry.id), order: index + 1, contentHash: contentHash([id, entry.name]), meta: { section: 'english', contentId: String(entry.id) } })
+        })
+        englishWords.forEach((entry, index) => {
+          const id = `english:word:${String(entry.id)}`
+          const filename = uniqueFilename(`english_word_${safeName(String(entry.id))}.mp3`, usedNames)
+          addProjectItem({ id, type: 'prompt', group: 'words', groupLabel: 'الكلمات', text: String(entry.text), filename, relativePath: `/audio/english/words/${filename}`, sourceId: String(entry.soundId ?? entry.id), order: index + 1, contentHash: contentHash([id, entry.text]), meta: { section: 'english', contentId: String(entry.id) } })
+        })
+        englishLetters.forEach((entry, index) => {
+          const id = `english:phonics:${String(entry.id)}`
+          const filename = uniqueFilename(`english_phonics_${safeName(String(entry.id))}.mp3`, usedNames)
+          addProjectItem({ id, type: 'prompt', group: 'phonics', groupLabel: 'الأصوات الصوتية', text: String(entry.phonicSound), filename, relativePath: `/audio/english/phonics/${filename}`, sourceId: id, order: index + 1, contentHash: contentHash([id, entry.phonicSound]), meta: { section: 'english', contentId: String(entry.id), kind: 'phonicSound' } })
+          const combinedId = `english:phonics-example:${String(entry.id)}`
+          const combinedText = `${String(entry.name)}. ${String(entry.phonicSound)}. ${String(entry.exampleWord)}`
+          const combinedFilename = uniqueFilename(`english_phonics_example_${safeName(String(entry.id))}.mp3`, usedNames)
+          addProjectItem({ id: combinedId, type: 'prompt', group: 'phonics', groupLabel: 'الأصوات الصوتية', text: combinedText, filename: combinedFilename, relativePath: `/audio/english/phonics/${combinedFilename}`, sourceId: combinedId, order: 100 + index + 1, contentHash: contentHash([combinedId, combinedText]), meta: { section: 'english', contentId: String(entry.id), kind: 'phonicExample' } })
+        })
+        englishSentences.forEach((entry, index) => {
+          const id = `english:sentence:${String(entry.id)}`
+          const text = String(entry.audioPrompt || entry.text)
+          const filename = uniqueFilename(`english_sentence_${String(index + 1).padStart(3, '0')}.mp3`, usedNames)
+          addProjectItem({ id, type: 'prompt', group: 'sentences', groupLabel: 'الجمل', text, filename, relativePath: `/audio/english/sentences/${filename}`, sourceId: String(entry.id), order: index + 1, contentHash: contentHash([id, text]), meta: { section: 'english', contentId: String(entry.id) } })
+        })
+        englishStories.forEach((story, storyIndex) => {
+          story.pages?.forEach((page: Record<string, any>, pageIndex: number) => {
+            const id = `english:story-page:${String(story.id)}:${pageIndex + 1}`
+            const filename = uniqueFilename(`english_story_${safeName(String(story.id))}_page_${String(pageIndex + 1).padStart(2, '0')}.mp3`, usedNames)
+            addProjectItem({ id, type: 'prompt', group: 'stories', groupLabel: 'القصص', text: String(page.text), filename, relativePath: `/audio/english/stories/${filename}`, sourceId: id, order: storyIndex * 100 + pageIndex + 1, contentHash: contentHash([id, story.title, page.text]), meta: { section: 'english', storyId: String(story.id), page: pageIndex + 1 } })
+          })
+          story.comprehensionQuestions?.forEach((question: Record<string, any>, questionIndex: number) => {
+            const id = `english:story-question:${String(story.id)}:${questionIndex + 1}`
+            const filename = uniqueFilename(`english_story_${safeName(String(story.id))}_question_${String(questionIndex + 1).padStart(2, '0')}.mp3`, usedNames)
+            addProjectItem({ id, type: 'prompt', group: 'stories', groupLabel: 'القصص', text: String(question.question), filename, relativePath: `/audio/english/stories/${filename}`, sourceId: id, order: storyIndex * 100 + 50 + questionIndex, contentHash: contentHash([id, question.question]), meta: { section: 'english', storyId: String(story.id), question: questionIndex + 1 } })
+          })
+        })
+
+        const numberNames = ['', 'وَاحِد', 'اثْنَان', 'ثَلَاثَة', 'أَرْبَعَة', 'خَمْسَة', 'سِتَّة', 'سَبْعَة', 'ثَمَانِيَة', 'تِسْعَة', 'عَشَرَة', 'أَحَدَ عَشَر', 'اثْنَا عَشَر', 'ثَلَاثَةَ عَشَر', 'أَرْبَعَةَ عَشَر', 'خَمْسَةَ عَشَر', 'سِتَّةَ عَشَر', 'سَبْعَةَ عَشَر', 'ثَمَانِيَةَ عَشَر', 'تِسْعَةَ عَشَر', 'عِشْرُون']
+        const numberPrompts: Array<{ id: string; text: string }> = []
+        for (let n = 1; n <= 20; n += 1) numberPrompts.push({ id: `num_${n}`, text: numberNames[n] })
+        numberPrompts.push(
+          { id: 'q_recognize', text: 'مَا هَذَا الرَّقْمُ؟' },
+          { id: 'q_count', text: 'كَمْ عَدَدُ الْأَشْيَاءِ؟' },
+          { id: 'q_compare', text: 'مَا الْعَلَامَةُ الصَّحِيحَةُ الَّتِي يَجِبُ وَضْعُهَا؟' },
+          { id: 'q_bigger', text: 'أَيُّ الْعَدَدَيْنِ أَكْبَرُ؟' },
+          { id: 'q_missing', text: 'أَيُّ رَقْمٍ نَاقِص؟' },
+          { id: 'cheer_correct', text: 'أَحْسَنْتَ' },
+          { id: 'cheer_try', text: 'حاول مرة أخرى' },
+          { id: 'welcome', text: 'مَرْحَبًا بِكَ فِي مُغَامَرَةِ الْأَرْقَامِ! هَلْ أَنْتَ مُسْتَعِدٌّ؟' },
+        )
+        for (let n = 1; n <= 20; n += 1) numberPrompts.push({ id: `hear_${n}`, text: `أَيْنَ الرَّقْمُ ${numberNames[n]}؟` })
+        for (let n = 2; n <= 19; n += 1) {
+          numberPrompts.push({ id: `before_${n}`, text: `مَا الرَّقْمُ الَّذِي يَأْتِي قَبْلَ ${numberNames[n]}؟` })
+          numberPrompts.push({ id: `after_${n}`, text: `مَا الرَّقْمُ الَّذِي يَأْتِي بَعْدَ ${numberNames[n]}؟` })
+        }
+        numberPrompts.forEach((entry, index) => {
+          const id = `numbers:${entry.id}`
+          const filename = uniqueFilename(`numbers_${safeName(entry.id)}.mp3`, usedNames)
+          addProjectItem({ id, type: 'prompt', group: 'numbers', groupLabel: 'الأرقام والأسئلة', text: entry.text, filename, relativePath: `/audio/numbers/prompts/${filename}`, sourceId: id, order: index + 1, contentHash: contentHash([id, entry.text]), meta: { section: 'numbers', contentId: entry.id } })
+        })
+
         return items.map((item) => {
           const saved = manifest[item.id]
           const expectedFile = path.resolve(projectRoot, 'public', item.relativePath.replace(/^\//, ''))
@@ -381,7 +456,7 @@ function voiceStudioPlugin(): Plugin {
             // المسار لا يأتي من المتصفح كمسار حر؛ نأخذ المسار المولّد من محتوى المشروع نفسه.
             // هذا يمنع أخطاء 400 الناتجة عن اختلاف اسم الملف، ويضمن الحفظ داخل public/audio فقط.
             const relativeAudio = currentItem.relativePath.replace(/^\/+/, '')
-            if (!/^audio\/[a-z-]+\/[a-z0-9_-]+\.mp3$/i.test(relativeAudio)) {
+            if (!/^audio\/(?:arabic|english|numbers)\/[a-z-]+\/[a-z0-9_-]+\.mp3$/i.test(relativeAudio)) {
               throw new Error(`مسار MP3 غير صالح للعنصر: ${relativeAudio}`)
             }
 
@@ -493,6 +568,72 @@ function voiceStudioPlugin(): Plugin {
   }
 }
 
-export default defineConfig({
-  plugins: [react(), tailwindcss(), voiceStudioPlugin()],
+// وضع البناء:
+//   npm run build         -> موقع + PWA (يولّد manifest و service worker)
+//   npm run build:native  -> نسخة التطبيق (Capacitor) بدون PWA
+export default defineConfig(({ mode }) => {
+  const isNative = mode === 'native'
+
+  return {
+    plugins: [
+      react(),
+      tailwindcss(),
+      voiceStudioPlugin(),
+      VitePWA({
+        disable: isNative,
+        // 'prompt': النسخة الجديدة تُطبَّق عند فتح التطبيق مرة أخرى، فلا تُقاطع الطفل أثناء اللعب
+        registerType: 'prompt',
+        injectRegister: false, // التسجيل يتم يدوياً من src/platform/initPlatform.ts
+        includeAssets: ['apple-touch-icon.png'],
+        manifest: {
+          name: 'منصة التعلم الموحدة',
+          short_name: 'منصة التعلم',
+          description: 'تعلم العربية والإنجليزية والأرقام واكتشف ما حولك — للأطفال',
+          lang: 'ar',
+          dir: 'rtl',
+          start_url: '/',
+          scope: '/',
+          display: 'standalone',
+          orientation: 'any',
+          background_color: '#edf8f5',
+          theme_color: '#6d28d9',
+          icons: [
+            { src: 'pwa-192.png', sizes: '192x192', type: 'image/png' },
+            { src: 'pwa-512.png', sizes: '512x512', type: 'image/png' },
+            { src: 'pwa-maskable-512.png', sizes: '512x512', type: 'image/png', purpose: 'maskable' },
+          ],
+        },
+        workbox: {
+          // نخزّن مسبقاً الكود والخطوط فقط. الصوت والصور الكبيرة تُخزَّن عند أول استخدام.
+          globPatterns: ['**/*.{js,css,html,svg,woff2}', 'pwa-*.png', 'apple-touch-icon.png'],
+          globIgnores: ['audio/**', 'images/**', 'video/**'],
+          maximumFileSizeToCacheInBytes: 4 * 1024 * 1024,
+          navigateFallback: '/index.html',
+          navigateFallbackDenylist: [/^\/__voice-studio/],
+          cleanupOutdatedCaches: true,
+          runtimeCaching: [
+            {
+              urlPattern: ({ url }: { url: URL }) => url.pathname.startsWith('/audio/'),
+              handler: 'CacheFirst',
+              options: {
+                cacheName: 'kids-audio-v1',
+                rangeRequests: true, // مهم لتشغيل الصوت على Safari/iOS
+                expiration: { maxEntries: 800, maxAgeSeconds: 60 * 60 * 24 * 90 },
+                cacheableResponse: { statuses: [0, 200] },
+              },
+            },
+            {
+              urlPattern: ({ url }: { url: URL }) => url.pathname.startsWith('/images/'),
+              handler: 'CacheFirst',
+              options: {
+                cacheName: 'kids-images-v1',
+                expiration: { maxEntries: 300, maxAgeSeconds: 60 * 60 * 24 * 90 },
+                cacheableResponse: { statuses: [0, 200] },
+              },
+            },
+          ],
+        },
+      }),
+    ],
+  }
 })

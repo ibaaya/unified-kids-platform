@@ -17,6 +17,7 @@ import type { ChildProfile, UnlockMode, SkillMastery } from '../../types/progres
 import lettersData from '../../data/letters.json'
 import wordsData from '../../data/words.json'
 import type { Letter, Word } from '../../types/content'
+import { STUDIO_ENABLED } from '../../config/features'
 
 const letters = lettersData as Letter[]
 const words = wordsData as Word[]
@@ -261,7 +262,7 @@ export function ParentDashboard() {
         </Card>
       )}
 
-      <Card className="p-5 mb-6 text-right border-2 border-[var(--color-sky)]/15">
+      {STUDIO_ENABLED && <Card className="p-5 mb-6 text-right border-2 border-[var(--color-sky)]/15">
         <h2 className="font-display font-bold mb-2">🎙️ استوديوهات التسجيل</h2>
         <p className="text-sm text-[var(--color-ink-soft)] mb-4">
           سجّل أصواتاً مخصصة للمحتوى العربي أو الإنجليزي لتحل محل صوت المتصفح.
@@ -270,7 +271,7 @@ export function ParentDashboard() {
           <Button onClick={() => navigate('/voice-studio')}>🌙 استوديو العربية</Button>
           <Button onClick={() => navigate('/english/voice-studio')}>🔤 English Voice Studio</Button>
         </div>
-      </Card>
+      </Card>}
 
       <Card className="p-5 mb-6 text-right">
         <h2 className="font-display font-bold mb-3">👨‍👩‍👧 الطلاب على هذا الجهاز</h2>
