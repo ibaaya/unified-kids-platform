@@ -829,10 +829,10 @@
   },
   {
     "id": "word_د_end",
-    "text": "يَدٌ",
+    "text": "وَلَدٌ",
     "letterId": "د",
     "position": "end",
-    "imageEmoji": "✋",
+    "imageEmoji": "👦",
     "soundId": "word_د_end",
     "difficulty": 1,
     "relatedLetterIds": [
@@ -841,10 +841,10 @@
   },
   {
     "id": "word_dal_end_01",
-    "text": "وَلَدٌ",
+    "text": "أَسَدٌ",
     "letterId": "د",
     "position": "end",
-    "imageEmoji": "👦",
+    "imageEmoji": "🦁",
     "soundId": "word_dal_end_01",
     "difficulty": 2,
     "relatedLetterIds": [
@@ -853,10 +853,10 @@
   },
   {
     "id": "word_dal_end_02",
-    "text": "أُسُودٌ",
+    "text": "قِرْدٌ",
     "letterId": "د",
     "position": "end",
-    "imageEmoji": "🦁",
+    "imageEmoji": "🐒",
     "soundId": "word_dal_end_02",
     "difficulty": 2,
     "relatedLetterIds": [
@@ -2941,10 +2941,10 @@
   },
   {
     "id": "word_ya_start_03",
-    "text": "يَدٌ",
+    "text": "يَرَقةٌ",
     "letterId": "ي",
     "position": "start",
-    "imageEmoji": "✋",
+    "imageEmoji": "🐛",
     "soundId": "word_ya_start_03",
     "difficulty": 1,
     "relatedLetterIds": [

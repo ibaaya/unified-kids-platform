@@ -27,6 +27,10 @@ function speechTextFor(q: Q): string {
     // اقرأ العددين بنفس ترتيب ظهورهما في المعادلة ذات الاتجاه LTR.
     return `قَارِنْ بَيْنَ ${NAMES[q.groups[0]] ?? q.groups[0]} وَ ${NAMES[q.groups[1]] ?? q.groups[1]}`;
   }
+  if (q.skill === "subtract" && q.groups && q.groups.length >= 2) {
+    const [minuend, subtrahend] = q.groups;
+    return `${NAMES[minuend] ?? minuend} نَاقِصُ ${NAMES[subtrahend] ?? subtrahend} يُسَاوِي كَمْ؟`;
+  }
   if (q.say) return q.say;
   return q.prompt;
 }

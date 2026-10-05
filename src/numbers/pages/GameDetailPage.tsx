@@ -38,7 +38,37 @@ export function NumbersGameDetailPage() {
   if (!G) return <NumbersPageFrame><Link to="/numbers/games">عودة</Link></NumbersPageFrame>;
   return <NumbersPageFrame background="/images/numbers-bg.webp"><div className="space-y-4">
     {done ? <div className="numbers-card text-center text-2xl">🎉 أَحْسَنْتَ! أَنْهَيْتَ اللُّعْبَة<CompletionActions nextHref="/numbers/games" replayLabel="🔄 إِعَادَة" onReplay={() => setDone(0)} /></div> : !help && <G key={done} onDone={finishGame} />}
-    <div className="flex justify-center gap-3"><button className="btn bg-white/90" onClick={() => setHelp(true)}>❓ كَيْفَ أَلْعَب؟</button><Link to="/numbers/games" className="btn bg-white/90">↩ الأَلْعَاب</Link></div>
-    {help && h && <div className="fixed inset-0 z-30 flex items-center justify-center bg-black/55 p-4"><div className="numbers-card numbers-game-help text-center"><h2 className="text-2xl font-extrabold">كَيْفَ أَلْعَب؟ 👋</h2><div className="my-5 flex flex-wrap items-center justify-center gap-4 text-4xl font-extrabold"><span className="rounded-2xl bg-yellow-300 px-4 py-3">{loc(h[1])} 👆</span><span className="rounded-2xl bg-orange-100 px-4 py-3">{loc(h[2])}</span></div><p className="text-xl leading-loose">{h[0]} <button aria-label="اسْتَمِع" onClick={() => speak(h[0], p.sound)}>🔊</button></p><button className="btn numbers-action-button mt-4 bg-emerald-400 text-white" onClick={close}>فَهِمْتُ، لِنَلْعَب! 🎮</button></div></div>}
+    <div className="mx-auto mt-5 grid w-full max-w-2xl grid-cols-2 gap-3 sm:gap-4">
+  <button
+    className="flex min-h-[82px] flex-col items-center justify-center rounded-3xl border-2 border-white/80 bg-white/95 px-3 py-3 text-center shadow-lg backdrop-blur-sm transition-all duration-200 hover:-translate-y-1 hover:shadow-xl active:scale-[0.97]"
+    onClick={() => setHelp(true)}
+  >
+    <span className="text-2xl leading-none">❓</span>
+    <span className="mt-2 text-base font-extrabold text-violet-800 sm:text-lg">
+      كَيْفَ أَلْعَب؟
+    </span>
+  </button>
+
+  <Link
+    to="/numbers/games"
+    className="flex min-h-[82px] flex-col items-center justify-center rounded-3xl border-2 border-white/80 bg-white/95 px-3 py-3 text-center shadow-lg backdrop-blur-sm transition-all duration-200 hover:-translate-y-1 hover:shadow-xl active:scale-[0.97]"
+  >
+    <span className="text-2xl leading-none">🎮</span>
+    <span className="mt-2 text-base font-extrabold text-violet-800 sm:text-lg">
+      الأَلْعَاب
+    </span>
+  </Link>
+</div>
+
+
+    {help && h && <div className="fixed inset-0 z-30 flex items-center justify-center bg-black/55 p-4">
+    <div className="numbers-card numbers-game-help text-center">
+      <h2 className="text-2xl font-bold">كَيْفَ أَلْعَب؟ 👋</h2>
+      <div className="my-5 flex flex-wrap items-center justify-center gap-4 text-4xl font-extrabold">
+        <span className="rounded-3xl bg-yellow-300 px-4 py-3">{loc(h[1])} 👆</span>
+        <span className="rounded-3xl bg-orange-100 px-4 py-3">{loc(h[2])}</span>
+        </div>
+        <p className="text-xl leading-loose">{h[0]} <button aria-label="اسْتَمِع" onClick={() => speak(h[0], p.sound)}>🔊</button></p>
+        <button className="btn numbers-action-button mt-4 bg-emerald-400 text-white" onClick={close}>فَهِمْتُ، لِنَلْعَب! 🎮</button></div></div>}
   </div></NumbersPageFrame>;
 }

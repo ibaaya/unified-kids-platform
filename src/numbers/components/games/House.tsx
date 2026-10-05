@@ -1,14 +1,14 @@
 
 import { useState } from "react";
-import { fmt } from "../../lib/arabic";
+import { fmt, speak } from "../../lib/arabic";
 import { emojiFor } from "../../data/content";
 import { Dots } from "../Objects";
 import { shuffle, uniq, useStar, TRY } from "./shared";
 // بيت الرقم: اسحب الرقم إلى البيت الذي يحمل العدد نفسه من الأشياء (أو اضغط الرقم ثم البيت لمن لا يستطيع السحب)
 export default function House({ onDone }: { onDone: () => void }) {
-  const { p, star } = useStar(); const [round, setRound] = useState(0); const [nums, setNums] = useState(() => uniq(3, 1, 10)); const [done, setDone] = useState<number[]>([]); const [sel, setSel] = useState<number | null>(null); const [msg, setMsg] = useState("");
+  const { p, star } = useStar(); const praise = ["أَحْسَنْتَ", "مُمْتَازٌ", "رَائِعٌ"] as const; const [praiseIndex, setPraiseIndex] = useState(0); const [round, setRound] = useState(0); const [nums, setNums] = useState(() => uniq(3, 1, 10)); const [done, setDone] = useState<number[]>([]); const [sel, setSel] = useState<number | null>(null); const [msg, setMsg] = useState("");
   const [order, setOrder] = useState(() => shuffle([0, 1, 2]));
-  const place = (n: number, h: number) => { if (done.includes(n)) return; if (n !== h) { setMsg(TRY); return; } setMsg("أَحْسَنْتَ! ⭐"); star(); const d = [...done, n]; setDone(d); setSel(null);
+  const place = (n: number, h: number) => { if (done.includes(n)) return; if (n !== h) { setMsg(TRY); speak("حَاوِلْ مُجَدَّدًا.", p.sound); return; } const d = [...done, n]; const cheer = praise[praiseIndex % praise.length]; setPraiseIndex((index) => index + 1); setMsg(`${cheer}! ⭐`); speak(cheer, p.sound); star(); setDone(d); setSel(null);
     if (d.length === 3) setTimeout(() => { if (round + 1 >= p.questionCount) return onDone(); const nn = uniq(3, 1, 10); setRound(round + 1); setNums(nn); setDone([]); setOrder(shuffle([0, 1, 2])); setMsg(""); }, 900); };
   return (<div className="numbers-card numbers-game-card text-center"><h2 className="text-3xl font-extrabold">ضَعِ الرَّقْمَ فِي بَيْتِه 🏠</h2>
     <div className="my-4 grid grid-cols-3 gap-3">{order.map((i) => { const n = nums[i]; return (<button key={n} data-house={n} onClick={() => sel !== null && place(sel, n)} onDragOver={(e) => e.preventDefault()} onDrop={(e) => { e.preventDefault(); const raw = e.dataTransfer.getData("text/plain"); const dragged = Number(raw); if (Number.isFinite(dragged)) place(dragged, n); }} className="rounded-2xl bg-orange-100 p-2 shadow">🏠<Dots n={n} e={emojiFor(n)} />{done.includes(n) && <div className="text-5xl font-extrabold text-grape">{fmt(n, p.eastern)}</div>}</button>); })}</div>

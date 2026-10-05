@@ -5,20 +5,19 @@ import { fmt, loc } from "../lib/arabic";
 import { pathState, rangeNums, resumeHref } from "../lib/path";
 import { NumbersPageFrame } from "../components/NumbersPageFrame";
 
-// ألوان مختلفة تماماً — لا تكرار (11 لوناً فريداً لـ 11 مرحلة)
-// كل لون يحتوي: bg (خلفية شفافة) + accent (شريط علوي + حدود الحالة)
+// ألوان مختلفة وهادئة — هوية مستقلة لكل مرحلة
 const TILE_STYLES = [
-  { bg: "rgba(251,191,36,0.22)",  accent: "#f59e0b", glow: "rgba(245,158,11,0.30)", icon: "from-amber-300  to-orange-400" },
-  { bg: "rgba(56,189,248,0.22)",  accent: "#0ea5e9", glow: "rgba(14,165,233,0.30)",  icon: "from-sky-400    to-blue-500"   },
-  { bg: "rgba(52,211,153,0.22)",  accent: "#10b981", glow: "rgba(16,185,129,0.30)", icon: "from-emerald-400 to-teal-500"  },
-  { bg: "rgba(196,181,253,0.22)", accent: "#8b5cf6", glow: "rgba(139,92,246,0.30)", icon: "from-violet-400  to-purple-600" },
-  { bg: "rgba(244,114,182,0.22)", accent: "#ec4899", glow: "rgba(236,72,153,0.30)", icon: "from-pink-400    to-rose-500"  },
-  { bg: "rgba(251,146,60,0.22)",  accent: "#f97316", glow: "rgba(249,115,22,0.30)", icon: "from-orange-400  to-red-500"   },
-  { bg: "rgba(34,211,238,0.22)",  accent: "#06b6d4", glow: "rgba(6,182,212,0.30)",  icon: "from-cyan-400   to-sky-500"   },
-  { bg: "rgba(163,230,53,0.22)",  accent: "#84cc16", glow: "rgba(132,204,22,0.30)", icon: "from-lime-400   to-green-500" },
-  { bg: "rgba(251,113,133,0.22)", accent: "#f43f5e", glow: "rgba(244,63,94,0.30)",  icon: "from-rose-400   to-pink-600"  },
-  { bg: "rgba(99,102,241,0.22)",  accent: "#6366f1", glow: "rgba(99,102,241,0.30)", icon: "from-indigo-400  to-violet-500"},
-  { bg: "rgba(20,184,166,0.22)",  accent: "#14b8a6", glow: "rgba(20,184,166,0.30)", icon: "from-teal-400   to-emerald-600"},
+  { bg: "rgba(255,248,225,0.94)", accent: "#F59E0B", glow: "rgba(245,158,11,0.22)", icon: "from-amber-300 to-orange-400" },
+  { bg: "rgba(230,247,255,0.94)", accent: "#0EA5E9", glow: "rgba(14,165,233,0.20)", icon: "from-sky-300 to-blue-500" },
+  { bg: "rgba(229,250,242,0.94)", accent: "#10B981", glow: "rgba(16,185,129,0.20)", icon: "from-emerald-300 to-teal-500" },
+  { bg: "rgba(243,238,255,0.95)", accent: "#8B5CF6", glow: "rgba(139,92,246,0.20)", icon: "from-violet-300 to-purple-500" },
+  { bg: "rgba(255,237,247,0.95)", accent: "#EC4899", glow: "rgba(236,72,153,0.18)", icon: "from-pink-300 to-rose-500" },
+  { bg: "rgba(255,241,231,0.95)", accent: "#F97316", glow: "rgba(249,115,22,0.20)", icon: "from-orange-300 to-red-500" },
+  { bg: "rgba(229,250,253,0.95)", accent: "#06B6D4", glow: "rgba(6,182,212,0.20)", icon: "from-cyan-300 to-sky-500" },
+  { bg: "rgba(241,251,222,0.95)", accent: "#84CC16", glow: "rgba(132,204,22,0.20)", icon: "from-lime-300 to-green-500" },
+  { bg: "rgba(244, 244, 244, 0.98)", accent: "#954383", glow: "rgba(93, 7, 21, 0.18)", icon: "from-rose-300 to-pink-500" },
+  { bg: "rgba(235,237,255,0.97)", accent: "#6366F1", glow: "rgba(99,102,241,0.20)", icon: "from-indigo-300 to-violet-500" },
+  { bg: "rgba(229,249,246,0.97)", accent: "#14B8A6", glow: "rgba(20,184,166,0.20)", icon: "from-teal-300 to-emerald-500" },
 ];
 
 export function NumbersMapPage() {
@@ -28,107 +27,165 @@ export function NumbersMapPage() {
   return (
     <NumbersPageFrame background="/images/numbers-bg.webp">
 
-      {/* ——— ترويسة ——— */}
+      {/* ——— ترويسة اللعبة ——— */}
       <div
-        className="numbers-card !w-full !max-w-none py-4 text-center"
-        style={{ background: "rgba(255,255,255,0.55)", backdropFilter: "blur(14px)" }}
+        className="relative w-full overflow-hidden rounded-[2rem] border border-white/90 bg-white/80 px-4 py-6 text-center shadow-[0_14px_35px_rgba(71,85,105,0.12)] backdrop-blur-xl sm:px-6"
       >
-        <h1 className="text-3xl font-extrabold text-violet-800">🗺️ مَسَارُ الْمُغَامَرَة</h1>
-        <div className="mt-3">
-          <Link
-            to={resumeHref(p)}
-            className="numbers-action-button inline-flex items-center gap-2 rounded-2xl bg-emerald-400 px-6 py-3 text-white shadow-lg transition hover:-translate-y-0.5 hover:bg-emerald-500"
-          >
-            ▶ تَابِعْ مِنْ حَيْثُ تَوَقَّفْتَ
-          </Link>
+        <div className="pointer-events-none absolute -left-10 -top-12 h-28 w-28 rounded-full bg-amber-200/35 blur-2xl" />
+        <div className="pointer-events-none absolute -right-10 -bottom-12 h-32 w-32 rounded-full bg-violet-200/30 blur-2xl" />
+
+        <div className="relative">
+          <div className="mb-2 flex items-center justify-center gap-2 text-xs font-extrabold text-violet-600 sm:text-sm">
+            <span>✨</span>
+            <span>مَغَامَرَةُ الأَرْقَامِ</span>
+            <span>✨</span>
+          </div>
+
+          <h1 className="text-2xl font-black leading-tight tracking-wide text-slate-800 sm:text-4xl">
+            🗺️ مَسَارُ الْمُغَامَرَةِ السِّحْرِيَّةِ
+          </h1>
+
+          <p className="mx-auto mt-2 max-w-xl text-sm font-bold text-slate-500 sm:text-base">
+            تعلّم الأرقام واكتشف مغامرة جديدة في كل مرحلة 🌟
+          </p>
+
+          <div className="mt-5">
+            <Link
+              to={resumeHref(p)}
+              className="numbers-action-button group inline-flex items-center gap-2.5 rounded-2xl border-2 border-white/80 bg-gradient-to-r from-emerald-500 to-teal-500 px-6 py-3 text-base font-black text-white shadow-[0_8px_22px_rgba(16,185,129,0.25)] transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_12px_28px_rgba(16,185,129,0.30)] active:scale-[0.98] sm:px-8 sm:py-3.5 sm:text-lg"
+            >
+              <span className="text-lg transition-transform duration-300 group-hover:translate-x-0.5">
+                ▶
+              </span>
+              <span>تَابِعْ مِنْ حَيْثُ تَوَقَّفْتَ</span>
+            </Link>
+          </div>
         </div>
       </div>
 
-      {/* ——— شبكة المسارات ——— */}
-      {/*
-        grid-cols-4 → أربعة مربعات في كل سطر
-        gap-2.5 → مسافة مناسبة
-        كل li: بدون aspect-square (ارتفاع أقصر)، ونستخدم min-h لتحديد الارتفاع
-      */}
-      <ol className="mt-4 grid grid-cols-4 gap-2.5">
+      {/* ——— شبكة المسارات التفاعلية ——— */}
+      <ol className="mt-6 grid grid-cols-2 gap-3 sm:grid-cols-4 sm:gap-4">
         {STAGES.map((s, idx) => {
-          const got    = rangeNums(s).filter((n) => p.learned.includes(n)).length;
-          const total  = rangeNums(s).length;
-          const style  = TILE_STYLES[idx % TILE_STYLES.length];
+          const got = rangeNums(s).filter((n) => p.learned.includes(n)).length;
+          const total = rangeNums(s).length;
+          const style = TILE_STYLES[idx % TILE_STYLES.length];
           const isOpen = open[idx];
           const isCurrent = idx === current;
-          const isDone    = done[idx];
+          const isDone = done[idx];
           const href = s.range ? `/numbers/stage/${s.id}` : `/numbers${s.href}`;
 
-          /* الحدود الخارجية: بيضاء دائماً لجميع المربعات، مع حواف ناعمة */
           const tileStyle: React.CSSProperties = {
-            background:     isOpen ? style.bg : "rgba(148,163,184,0.12)",
-            borderColor:    "rgba(255,255,255,0.85)",   // ← أبيض لجميع المربعات
-            borderWidth:    "2px",
-            borderStyle:    "solid",
-            backdropFilter: "blur(14px)",
-            WebkitBackdropFilter: "blur(14px)",
-            boxShadow: isOpen && isCurrent
-              ? `0 0 0 2px ${style.accent}, 0 6px 18px ${style.glow}`
-              : isOpen
-              ? `0 3px 12px ${style.glow}`
-              : "0 2px 8px rgba(0,0,0,0.06)",
+            background: isOpen ? style.bg : "rgba(241,245,249,0.86)",
+            borderColor: isCurrent
+              ? `${style.accent}55`
+              : "rgba(255,255,255,0.92)",
+            borderWidth: isCurrent ? "2px" : "1px",
+            borderStyle: "solid",
+            backdropFilter: "blur(12px)",
+            WebkitBackdropFilter: "blur(12px)",
+            boxShadow:
+              isOpen && isCurrent
+                ? `0 0 0 3px ${style.accent}30, 0 12px 30px ${style.glow}`
+                : isOpen
+                ? `0 7px 22px ${style.glow}`
+                : "0 4px 14px rgba(51,65,85,0.07)",
           };
 
-          /* المحتوى الداخلي مشترك بين Link و div */
           const inner = (
-            <div className="flex h-full w-full flex-col items-center justify-center gap-1 px-1 pt-3 pb-1.5">
+            <div className="flex h-full w-full flex-col items-center justify-between gap-2 p-3 pt-5 sm:min-h-[178px] sm:p-4 sm:pt-6">
 
-              {/* أيقونة دائرية — أكبر */}
+              {/* أيقونة المرحلة */}
               <div
-                className={`flex h-11 w-11 flex-shrink-0 items-center justify-center rounded-xl text-2xl shadow-md sm:h-12 sm:w-12 sm:text-3xl ${
-                  isCurrent ? "animate-bounce" : ""
-                } ${isOpen ? `bg-gradient-to-br ${style.icon}` : "bg-slate-300/60"}`}
-              >
-                {isOpen ? s.icon : "🔒"}
-              </div>
-
-              {/* اسم المرحلة — أكبر */}
-              <span
-                className={`text-center text-sm font-extrabold leading-tight sm:text-base ${
-                  isOpen ? "text-slate-800" : "text-slate-400"
+                className={`relative flex h-14 w-14 flex-shrink-0 items-center justify-center rounded-[1.15rem] border-2 border-white/85 text-3xl shadow-[0_7px_16px_rgba(15,23,42,0.12)] transition-transform duration-300 sm:h-16 sm:w-16 ${
+                  isCurrent ? "scale-105 animate-pulse" : ""
+                } ${
+                  isOpen
+                    ? `bg-gradient-to-br ${style.icon}`
+                    : "bg-slate-300/80 grayscale"
                 }`}
               >
-                {loc(s.title)}
-                {isDone && <span className="ms-0.5 text-emerald-500">✅</span>}
-              </span>
+                <span className="drop-shadow-sm">
+                  {isOpen ? s.icon : "🔒"}
+                </span>
 
-              {/* شريط تقدم — فقط للمراحل الرقمية غير المكتملة */}
+                {isCurrent && (
+                  <span
+                    className="absolute -right-2 -top-2 rounded-full border-2 border-white bg-white px-1.5 py-0.5 text-[9px] font-black shadow-sm"
+                    style={{ color: style.accent }}
+                  >
+                    الآن
+                  </span>
+                )}
+              </div>
+
+              {/* اسم المرحلة */}
+              <div className="flex min-h-9 items-center justify-center">
+                <span
+                  className={`px-1 text-center text-sm font-black leading-snug sm:text-base ${
+                    isOpen ? "text-slate-800" : "text-slate-400"
+                  }`}
+                >
+                  {loc(s.title)}
+
+                  {isDone && (
+                    <span className="ms-1.5 inline-block align-middle text-base text-emerald-600 sm:text-lg">
+                      ✓
+                    </span>
+                  )}
+                </span>
+              </div>
+
+              {/* التقدم */}
               {s.range && isOpen && !isDone && total > 0 && (
-                <div className="w-full px-0.5">
-                  <div className="mb-0.5 text-center text-[9px] font-bold text-slate-500">
-                    {fmt(got, p.eastern)}/{fmt(total, p.eastern)}
+                <div className="mt-1 w-full px-0.5">
+                  <div className="mb-1.5 flex items-center justify-between px-0.5 text-[10px] font-black text-slate-500 sm:text-[11px]">
+                    <span>الإنجاز</span>
+
+                    <span className="rounded-lg border border-white/80 bg-white/75 px-1.5 py-0.5 text-slate-600 shadow-sm">
+                      {fmt(got, p.eastern)} / {fmt(total, p.eastern)}
+                    </span>
                   </div>
-                  <div className="h-1 w-full overflow-hidden rounded-full bg-white/50">
+
+                  <div className="h-2.5 w-full overflow-hidden rounded-full border border-white/80 bg-white/65 p-[2px] shadow-inner">
                     <div
-                      className="h-1 rounded-full bg-emerald-400 transition-all duration-500"
-                      style={{ width: `${Math.round((got / total) * 100)}%` }}
+                      className="h-full rounded-full bg-gradient-to-r from-emerald-400 to-teal-500 shadow-sm transition-all duration-700"
+                      style={{
+                        width: `${Math.round((got / total) * 100)}%`,
+                      }}
                     />
                   </div>
+                </div>
+              )}
+
+              {/* مكتملة */}
+              {isDone && (
+                <div className="rounded-full border border-emerald-200/80 bg-emerald-50/80 px-3 py-1 text-[10px] font-black text-emerald-700 shadow-sm sm:text-xs">
+                  🎉 اكتملت المرحلة
+                </div>
+              )}
+
+              {/* مقفلة */}
+              {!isOpen && (
+                <div className="rounded-full border border-slate-200/80 bg-white/70 px-2.5 py-1 text-[9px] font-bold text-slate-400 shadow-sm sm:text-[10px]">
+                  🔒 أكمل السابقة أولًا
                 </div>
               )}
             </div>
           );
 
-          /* كلاس المربع — border-2 لجعل الأبيض ظاهراً، rounded-2xl لحواف ناعمة
-             min-h لتقليل الارتفاع (بدلاً من aspect-square) */
           const tileClass =
-            "relative block min-h-[92px] w-full overflow-hidden rounded-3xl border-2 text-center transition-all duration-200 sm:min-h-[160px] " +
+            "relative block min-h-[148px] w-full overflow-hidden rounded-[1.6rem] text-center transition-all duration-300 sm:min-h-[178px] " +
             (isOpen
-              ? "cursor-pointer hover:-translate-y-1 hover:shadow-2xl active:scale-95"
-              : "cursor-not-allowed opacity-55");
+              ? "cursor-pointer hover:-translate-y-1.5 hover:scale-[1.015] hover:shadow-2xl active:scale-[0.99]"
+              : "cursor-not-allowed opacity-75");
 
-          /* شريط لوني في أعلى المربع */
           const topBar = (
             <div
-              className="absolute inset-x-0 top-0 h-1.5"
+              className="absolute inset-x-0 top-0 h-1.5 rounded-t-[1.6rem]"
               style={{
-                background: isOpen ? style.accent : "rgba(148,163,184,0.35)",
+                background: isOpen
+                  ? style.accent
+                  : "rgba(148,163,184,0.35)",
               }}
             />
           );
@@ -136,12 +193,19 @@ export function NumbersMapPage() {
           return (
             <li key={s.id} className="list-none">
               {isOpen ? (
-                <Link to={href} className={tileClass} style={tileStyle}>
+                <Link
+                  to={href}
+                  className={tileClass}
+                  style={tileStyle}
+                >
                   {topBar}
                   {inner}
                 </Link>
               ) : (
-                <div className={tileClass} style={tileStyle}>
+                <div
+                  className={tileClass}
+                  style={tileStyle}
+                >
                   {topBar}
                   {inner}
                 </div>

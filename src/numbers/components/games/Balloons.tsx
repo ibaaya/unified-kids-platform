@@ -6,7 +6,7 @@ import { uniq, useStar, r, TRY } from "./shared";
 const COLORS = ["#ff5d8f", "#ffd93d", "#4cc9f0", "#6bcf7f", "#9b8cff", "#ff9f43"];
 export default function Balloons({ onDone }: { onDone: () => void }) {
   const { p, star } = useStar(); const [round, setRound] = useState(0); const [nums, setNums] = useState<number[]>([]); const [t, setT] = useState(1); const [msg, setMsg] = useState(""); const [popped, setPopped] = useState<number | null>(null); const [settled, setSettled] = useState(false); const busy = useRef(false);
-  const say = (x: number) => speak(`فَرْقِعِ الْبَالُونَ رَقْم ${NAMES[x]}`, p.sound);
+  const say = (x: number) => speak(`فَرْقِعِ الْبَالُونَ رَقْمَ ${NAMES[x]}`, p.sound);
   useEffect(() => { busy.current = false; setSettled(false); const n = uniq(6); const target = n[r(0, 5)]; setNums(n); setT(target); setPopped(null); say(target); }, [round]);
   const popSound = () => {
     if (!p.sound) return;
@@ -26,7 +26,7 @@ export default function Balloons({ onDone }: { onDone: () => void }) {
   };
   const tap = (n: number) => { if (busy.current || settled) return; stopSpeaking(); if (n !== t) { setMsg(TRY); return; } busy.current = true; popSound(); setPopped(n); setMsg("أَحْسَنْتَ! ⭐"); setSettled(true); star(); };
   const next = () => { if (round + 1 >= p.questionCount) onDone(); else setRound((value) => value + 1); };
-  return (<div className="numbers-card numbers-game-card text-center"><h2 className="text-2xl font-extrabold">فَرْقِعِ الْبَالُونَ رَقْم {fmt(t, p.eastern)} <button aria-label="اسْتَمِع" onClick={() => say(t)}>🔊</button></h2>
+  return (<div className="numbers-card numbers-game-card text-center"><h2 className="text-2xl font-extrabold">فَرْقِعِ الْبَالُونَ رَقْمَ {fmt(t, p.eastern)} <button aria-label="اسْتَمِع" onClick={() => say(t)}>🔊</button></h2>
     <div className="numbers-balloon-area mt-4 grid grid-cols-2 gap-x-5 gap-y-8 sm:grid-cols-3">{nums.map((n, i) => <div key={n} className="flex justify-center"><button type="button" disabled={settled} onClick={() => tap(n)} aria-label={String(n)} className="numbers-balloon disabled:cursor-default" style={{ background: COLORS[i % COLORS.length], opacity: popped === n ? .45 : 1, transform: popped === n ? 'scale(.85)' : undefined }}><span className="numbers-balloon-label">{fmt(n, p.eastern)}</span></button></div>)}</div>
     <p className="mt-3 min-h-8 text-xl font-extrabold">السؤال {fmt(round + 1, p.eastern)} / {fmt(p.questionCount, p.eastern)} · {msg}</p>
     {settled && <button type="button" className="btn numbers-action-button mx-auto mt-3 bg-emerald-500 text-white" onClick={next}>{round + 1 >= p.questionCount ? "إنهاء اللعبة" : "السؤال التالي ←"}</button>}</div>);

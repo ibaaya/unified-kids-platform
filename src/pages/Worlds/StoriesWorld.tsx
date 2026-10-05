@@ -23,9 +23,17 @@ export const StoriesWorld: React.FC = () => {
   const [storyPage, setStoryPage] = useState(0);
 
   const stories = storiesData as unknown as Story[];
+  const activeStoryPage = selectedStory?.pages[currentPageIndex];
   const activeQuestionText = selectedStory?.comprehensionQuestions?.[0]?.question ?? '';
+  useAutoReadQuestion(
+    activeStoryPage?.text ?? '',
+    Boolean(selectedStory && activeStoryPage && !showQuestion),
+    `${selectedStory?.id ?? 'story-picker'}:${showQuestion ? 'question' : currentPageIndex}`,
+    400,
+    undefined,
+    activeStoryPage ? `story-page:${selectedStory?.id}:page:${currentPageIndex + 1}` : undefined,
+  );
   useAutoReadQuestion(activeQuestionText, Boolean(selectedStory && showQuestion && (child?.settings?.autoReadQuestions ?? true)), selectedStory?.id ?? 'story-picker', 400);
-
   const handleOpenStory = (story: Story) => {
     setSelectedStory(story);
     setCurrentPageIndex(0);
