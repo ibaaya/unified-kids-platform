@@ -129,9 +129,9 @@ function processRecording(samples: Float32Array, sampleRate: number): { blob: Bl
   }
 }
 
-export function VoiceStudio({ section = 'arabic' }: { section?: 'arabic' | 'english' | 'numbers' }) {
+export function VoiceStudio({ section = 'arabic' }: { section?: 'arabic' | 'english' | 'numbers' | 'discover' }) {
   const navigate = useNavigate()
-  const parentDashboardPath = section === 'english' ? '/parent/english' : section === 'numbers' ? '/parent/numbers' : '/parent/arabic'
+  const parentDashboardPath = section === 'english' ? '/parent/english' : section === 'numbers' ? '/parent?section=numbers' : section === 'discover' ? '/parent?section=discover' : '/parent/arabic'
   const [items, setItems] = useState<VoiceRecordingItem[]>([])
   const [selectedId, setSelectedId] = useState('')
   const [filter, setFilter] = useState<Filter>('all')
@@ -500,7 +500,7 @@ export function VoiceStudio({ section = 'arabic' }: { section?: 'arabic' | 'engl
         <header className="flex flex-wrap items-center justify-between gap-3 mb-6">
           <div>
             <p className="text-sm font-bold text-[var(--color-sky)]">منطقة الإدارة • غير ظاهرة للطفل</p>
-            <h1 className="font-display text-3xl font-extrabold mt-1">🎙️ {section === 'english' ? 'English Voice Studio' : section === 'numbers' ? 'استوديو الأرقام' : 'استوديو التسجيل الصوتي'}</h1>
+            <h1 className="font-display text-3xl font-extrabold mt-1">🎙️ {section === 'english' ? 'English Voice Studio' : section === 'numbers' ? 'استوديو الأرقام' : section === 'discover' ? 'استوديو اكتشف ما حولك' : 'استوديو التسجيل الصوتي'}</h1>
             <p className="text-[var(--color-ink-soft)] mt-1">
               التسجيل من محتوى المشروع نفسه • MP3 • Trim Silence • Normalize Volume • حفظ مباشر
             </p>

@@ -56,6 +56,7 @@ import { EnglishBackground } from '../english/components/EnglishBackground'
 import { DiscoverHome } from '../discover/pages/DiscoverHome'
 import { WorldPage } from '../discover/pages/WorldPage'
 import { DiscoverFinalTest } from '../discover/pages/DiscoverFinalTest'
+import DiscoverVoiceStudio from '../discover/pages/DiscoverVoiceStudio'
 
 // Numbers module
 import { NumbersHome } from '../numbers/pages/NumbersHome'
@@ -68,6 +69,7 @@ import { NumbersGameDetailPage } from '../numbers/pages/GameDetailPage'
 import { NumberLinePage } from '../numbers/pages/NumberLinePage'
 import { NumbersParentPage } from '../numbers/pages/NumbersParentPage'
 import { NumbersChallengePage } from '../numbers/pages/ChallengePage'
+import NumbersVoiceStudio from '../numbers/pages/NumbersVoiceStudio'
 
 export function AppRoutes() {
   return (
@@ -147,10 +149,12 @@ export function AppRoutes() {
       <Route path="/numbers/games/:id" element={<NumbersGameDetailPage />} />
       <Route path="/numbers/numberline" element={<NumberLinePage />} />
       <Route path="/numbers/challenge/:id" element={<NumbersChallengePage />} />
+      {STUDIO_ENABLED && <Route path="/numbers/voice-studio" element={<ProtectedParentRoute><NumbersVoiceStudio /></ProtectedParentRoute>} />}
       <Route path="/numbers/parent" element={<NumbersParentPage />} />
 
       {/* ==================== DISCOVER MODULE (/discover) ==================== */}
       <Route path="/discover" element={<DiscoverHome />} />
+      {STUDIO_ENABLED && <Route path="/discover/voice-studio" element={<ProtectedParentRoute><DiscoverVoiceStudio /></ProtectedParentRoute>} />}
       <Route path="/discover/test" element={<DiscoverFinalTest />} />
       <Route path="/discover/:worldId" element={<WorldPage />} />
     </Routes>

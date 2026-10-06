@@ -2,13 +2,14 @@ import { useMemo, useState, type ReactNode } from 'react'
 import { Card } from '../components/ui/Card'
 import { Button } from '../components/ui/Button'
 import { HomeButton } from '../components/ui/HomeButton'
+import { hasUnlockedParentSession, unlockParentSession } from './parentSession'
 
 /**
  * حماية بسيطة تمنع الطفل من الدخول للوحة ولي الأمر بالخطأ:
  * سؤال حسابي بسيط لا يستطيع طفل عمر 6-7 سنوات حله بسهولة عشوائيًا.
  */
 export function ProtectedParentRoute({ children }: { children: ReactNode }) {
-  const [unlocked, setUnlocked] = useState(false)
+  const [unlocked, setUnlocked] = useState(hasUnlockedParentSession)
   const [answer, setAnswer] = useState('')
   const [error, setError] = useState(false)
 
@@ -22,6 +23,7 @@ export function ProtectedParentRoute({ children }: { children: ReactNode }) {
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
     if (Number(answer) === a * b) {
+      unlockParentSession()
       setUnlocked(true)
     } else {
       setError(true)

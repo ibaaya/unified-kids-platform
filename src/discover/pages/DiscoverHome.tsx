@@ -252,7 +252,7 @@ export function DiscoverHome() {
                 {
                   value: `${completedWorldsCount} / ${DISCOVER_WORLDS.length}`,
                   label: 'عالم مكتمل',
-                  color: '#7baaf7',
+                  color: '#5392f6',
                   icon: '🌐',
                 },
               ].map(({ value, label, color, icon }) => (

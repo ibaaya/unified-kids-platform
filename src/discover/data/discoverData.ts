@@ -94,14 +94,14 @@ export const DISCOVER_WORLDS: DiscoverWorld[] = [
     items: [
       { id: 'red',    nameAr: 'أَحْمَرُ',   nameEn: 'Red',    emoji: '🔴', color: '#ef4444' },
       { id: 'blue',   nameAr: 'أَزْرَقُ',   nameEn: 'Blue',   emoji: '🔵', color: '#3b82f6' },
-      { id: 'yellow', nameAr: 'أَصْفَرُ',   nameEn: 'Yellow', emoji: '🟡', color: '#eab308' },
+      { id: 'yellow', nameAr: 'أَصْفَرُ',   nameEn: 'Yellow', emoji: '🟡', color: '#f7f306' },
       { id: 'green',  nameAr: 'أَخْضَرُ',   nameEn: 'Green',  emoji: '🟢', color: '#22c55e' },
       { id: 'orange', nameAr: 'بُرْتُقَالِيٌّ', nameEn: 'Orange', emoji: '🟠', color: '#f97316' },
       { id: 'purple', nameAr: 'بَنَفْسَجِيٌّ', nameEn: 'Purple', emoji: '🟣', color: '#a855f7' },
       { id: 'pink',   nameAr: 'وَرْدِيٌّ',   nameEn: 'Pink',   emoji: '🌸', color: '#ec4899' },
-      { id: 'black',  nameAr: 'أَسْوَدُ',   nameEn: 'Black',  emoji: '⚫', color: '#1f2937' },
-      { id: 'white',  nameAr: 'أَبْيَضُ',   nameEn: 'White',  emoji: '⚪', color: '#f9fafb' },
-      { id: 'brown',  nameAr: 'بُنِّيٌّ',   nameEn: 'Brown',  emoji: '🟤', color: '#92400e' },
+      { id: 'black',  nameAr: 'أَسْوَدُ',   nameEn: 'Black',  emoji: '⚫', color: '#000000' },
+      { id: 'white',  nameAr: 'أَبْيَضُ',   nameEn: 'White',  emoji: '⚪', color: '#ffffff' },
+      { id: 'brown',  nameAr: 'بُنِّيٌّ',   nameEn: 'Brown',  emoji: '🟤', color: '#903a04' },
 
       { id: 'gray', nameAr: 'رَمَادِيٌّ', nameEn: 'Gray', emoji: '🩶' },
       { id: 'turquoise', nameAr: 'فِيرُوزِيٌّ', nameEn: 'Turquoise', emoji: '🩵' },

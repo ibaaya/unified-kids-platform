@@ -5,6 +5,7 @@
  * - إعدادات الصوت
  */
 import { Link } from 'react-router-dom'
+import { STUDIO_ENABLED } from '../../config/features'
 import { DISCOVER_WORLDS } from '../data/discoverData'
 import {
   loadDiscoverProgress,
@@ -36,6 +37,21 @@ export function DiscoverParentSettings() {
           </h1>
           <p className="text-sm text-gray-500 mt-1">تتبع تقدم الطفل في رحلة الاكتشاف</p>
         </header>
+
+        {STUDIO_ENABLED && (
+          <section className="mb-5 rounded-3xl border-2 border-emerald-100 bg-white/85 p-4 shadow-lg">
+            <h2 className="mb-2 text-lg font-extrabold text-emerald-900">🎙️ استوديو تسجيل اكتشف ما حولك</h2>
+            <p className="mb-3 text-sm text-gray-600">
+              سجّل أسماء العوالم والأشياء والأسئلة العربية، واحفظها لتُستخدم بدل النطق الآلي.
+            </p>
+            <Link
+              to="/discover/voice-studio"
+              className="inline-flex items-center rounded-2xl bg-emerald-600 px-4 py-2 text-sm font-bold text-white shadow transition hover:scale-105"
+            >
+              🎙️ فتح استوديو الاكتشاف
+            </Link>
+          </section>
+        )}
 
         {/* إحصائيات إجمالية */}
         <section className="mb-5 rounded-3xl border-2 border-white/70 bg-white/80 p-4 shadow-lg">

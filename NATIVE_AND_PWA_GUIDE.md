@@ -21,7 +21,7 @@
 | `index.html` | معدّل | `viewport-fit=cover`، وسوم PWA وiOS، وإزالة Google Fonts |
 | `src/main.tsx` | معدّل | استيراد الخطوط المدمجة وتشغيل `initPlatform()` |
 | `src/engine/recordedAudioManager.ts` | معدّل | الإنتاج يقرأ `audio-manifest.json` المضمّن، والتطوير كما كان |
-| `src/app/routes.tsx` | معدّل | مسارا الاستوديو العربي والإنجليزي للتطوير فقط |
+| `src/app/routes.tsx` | معدّل | مسارات استوديوهات العربية والإنجليزية والاكتشاف للتطوير فقط |
 | `src/numbers/pages/NumbersParentPage.tsx` | معدّل | زر استوديو الأرقام للتطوير فقط |
 | `src/config/features.ts` | جديد | `STUDIO_ENABLED` مفعّل في وضع التطوير فقط |
 | `src/platform/initPlatform.ts` | جديد | يميّز تطبيق/PWA/موقع، ويسجّل Service Worker للويب فقط |
@@ -52,6 +52,7 @@ npm install
 3. **الخطوط:** صارت مدمجة (`@fontsource`) بدل Google Fonts، فتعمل بدون إنترنت ولا ترسل طلبات لطرف ثالث (يناسب سياسات تطبيقات الأطفال).
 4. **Service Worker:** يعمل في الموقع المنشور فقط، لا في وضع التطوير ولا داخل التطبيق.
 5. **تخزين دائم:** يُطلب `navigator.storage.persist()` في الويب لتقليل احتمال مسح تقدّم الطفل.
+6. **جلسة ولي الأمر:** بعد اجتياز سؤال التحقق، تحفظ حالة الدخول في `sessionStorage` للتبويب الحالي، وتشترك فيها بوابة الأرقام واللوحات الأخرى. استوديو الأرقام له مسار مستقل `/numbers/voice-studio` ليظل مفتوحًا عند تحديث Vite للصفحة؛ وتنتهي الجلسة عند إغلاق التبويب.
 
 ---
 

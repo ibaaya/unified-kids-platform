@@ -8,8 +8,8 @@
  * - الخيارات محددة لكل سؤال حتى لا تعتمد جودة الاختبار على العشوائية.
  * - لإضافة سؤال: أضف كائناً جديداً إلى المستوى المناسب، مع id فريد.
  */
-import type { DiscoverItem } from './discoverData'
-import { DISCOVER_WORLDS } from './discoverData'
+import type { DiscoverItem } from './discoverData.ts'
+import { DISCOVER_WORLDS } from './discoverData.ts'
 
 export type DiscoverTestLevel = 'easy' | 'medium' | 'hard'
 

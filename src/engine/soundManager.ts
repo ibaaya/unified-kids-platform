@@ -71,7 +71,7 @@ export function speakArabic(text: string, options: SpeakOptions = {}, audioId?: 
   if (!text.trim()) return false
 
   // التسجيلات التي اعتمدها Voice Studio لها الأولوية على صوت المتصفح.
-  if (playRecordedAudio(audioId, options.onEnd, options.onError)) {
+  if (playRecordedAudio(audioId ?? text, options.onEnd, options.onError)) {
     speakRequestId += 1
     if (pendingSpeakTimer !== null && typeof window !== 'undefined') {
       window.clearTimeout(pendingSpeakTimer)

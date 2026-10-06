@@ -6,7 +6,6 @@
  * - فتح جميع المسارات أو حتى مرحلة معينة
  * - زر العودة لمغامرة الأرقام في الأعلى
  */
-import { useState } from "react";
 import { Link } from "react-router-dom";
 import type { CSSProperties } from "react";
 import { BADGES, STAGES } from "../data/content";
@@ -14,7 +13,6 @@ import { useProgress } from "../lib/progress";
 import { fmt, loc } from "../lib/arabic";
 import PinGate from "../components/PinGate";
 import NumbersControls from "../components/NumbersControls";
-import NumbersVoiceStudio from "./NumbersVoiceStudio";
 import { STUDIO_ENABLED } from "../../config/features";
 import "../numbers.css";
 
@@ -40,22 +38,6 @@ const grade = (ok: number, total: number) => {
 
 export function NumbersParentPage() {
   const [p, up] = useProgress();
-  const [showVoiceStudio, setShowVoiceStudio] = useState(false);
-
-  // عرض استوديو التسجيل إذا طلبه ولي الأمر
-  if (showVoiceStudio) {
-    return (
-      <div className="relative min-h-screen">
-        <button
-          onClick={() => setShowVoiceStudio(false)}
-          className="fixed top-4 right-4 z-[70] flex items-center gap-2 rounded-2xl border-2 border-white/80 bg-violet-600/90 px-3 py-2 text-sm font-bold text-white shadow-lg backdrop-blur-sm transition hover:scale-105"
-        >
-          ← العودة للإعدادات
-        </button>
-        <NumbersVoiceStudio />
-      </div>
-    );
-  }
 
   const completedActivities = p.completed.filter(
     (id) => id.startsWith("practice:") || id.startsWith("game:")
@@ -306,13 +288,12 @@ export function NumbersParentPage() {
               <p className="mb-3 text-sm text-violet-600">
                 سجّل أصواتك الخاصة للأرقام والأسئلة لتحل محل الصوت الآلي للمتصفح.
               </p>
-              <button
-                type="button"
-                onClick={() => setShowVoiceStudio(true)}
+              <Link
+                to="/numbers/voice-studio"
                 className="flex items-center gap-2 rounded-2xl bg-violet-600 px-5 py-2.5 text-sm font-extrabold text-white shadow-md transition hover:scale-105 hover:bg-violet-700"
               >
                 🎙️ فتح الاستوديو
-              </button>
+              </Link>
             </div>
             )}
 

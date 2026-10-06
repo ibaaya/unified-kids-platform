@@ -6,6 +6,8 @@ import fs from 'node:fs'
 import path from 'node:path'
 import crypto from 'node:crypto'
 import { voicePromptAudioId } from './src/utils/voicePromptIds.js'
+import { DISCOVER_WORLDS } from './src/discover/data/discoverData.ts'
+import { DISCOVER_QUIZ_QUESTIONS } from './src/discover/data/discoverQuizData.ts'
 
 const ARABIC_DIACRITICS = /[\u064B-\u065F\u0670\u06D6-\u06ED]/g
 const ARABIC_LETTER_MAP: Record<string, string> = {
@@ -371,6 +373,27 @@ function voiceStudioPlugin(): Plugin {
           addProjectItem({ id, type: 'prompt', group: 'numbers', groupLabel: 'الأرقام والأسئلة', text: entry.text, filename, relativePath: `/audio/numbers/prompts/${filename}`, sourceId: id, order: index + 1, contentHash: contentHash([id, entry.text]), meta: { section: 'numbers', contentId: entry.id } })
         })
 
+        const addDiscoverItem = (id: string, group: string, groupLabel: string, text: string, order: number, meta: Record<string, string | number> = {}) => {
+          const filename = uniqueFilename(`discover_${safeName(id)}.mp3`, usedNames)
+          addProjectItem({ id, type: 'prompt', group, groupLabel, text, filename, relativePath: `/audio/discover/${group}/${filename}`, sourceId: id, order, contentHash: contentHash([id, text]), meta: { section: 'discover', ...meta } })
+        }
+        let discoverOrder = 0
+        DISCOVER_WORLDS.forEach((world) => {
+          addDiscoverItem(`discover:world:${world.id}:title`, 'worlds', 'أسماء العوالم', world.titleAr, ++discoverOrder, { worldId: world.id, kind: 'title' })
+          addDiscoverItem(`discover:world:${world.id}:welcome`, 'worlds', 'أسماء العوالم', `مَرْحَبًا بِكَ فِي ${world.titleAr}`, ++discoverOrder, { worldId: world.id, kind: 'welcome' })
+          world.items.forEach((entry) => {
+            addDiscoverItem(`discover:item:${world.id}:${entry.id}`, 'items', 'أسماء الأشياء', entry.nameAr, ++discoverOrder, { worldId: world.id, itemId: entry.id })
+            addDiscoverItem(`discover:prompt:choose:${world.id}:${entry.id}`, 'prompts', 'التعليمات والتشجيع', `اخْتَرْ ${entry.nameAr}`, ++discoverOrder, { worldId: world.id, itemId: entry.id, kind: 'choose' })
+            addDiscoverItem(`discover:prompt:where:${world.id}:${entry.id}`, 'prompts', 'التعليمات والتشجيع', `أَيْنَ ${entry.nameAr}؟`, ++discoverOrder, { worldId: world.id, itemId: entry.id, kind: 'where' })
+          })
+        })
+        for (const phrase of ['مَا هَذَا؟', 'أَحْسَنْتَ!', 'رَائِع!', 'مُمْتَاز!', 'صَحِيح!', 'حَاوِلْ مَرَّةً أُخْرَى!']) {
+          addDiscoverItem(`discover:phrase:${discoverOrder}`, 'prompts', 'التعليمات والتشجيع', phrase, ++discoverOrder, { kind: 'phrase' })
+        }
+        DISCOVER_QUIZ_QUESTIONS.forEach((question, index) => {
+          addDiscoverItem(`discover:quiz:${question.id}`, 'quiz', 'أسئلة الاختبار', question.prompt, index + 1, { worldId: question.worldId, level: question.level, questionId: question.id })
+        })
+
         return items.map((item) => {
           const saved = manifest[item.id]
           const expectedFile = path.resolve(projectRoot, 'public', item.relativePath.replace(/^\//, ''))
@@ -456,7 +479,7 @@ function voiceStudioPlugin(): Plugin {
             // المسار لا يأتي من المتصفح كمسار حر؛ نأخذ المسار المولّد من محتوى المشروع نفسه.
             // هذا يمنع أخطاء 400 الناتجة عن اختلاف اسم الملف، ويضمن الحفظ داخل public/audio فقط.
             const relativeAudio = currentItem.relativePath.replace(/^\/+/, '')
-            if (!/^audio\/(?:arabic|english|numbers)\/[a-z-]+\/[a-z0-9_-]+\.mp3$/i.test(relativeAudio)) {
+            if (!/^audio\/(?:arabic|english|numbers|discover)\/[a-z-]+\/[a-z0-9_-]+\.mp3$/i.test(relativeAudio)) {
               throw new Error(`مسار MP3 غير صالح للعنصر: ${relativeAudio}`)
             }
 
