@@ -528,9 +528,14 @@ export function VoiceStudio({ section = 'arabic' }: { section?: 'arabic' | 'engl
           ? { ...item, status: 'approved', filename: progress.entry.filename, relativePath: progress.entry.relativePath, source: 'edge-tts', voice: progress.entry.voice, textHash: progress.entry.textHash }
           : item))
         if (progress.error) setError(`تعذر توليد «${items.find((item) => item.id === progress.itemId)?.text ?? progress.itemId}»: ${progress.error}`)
-        else setMessage(`تم توليد الصوت واعتماده تلقائيًا: ${progress.completed} من ${progress.total}.`)
+        else {
+          const remaining = progress.total - progress.completed
+          setMessage(`تم توليد الصوت واعتماده تلقائيًا: ${progress.completed} من ${progress.total} • المتبقي ${remaining}.`)
+        }
       }, () => !stopGenerationRef.current, onlyItemId)
-      await refresh()
+      // لا نعيد بناء القائمة كاملة بعد الدفعة؛ حدّثناها عبر onProgress.
+      // تحديث خفيف بدون شاشة تحميل يكفي لمزامنة أي عناصر تغيّرت.
+      void refresh(false, false)
       const firstFailure = result.results.find((item) => !item.ok)
       if (firstFailure?.error) {
         setError(`تعذر توليد «${items.find((item) => item.id === firstFailure.itemId)?.text ?? firstFailure.itemId}»: ${firstFailure.error} (تمت متابعة بقية العناصر)`)

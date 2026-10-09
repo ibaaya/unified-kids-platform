@@ -1189,10 +1189,10 @@
   },
   {
     "id": "word_س_start",
-    "text": "سَمَكٌ",
+    "text": "سُلَمٌ",
     "letterId": "س",
     "position": "start",
-    "imageEmoji": "🐟",
+    "imageEmoji": "🪜",
     "soundId": "word_س_start",
     "difficulty": 1,
     "relatedLetterIds": [

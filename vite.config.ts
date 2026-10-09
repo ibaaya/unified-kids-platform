@@ -57,7 +57,6 @@ function readJson<T>(file: string): T {
   return JSON.parse(fs.readFileSync(file, 'utf8')) as T
 }
 
-
 function contentHash(parts: unknown[]): string {
   return crypto.createHash('sha256').update(JSON.stringify(parts)).digest('hex')
 }
@@ -70,18 +69,58 @@ function voiceStudioPlugin(): Plugin {
       const dataDir = path.join(projectRoot, 'src', 'data')
       const manifestPath = path.join(dataDir, 'audio-manifest.json')
       const activeGenerationItems = new Set<string>()
-      let buildCache: { items: any[]; at: number } | null = null
       const cacheTtlMs = 2000
+      const cacheTtlActiveMs = 10000
+
+      // ---- Build cache (with source-watcher invalidation) ----
+      let buildCache: { items: any[]; at: number } | null = null
       const invalidateBuildCache = () => { buildCache = null }
       const sourceRoot = path.resolve(projectRoot, 'src') + path.sep
       const invalidateOnSourceChange = (file: string) => {
         const absolute = path.isAbsolute(file) ? path.resolve(file) : path.resolve(projectRoot, file)
         if (absolute.startsWith(sourceRoot) && absolute !== path.resolve(manifestPath)) invalidateBuildCache()
-      }
+        if (absolute.includes('audio-manifest.json.tmp-')) return
+        } 
+      
       server.watcher.on('change', invalidateOnSourceChange)
       server.watcher.on('add', invalidateOnSourceChange)
       server.watcher.on('unlink', invalidateOnSourceChange)
 
+      // ---- Manifest in-memory + serialized write queue (prevents race conditions) ----
+      let manifestMemory: Record<string, any> | null = null
+      let manifestWriteQueue: Promise<void> = Promise.resolve()
+      const readManifest = (): Record<string, any> => {
+        if (manifestMemory) return manifestMemory
+        manifestMemory = fs.existsSync(manifestPath) ? readJson<Record<string, any>>(manifestPath) : {}
+        return manifestMemory
+      }
+      const writeManifestQueued = (mutator: (manifest: Record<string, any>) => void): Promise<void> => {
+        manifestWriteQueue = manifestWriteQueue.then(async () => {
+          const manifest = readManifest()
+          mutator(manifest)
+          const serialized = `${JSON.stringify(manifest, null, 2)}\n`
+          // على Windows، rename قد يفشل بـ EPERM/EBUSY إذا كان الملف مقفلاً
+          // من Vite watcher أو antivirus. الكتابة المباشرة مع retry أكثر موثوقية.
+          let lastError: unknown
+          for (let attempt = 0; attempt < 5; attempt += 1) {
+            try {
+              fs.writeFileSync(manifestPath, serialized, 'utf8')
+              return
+            } catch (error) {
+              lastError = error
+              const code = (error as NodeJS.ErrnoException)?.code
+              if (code !== 'EPERM' && code !== 'EBUSY' && code !== 'EACCES') throw error
+              await new Promise((resolve) => setTimeout(resolve, 100 * (attempt + 1)))
+            }
+          }
+          throw lastError
+        }).catch((error) => {
+          console.error('[voice-studio] manifest write failed', error)
+        })
+        return manifestWriteQueue
+      }
+
+      // ---- Build items (cached scan of all sources) ----
       const buildItemsUncached = () => {
         type Item = {
           id: string
@@ -312,7 +351,7 @@ function voiceStudioPlugin(): Plugin {
           })
         })
 
-// Keep all language/subject recordings grouped under their own public/audio directory.
+        // Keep all language/subject recordings grouped under their own public/audio directory.
         items.forEach((item) => {
           item.meta = { ...item.meta, section: 'arabic' }
           item.relativePath = item.relativePath.replace(/^\/audio\//, '/audio/arabic/')
@@ -485,13 +524,14 @@ function voiceStudioPlugin(): Plugin {
       }
 
       const buildItems = () => {
+        const ttl = activeGenerationItems.size > 0 ? cacheTtlActiveMs : cacheTtlMs
         let baseItems: any[]
-        if (buildCache && Date.now() - buildCache.at < cacheTtlMs) baseItems = buildCache.items
+        if (buildCache && Date.now() - buildCache.at < ttl) baseItems = buildCache.items
         else {
           baseItems = buildItemsUncached()
           buildCache = { items: baseItems, at: Date.now() }
         }
-        const manifest = fs.existsSync(manifestPath) ? readJson<Record<string, any>>(manifestPath) : {}
+        const manifest = readManifest()
         return baseItems.map((item) => {
           const saved = manifest[item.id]
           const expectedFile = path.resolve(projectRoot, 'public', item.relativePath.replace(/^\//, ''))
@@ -508,6 +548,7 @@ function voiceStudioPlugin(): Plugin {
         })
       }
 
+      // ---- GET /__voice-studio/items ----
       server.middlewares.use('/__voice-studio/items', (_req, res) => {
         try {
           res.setHeader('Content-Type', 'application/json; charset=utf-8')
@@ -518,6 +559,7 @@ function voiceStudioPlugin(): Plugin {
         }
       })
 
+      // ---- GET /__voice-studio/manifest ----
       server.middlewares.use('/__voice-studio/manifest', (req, res) => {
         if (req.method !== 'GET') {
           res.statusCode = 405
@@ -525,7 +567,7 @@ function voiceStudioPlugin(): Plugin {
           return
         }
         try {
-          const manifest = fs.existsSync(manifestPath) ? readJson<Record<string, any>>(manifestPath) : {}
+          const manifest = readManifest()
           res.statusCode = 200
           res.setHeader('Content-Type', 'application/json; charset=utf-8')
           res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate')
@@ -537,6 +579,8 @@ function voiceStudioPlugin(): Plugin {
         }
       })
 
+      // ---- POST /__voice-studio/generate-batch ----
+      // Supports both { itemId } (legacy single) and { itemIds: string[] } (new batch).
       server.middlewares.use('/__voice-studio/generate-batch', (req, res) => {
         if (req.method !== 'POST') {
           res.statusCode = 405
@@ -545,28 +589,54 @@ function voiceStudioPlugin(): Plugin {
         }
         let body = ''
         req.setEncoding('utf8')
-        req.on('data', (chunk) => { body += chunk; if (body.length > 1024 * 1024) req.destroy() })
+        req.on('data', (chunk) => { body += chunk; if (body.length > 4 * 1024 * 1024) req.destroy() })
         req.on('end', async () => {
-          let lockedItemId = ''
+          const lockedItemIds: string[] = []
           try {
-            const payload = JSON.parse(body) as { section?: string; voice?: string; itemId?: string }
+            const payload = JSON.parse(body) as { section?: string; voice?: string; itemId?: string; itemIds?: string[] }
             const supportedSections = ['arabic', 'english', 'numbers', 'discover', 'islamic', 'skills']
             if (!payload.section || !supportedSections.includes(payload.section)) throw new Error('القسم المحدد غير مدعوم للتوليد الآلي.')
-            if (!payload.itemId) throw new Error('يلزم تحديد عنصر واحد لكل طلب توليد.')
-            const voice = String(payload.voice || (payload.section === 'english' ? 'en-US-AnaNeural' : 'ar-SA-ZariyahNeural'))
-            if (!/^[a-z]{2,3}-[A-Z]{2,3}-[A-Za-z]+Neural$/.test(voice)) throw new Error('اسم صوت Edge-TTS غير صالح.')
-            if (activeGenerationItems.has(payload.itemId)) throw new Error('هذا العنصر قيد التوليد بالفعل.')
-            activeGenerationItems.add(payload.itemId)
-            lockedItemId = payload.itemId
 
-            const candidates = buildItems().filter((item) => item.id === payload.itemId && item.meta?.section === payload.section && item.text.trim() && item.status !== 'approved')
+            const requestedIds: string[] = Array.isArray(payload.itemIds) && payload.itemIds.length
+              ? payload.itemIds.filter((id): id is string => typeof id === 'string' && id.length > 0)
+              : payload.itemId ? [payload.itemId] : []
+            if (requestedIds.length === 0) throw new Error('يلزم تحديد عنصر واحد على الأقل للتوليد.')
+            if (requestedIds.length > 32) throw new Error('الحد الأقصى 32 عنصراً في الدفعة الواحدة.')
+
+            const voice = String(payload.voice || (payload.section === 'english' ? 'en-US-AnaNeural' : 'ar-SA-ZariyahNeural'))
+            const ALLOWED_VOICES = new Set([
+              'ar-SA-ZariyahNeural', 'ar-SA-HamedNeural', 'ar-EG-ShakirNeural', 'ar-EG-SalmaNeural',
+              'en-US-AnaNeural', 'en-US-AriaNeural', 'en-GB-SoniaNeural', 'en-GB-RyanNeural',
+            ])
+            if (!ALLOWED_VOICES.has(voice)) throw new Error('اسم صوت Edge-TTS غير مسموح.')
+
+            const uniqueIds = [...new Set(requestedIds)]
+            const lockable = uniqueIds.filter((id) => !activeGenerationItems.has(id))
+            for (const id of lockable) activeGenerationItems.add(id)
+            lockedItemIds.push(...lockable)
+            invalidateBuildCache()
+
+            const currentItems = buildItems()
+            const itemById = new Map(currentItems.map((item) => [item.id, item]))
+            const candidates = lockable
+              .map((id) => itemById.get(id))
+              .filter((item): item is NonNullable<typeof item> => Boolean(item && item.meta?.section === payload.section && item.text.trim() && item.status !== 'approved'))
+
             const results: Array<{ itemId: string; ok: boolean; error?: string; entry?: Record<string, any> }> = []
             const python = process.env.EDGE_TTS_PYTHON || process.env.PYTHON_EXECUTABLE || (process.platform === 'win32' ? 'py' : 'python3')
 
-            for (let index = 0; index < candidates.length; index += 1) {
-              const item = candidates[index]
+            type Job = {
+              item: typeof candidates[number]
+              textHash: string
+              relativeAudio: string
+              target: string
+              textFile: string
+              outputFile: string
+            }
+            const jobs: Job[] = []
+            const publicRoot = path.resolve(projectRoot, 'public')
+            for (const item of candidates) {
               const textHash = crypto.createHash('sha256').update(item.text, 'utf8').digest('hex')
-              // Audio URLs use POSIX separators even when Vite runs on Windows.
               const itemDir = path.posix.dirname(item.relativePath.replace(/^\/+/, ''))
               const field = safeName(item.type || 'content')
               const contentId = safeName(String(item.meta?.contentId || item.sourceId || item.id))
@@ -577,14 +647,16 @@ function voiceStudioPlugin(): Plugin {
                 continue
               }
               const target = path.resolve(projectRoot, 'public', relativeAudio)
-              const publicRoot = path.resolve(projectRoot, 'public')
               if (!target.startsWith(publicRoot + path.sep)) {
                 results.push({ itemId: item.id, ok: false, error: 'مسار الحفظ خارج مجلد الصوت.' })
                 continue
               }
               const tempBase = path.join(os.tmpdir(), `voice-studio-${crypto.randomUUID()}`)
-              const textFile = `${tempBase}.txt`
-              const outputFile = `${tempBase}.mp3`
+              jobs.push({ item, textHash, relativeAudio, target, textFile: `${tempBase}.txt`, outputFile: `${tempBase}.mp3` })
+            }
+
+            const generateOne = async (job: Job): Promise<{ ok: boolean; error?: string; entry?: Record<string, any> }> => {
+              const { item, textHash, relativeAudio, target, textFile, outputFile } = job
               try {
                 fs.writeFileSync(textFile, item.text, 'utf8')
                 let lastGenerationError: unknown
@@ -606,7 +678,7 @@ function voiceStudioPlugin(): Plugin {
                       }
                       child.stderr.setEncoding('utf8')
                       child.stderr.on('data', (chunk: string) => { stderr = (stderr + chunk).slice(-4000) })
-                      const timeout = setTimeout(() => { child.kill(); finish(new Error('انتهت مهلة توليد الصوت.')) }, 120000)
+                      const timeout = setTimeout(() => { child.kill(); finish(new Error('انتهت مهلة توليد الصوت.')) }, 30000)
                       child.on('error', (error) => finish(new Error(`تعذر تشغيل Python/edge-tts (${error.message}). ثبّت حزمة edge-tts في بيئة Python المستخدمة أو عيّن EDGE_TTS_PYTHON.`)))
                       child.on('close', (code) => code === 0 ? finish() : finish(new Error(stderr.trim() || `انتهى Edge-TTS برمز ${code}.`)))
                     })
@@ -619,48 +691,88 @@ function voiceStudioPlugin(): Plugin {
                 }
                 if (lastGenerationError) throw lastGenerationError
                 const audio = fs.readFileSync(outputFile)
-                if (audio.length < 128 || audio.toString('ascii', 0, 3) !== 'ID3' && !(audio[0] === 0xff && (audio[1] & 0xe0) === 0xe0)) throw new Error('الناتج ليس ملف MP3 صالحًا.')
+                if (audio.length < 128 || audio.toString('ascii', 0, 3) !== 'ID3' && !(audio[0] === 0xff && (audio[1] & 0xe0) === 0xe0)) throw new Error('الناتج ليس ملف MP3 صالحاً.')
                 fs.mkdirSync(path.dirname(target), { recursive: true })
                 const staged = `${target}.tmp-${crypto.randomUUID()}`
                 fs.writeFileSync(staged, audio)
                 fs.renameSync(staged, target)
                 const entry = {
                   itemId: item.id, sourceId: item.sourceId, type: item.type, text: item.text,
-                  filename, relativePath: `/${relativeAudio}`, status: 'approved', updatedAt: new Date().toISOString(),
+                  filename: path.basename(relativeAudio), relativePath: `/${relativeAudio}`, status: 'approved', updatedAt: new Date().toISOString(),
                   contentHash: item.contentHash, textHash, source: 'edge-tts', voice,
                 }
-                const latestManifest = fs.existsSync(manifestPath) ? readJson<Record<string, any>>(manifestPath) : {}
-                latestManifest[item.id] = entry
-                fs.writeFileSync(manifestPath, `${JSON.stringify(latestManifest, null, 2)}\n`, 'utf8')
-                    results.push({ itemId: item.id, ok: true, entry })
+                return { ok: true, entry }
               } catch (error) {
-                results.push({ itemId: item.id, ok: false, error: error instanceof Error ? error.message : String(error) })
+                return { ok: false, error: error instanceof Error ? error.message : String(error) }
               } finally {
                 for (const temp of [textFile, outputFile]) if (fs.existsSync(temp)) fs.unlinkSync(temp)
               }
             }
+
+            //const concurrency = Math.min(4, jobs.length)
+            const concurrency = Math.min(8, jobs.length)
+            const queue = [...jobs]
+            const settled: Array<{ ok: boolean; error?: string; entry?: Record<string, any> }> = []
+            const runWorker = async () => {
+              while (queue.length) {
+                const job = queue.shift()
+                if (!job) return
+                settled.push(await generateOne(job))
+              }
+            }
+            await Promise.all(Array.from({ length: concurrency }, () => runWorker()))
+
+            const okEntries: Record<string, any>[] = []
+            for (let i = 0; i < jobs.length; i += 1) {
+              const job = jobs[i]
+              const outcome = settled[i]
+              if (outcome?.ok && outcome.entry) {
+                results.push({ itemId: job.item.id, ok: true, entry: outcome.entry })
+                okEntries.push(outcome.entry)
+              } else {
+                results.push({ itemId: job.item.id, ok: false, error: outcome?.error || 'فشل غير معروف' })
+              }
+            }
+            if (okEntries.length) {
+              await writeManifestQueued((manifest) => {
+                for (const entry of okEntries) manifest[entry.itemId] = entry
+              })
+            }
+
+            for (const id of uniqueIds) {
+              if (!results.some((r) => r.itemId === id) && !candidates.some((c) => c.id === id)) {
+                results.push({ itemId: id, ok: false, error: 'العنصر غير مؤهل للتوليد (معتمد مسبقاً أو غير موجود في القسم).' })
+              }
+            }
+
+            invalidateBuildCache()
             res.setHeader('Content-Type', 'application/json; charset=utf-8')
-            res.end(JSON.stringify({ generated: results.filter((result) => result.ok).length, failed: results.filter((result) => !result.ok).length, results }))
+            res.end(JSON.stringify({
+              generated: results.filter((r) => r.ok).length,
+              failed: results.filter((r) => !r.ok).length,
+              results,
+            }))
           } catch (error) {
             res.statusCode = 400
             res.setHeader('Content-Type', 'application/json; charset=utf-8')
             res.end(JSON.stringify({ error: error instanceof Error ? error.message : String(error) }))
           } finally {
-            if (lockedItemId) activeGenerationItems.delete(lockedItemId)
+            for (const id of lockedItemIds) activeGenerationItems.delete(id)
           }
         })
       })
 
+      // ---- POST /__voice-studio/approve-generated ----
       server.middlewares.use('/__voice-studio/approve-generated', (req, res) => {
         if (req.method !== 'POST') { res.statusCode = 405; res.end('Method Not Allowed'); return }
         let body = ''
         req.setEncoding('utf8')
         req.on('data', (chunk) => { body += chunk; if (body.length > 1024 * 1024) req.destroy() })
-        req.on('end', () => {
+        req.on('end', async () => {
           try {
             const { section } = JSON.parse(body) as { section?: string }
             if (!section || !['arabic', 'english', 'numbers', 'discover', 'islamic', 'skills'].includes(section)) throw new Error('القسم المحدد غير مدعوم.')
-            const manifest = fs.existsSync(manifestPath) ? readJson<Record<string, any>>(manifestPath) : {}
+            const manifest = readManifest()
             const currentItems = new Map(buildItems().map((item) => [item.id, item]))
             const approved: Record<string, any>[] = []
             for (const [itemId, entry] of Object.entries(manifest)) {
@@ -674,7 +786,12 @@ function voiceStudioPlugin(): Plugin {
               manifest[itemId] = entry
               approved.push(entry)
             }
-            if (approved.length) fs.writeFileSync(manifestPath, `${JSON.stringify(manifest, null, 2)}\n`, 'utf8')
+            if (approved.length) {
+              const snapshot = JSON.parse(JSON.stringify(manifest))
+              await writeManifestQueued((target) => {
+                for (const [k, v] of Object.entries(snapshot)) target[k] = v
+              })
+            }
             res.setHeader('Content-Type', 'application/json; charset=utf-8')
             res.end(JSON.stringify({ approved }))
           } catch (error) {
@@ -685,15 +802,16 @@ function voiceStudioPlugin(): Plugin {
         })
       })
 
+      // ---- POST /__voice-studio/approve ----
       server.middlewares.use('/__voice-studio/approve', (req, res) => {
         if (req.method !== 'POST') { res.statusCode = 405; res.end('Method Not Allowed'); return }
         let body = ''
         req.setEncoding('utf8')
         req.on('data', (chunk) => { body += chunk; if (body.length > 1024 * 1024) req.destroy() })
-        req.on('end', () => {
+        req.on('end', async () => {
           try {
             const { itemId } = JSON.parse(body) as { itemId: string }
-            const manifest = fs.existsSync(manifestPath) ? readJson<Record<string, any>>(manifestPath) : {}
+            const manifest = readManifest()
             const entry = manifest[itemId]
             const current = buildItems().find((item) => item.id === itemId)
             if (!entry || entry.status !== 'generated' || !current || entry.contentHash !== current.contentHash) throw new Error('لا يمكن اعتماد هذا التسجيل؛ أعد التوليد أو حدّث القائمة.')
@@ -703,7 +821,10 @@ function voiceStudioPlugin(): Plugin {
             entry.status = 'approved'
             entry.updatedAt = new Date().toISOString()
             manifest[itemId] = entry
-            fs.writeFileSync(manifestPath, `${JSON.stringify(manifest, null, 2)}\n`, 'utf8')
+            const snapshot = JSON.parse(JSON.stringify(manifest))
+            await writeManifestQueued((target2) => {
+              for (const [k, v] of Object.entries(snapshot)) target2[k] = v
+            })
             res.setHeader('Content-Type', 'application/json; charset=utf-8')
             res.end(JSON.stringify({ entry }))
           } catch (error) {
@@ -714,6 +835,7 @@ function voiceStudioPlugin(): Plugin {
         })
       })
 
+      // ---- POST /__voice-studio/save ----
       server.middlewares.use('/__voice-studio/save', (req, res) => {
         if (req.method !== 'POST') {
           res.statusCode = 405
@@ -727,7 +849,7 @@ function voiceStudioPlugin(): Plugin {
           body += chunk
           if (body.length > 100 * 1024 * 1024) req.destroy()
         })
-        req.on('end', () => {
+        req.on('end', async () => {
           try {
             const payload = JSON.parse(body) as {
               itemId: string
@@ -751,8 +873,6 @@ function voiceStudioPlugin(): Plugin {
               throw new Error('تم تغيير المحتوى منذ فتح الاستوديو. اضغط «تحديث» ثم سجّل الصوت الجديد.')
             }
 
-            // المسار لا يأتي من المتصفح كمسار حر؛ نأخذ المسار المولّد من محتوى المشروع نفسه.
-            // هذا يمنع أخطاء 400 الناتجة عن اختلاف اسم الملف، ويضمن الحفظ داخل public/audio فقط.
             const relativeAudio = currentItem.relativePath.replace(/^\/+/, '')
             if (!/^audio\/(?:arabic|english|numbers|discover|islamic|skills)\/[a-z0-9_-]+\/[a-z0-9_-]+\.mp3$/i.test(relativeAudio)) {
               throw new Error(`مسار MP3 غير صالح للعنصر: ${relativeAudio}`)
@@ -762,9 +882,7 @@ function voiceStudioPlugin(): Plugin {
             const publicRoot = path.resolve(projectRoot, 'public')
             if (!target.startsWith(publicRoot + path.sep)) throw new Error('مسار غير مسموح.')
 
-            const currentManifest = fs.existsSync(manifestPath)
-              ? readJson<Record<string, any>>(manifestPath)
-              : {}
+            const currentManifest = readManifest()
             const oldEntry = currentManifest[payload.itemId]
             if (oldEntry?.relativePath && oldEntry.relativePath !== `/${relativeAudio}`) {
               const oldFile = path.resolve(projectRoot, 'public', String(oldEntry.relativePath).replace(/^\/+/, ''))
@@ -781,11 +899,7 @@ function voiceStudioPlugin(): Plugin {
               throw new Error('تعذر التحقق من حفظ ملف MP3 داخل المشروع.')
             }
 
-            const manifest = fs.existsSync(manifestPath)
-              ? readJson<Record<string, any>>(manifestPath)
-              : {}
-
-            manifest[payload.itemId] = {
+            const entry = {
               itemId: payload.itemId,
               sourceId: currentItem.sourceId,
               type: currentItem.type,
@@ -807,14 +921,13 @@ function voiceStudioPlugin(): Plugin {
                 normalizeDb: -1,
               },
             }
-
-            fs.writeFileSync(manifestPath, `${JSON.stringify(manifest, null, 2)}\n`, 'utf8')
+            await writeManifestQueued((manifest) => { manifest[payload.itemId] = entry })
 
             res.setHeader('Content-Type', 'application/json; charset=utf-8')
             res.end(JSON.stringify({
               localSave: true,
               item: buildItems().find((item) => item.id === payload.itemId),
-              entry: manifest[payload.itemId],
+              entry,
               savedBytes: audioBuffer.length,
             }))
           } catch (error) {
@@ -825,12 +938,13 @@ function voiceStudioPlugin(): Plugin {
         })
       })
 
+      // ---- POST /__voice-studio/delete-section ----
       server.middlewares.use('/__voice-studio/delete-section', (req, res) => {
         if (req.method !== 'POST') { res.statusCode = 405; res.end('Method Not Allowed'); return }
         let body = ''
         req.setEncoding('utf8')
         req.on('data', (chunk) => { body += chunk; if (body.length > 1024 * 1024) req.destroy() })
-        req.on('end', () => {
+        req.on('end', async () => {
           try {
             const { section, confirmed } = JSON.parse(body) as { section?: string; confirmed?: boolean }
             const supportedSections = ['arabic', 'english', 'numbers', 'discover', 'islamic', 'skills']
@@ -860,7 +974,7 @@ function voiceStudioPlugin(): Plugin {
             }
             removeMp3Files(audioRoot)
 
-            const manifest = fs.existsSync(manifestPath) ? readJson<Record<string, any>>(manifestPath) : {}
+            const manifest = readManifest()
             const sectionItemIds = new Set(sectionItems.map((item) => item.id))
             let removedEntries = 0
             const removedItemIds: string[] = []
@@ -872,7 +986,11 @@ function voiceStudioPlugin(): Plugin {
                 removedItemIds.push(itemId)
               }
             }
-            fs.writeFileSync(manifestPath, `${JSON.stringify(manifest, null, 2)}\n`, 'utf8')
+            const snapshot = JSON.parse(JSON.stringify(manifest))
+            await writeManifestQueued((target) => {
+              for (const key of Object.keys(target)) delete target[key]
+              for (const [k, v] of Object.entries(snapshot)) target[k] = v
+            })
             res.setHeader('Content-Type', 'application/json; charset=utf-8')
             res.end(JSON.stringify({ section, deletedFiles, removedEntries, removedItemIds, localSave: true }))
           } catch (error) {
@@ -883,6 +1001,7 @@ function voiceStudioPlugin(): Plugin {
         })
       })
 
+      // ---- POST /__voice-studio/delete ----
       server.middlewares.use('/__voice-studio/delete', (req, res) => {
         if (req.method !== 'POST') {
           res.statusCode = 405
@@ -893,12 +1012,12 @@ function voiceStudioPlugin(): Plugin {
         let body = ''
         req.setEncoding('utf8')
         req.on('data', (chunk) => { body += chunk })
-        req.on('end', () => {
+        req.on('end', async () => {
           try {
             const payload = JSON.parse(body) as { itemId: string }
             if (!payload.itemId) throw new Error('لم يتم تحديد التسجيل.')
 
-            const manifest = fs.existsSync(manifestPath) ? readJson<Record<string, any>>(manifestPath) : {}
+            const manifest = readManifest()
             const entry = manifest[payload.itemId]
             const currentItem = buildItems().find((item) => item.id === payload.itemId)
             if (!entry && !currentItem) throw new Error('العنصر المطلوب غير موجود في محتوى المشروع.')
@@ -910,8 +1029,7 @@ function voiceStudioPlugin(): Plugin {
               if (target.startsWith(publicRoot + path.sep) && fs.existsSync(target)) fs.unlinkSync(target)
             }
 
-            delete manifest[payload.itemId]
-            fs.writeFileSync(manifestPath, `${JSON.stringify(manifest, null, 2)}\n`, 'utf8')
+            await writeManifestQueued((m) => { delete m[payload.itemId] })
 
             res.setHeader('Content-Type', 'application/json; charset=utf-8')
             res.end(JSON.stringify({ localSave: true, itemId: payload.itemId }))
@@ -939,9 +1057,8 @@ export default defineConfig(({ mode }) => {
       voiceStudioPlugin(),
       VitePWA({
         disable: isNative,
-        // 'prompt': النسخة الجديدة تُطبَّق عند فتح التطبيق مرة أخرى، فلا تُقاطع الطفل أثناء اللعب
         registerType: 'prompt',
-        injectRegister: false, // التسجيل يتم يدوياً من src/platform/initPlatform.ts
+        injectRegister: false,
         includeAssets: ['apple-touch-icon.png'],
         manifest: {
           name: 'منصة التعلم الموحدة',
@@ -962,7 +1079,6 @@ export default defineConfig(({ mode }) => {
           ],
         },
         workbox: {
-          // نخزّن مسبقاً الكود والخطوط فقط. الصوت والصور الكبيرة تُخزَّن عند أول استخدام.
           globPatterns: ['**/*.{js,css,html,svg,woff2}', 'pwa-*.png', 'apple-touch-icon.png'],
           globIgnores: ['audio/**', 'images/**', 'video/**'],
           maximumFileSizeToCacheInBytes: 4 * 1024 * 1024,
@@ -975,7 +1091,7 @@ export default defineConfig(({ mode }) => {
               handler: 'CacheFirst',
               options: {
                 cacheName: 'kids-audio-v1',
-                rangeRequests: true, // مهم لتشغيل الصوت على Safari/iOS
+                rangeRequests: true,
                 expiration: { maxEntries: 800, maxAgeSeconds: 60 * 60 * 24 * 90 },
                 cacheableResponse: { statuses: [0, 200] },
               },

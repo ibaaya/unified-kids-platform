@@ -134,6 +134,13 @@ export async function approveGeneratedVoices(section: VoiceStudioSection): Promi
   return result.approved
 }
 
+/**
+ * توليد جماعي سريع:
+ *  - يرسل دفعات من 8 عناصر لكل طلب HTTP (بدل عنصر-عنصر).
+ *  - يشغّل حتى 3 طلبات متوازية → 24 عنصراً قيد التوليد في نفس الوقت.
+ *  - كل طلب داخلياً يولّد حتى 8 عناصر بالتوازي عبر edge-tts.
+ *  - الخادم يكتب المانيفست مرة واحدة لكل دفعة (بدل 8 مرات).
+ */
 export async function generateAllBatchWithAI(
   section: VoiceStudioSection,
   voice: string,
@@ -141,42 +148,116 @@ export async function generateAllBatchWithAI(
   shouldContinue: () => boolean,
   onlyItemId?: string,
 ): Promise<VoiceBatchResult> {
+  const allItems = await loadVoiceItems()
   const candidates = onlyItemId
-    ? (await loadVoiceItems()).filter((item) => item.id === onlyItemId && item.meta?.section === section && item.status !== 'approved')
-    : (await loadVoiceItems()).filter((item) => item.meta?.section === section && (item.status === 'missing' || item.status === 'stale'))
-  const result: VoiceBatchResult = { generated: 0, failed: 0, total: candidates.length, stopped: false, results: [] }
+    ? allItems.filter((item) => item.id === onlyItemId && item.meta?.section === section && item.status !== 'approved')
+    : allItems.filter((item) => item.meta?.section === section && (item.status === 'missing' || item.status === 'stale'))
 
-  let nextIndex = 0
+  const result: VoiceBatchResult = {
+    generated: 0,
+    failed: 0,
+    total: candidates.length,
+    stopped: false,
+    results: [],
+  }
+  if (candidates.length === 0) return result
+
+  // حجم الدفعة: 8 عناصر لكل طلب HTTP. مع 3 طلبات متوازية = 24 عنصراً فعلياً.
+  const BATCH_SIZE = 8
+  const batches: VoiceRecordingItem[][] = []
+  for (let i = 0; i < candidates.length; i += BATCH_SIZE) {
+    batches.push(candidates.slice(i, i + BATCH_SIZE))
+  }
+
+  let nextBatch = 0
   let completed = 0
+
   const worker = async () => {
     while (shouldContinue()) {
-      const index = nextIndex++
-      if (index >= candidates.length) return
-      const item = candidates[index]
-      let itemResult: VoiceBatchResult['results'][number]
+      const batchIndex = nextBatch++
+      if (batchIndex >= batches.length) return
+      const batch = batches[batchIndex]
+
       try {
         const response = await fetch('/__voice-studio/generate-batch', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ section, itemId: item.id, voice }),
+          body: JSON.stringify({
+            section,
+            itemIds: batch.map((item) => item.id),
+            voice,
+          }),
         })
-        if (!response.ok) throw new Error(await readError(response) || 'تعذر توليد الملف الصوتي.')
-        const payload = await response.json() as { generated: number; failed: number; results: VoiceBatchResult['results'] }
-        itemResult = payload.results[0] ?? { itemId: item.id, ok: false, error: 'لم يُرجع الخادم نتيجة لهذا العنصر.' }
+
+        if (!response.ok) {
+          const errMsg = await readError(response) || 'تعذر توليد الدفعة.'
+          for (const item of batch) {
+            completed += 1
+            result.failed += 1
+            const itemResult = { itemId: item.id, ok: false, error: errMsg }
+            result.results.push(itemResult)
+            onProgress({
+              completed,
+              total: candidates.length,
+              itemId: item.id,
+              ok: false,
+              error: errMsg,
+            })
+          }
+          continue
+        }
+
+        const payload = await response.json() as {
+          generated: number
+          failed: number
+          results: VoiceBatchResult['results']
+        }
+
+        const byId = new Map(payload.results.map((entry) => [entry.itemId, entry]))
+        for (const item of batch) {
+          const itemResult = byId.get(item.id) ?? {
+            itemId: item.id,
+            ok: false,
+            error: 'لم يُرجع الخادم نتيجة لهذا العنصر.',
+          }
+          completed += 1
+          result.results.push(itemResult)
+          if (itemResult.ok && itemResult.entry) {
+            result.generated += 1
+            setRecordedAudioEntry(itemResult.entry)
+          } else {
+            result.failed += 1
+          }
+          onProgress({
+            completed,
+            total: candidates.length,
+            itemId: item.id,
+            ok: itemResult.ok,
+            entry: itemResult.entry,
+            error: itemResult.error,
+          })
+        }
       } catch (error) {
-        itemResult = { itemId: item.id, ok: false, error: error instanceof Error ? error.message : String(error) }
+        const msg = error instanceof Error ? error.message : String(error)
+        for (const item of batch) {
+          completed += 1
+          result.failed += 1
+          const itemResult = { itemId: item.id, ok: false, error: msg }
+          result.results.push(itemResult)
+          onProgress({
+            completed,
+            total: candidates.length,
+            itemId: item.id,
+            ok: false,
+            error: msg,
+          })
+        }
       }
-      completed += 1
-      result.results.push(itemResult)
-      if (itemResult.ok && itemResult.entry) {
-        result.generated += 1
-        setRecordedAudioEntry(itemResult.entry)
-      } else result.failed += 1
-      onProgress({ completed, total: candidates.length, itemId: item.id, ok: itemResult.ok, entry: itemResult.entry, error: itemResult.error })
     }
   }
 
-  await Promise.all(Array.from({ length: Math.min(4, candidates.length) }, () => worker()))
+  // 3 عمال × 8 عناصر = 24 عنصراً قيد التوليد في وقت واحد. توازن جيد بين السرعة والاستقرار.
+  await Promise.all(Array.from({ length: Math.min(3, batches.length) }, () => worker()))
   result.stopped = completed < candidates.length && !shouldContinue()
   return result
 }
