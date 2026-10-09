@@ -1,5 +1,6 @@
 /** English Sound Manager — تشغيل التسجيلات المعتمدة أولاً ثم الرجوع إلى Web Speech API. */
 import { playRecordedAudio, stopRecordedAudio } from '../../engine/recordedAudioManager'
+import { ENGLISH_ENCOURAGEMENTS } from '../data/voicePrompts'
 
 let cachedVoice: SpeechSynthesisVoice | null = null
 let voicesLoaded = false
@@ -56,12 +57,11 @@ export function speakWord(word: string): void { speakEnglish(word, { rate: 0.78 
 export function speakSentence(sentence: string): void { speakEnglish(sentence, { rate: 0.75 }) }
 export function speakPhonic(phonicText: string): void { speakEnglish(phonicText, { rate: 0.70, pitch: 1.1 }) }
 
-const ENCOURAGEMENTS = ['Excellent!', 'Well done!', 'Amazing!', 'Perfect!', 'Super job!', 'Brilliant!', 'Fantastic!', 'Keep going!', 'You are a star!', 'Wonderful!']
 let lastEncouragementIdx = -1
 export function speakEncouragement(): void {
   let idx
-  do { idx = Math.floor(Math.random() * ENCOURAGEMENTS.length) } while (idx === lastEncouragementIdx)
+  do { idx = Math.floor(Math.random() * ENGLISH_ENCOURAGEMENTS.length) } while (idx === lastEncouragementIdx)
   lastEncouragementIdx = idx
-  speakEnglish(ENCOURAGEMENTS[idx], { rate: 0.9, pitch: 1.15 })
+  speakEnglish(ENGLISH_ENCOURAGEMENTS[idx], { rate: 0.9, pitch: 1.15 })
 }
 export function isEnglishSpeechSupported(): boolean { return typeof window !== 'undefined' && 'speechSynthesis' in window }

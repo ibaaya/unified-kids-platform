@@ -5,9 +5,12 @@ import { VitePWA } from 'vite-plugin-pwa'
 import fs from 'node:fs'
 import path from 'node:path'
 import crypto from 'node:crypto'
+import os from 'node:os'
+import { spawn } from 'node:child_process'
 import { voicePromptAudioId } from './src/utils/voicePromptIds.js'
 import { DISCOVER_WORLDS } from './src/discover/data/discoverData.ts'
 import { DISCOVER_QUIZ_QUESTIONS } from './src/discover/data/discoverQuizData.ts'
+import { ENGLISH_ENCOURAGEMENTS, ENGLISH_FIXED_GAME_SPEECH, ENGLISH_FINAL_QUESTION_VOICE, ENGLISH_LETTER_QUESTION_VOICE } from './src/english/data/voicePrompts.ts'
 
 const ARABIC_DIACRITICS = /[\u064B-\u065F\u0670\u06D6-\u06ED]/g
 const ARABIC_LETTER_MAP: Record<string, string> = {
@@ -66,8 +69,20 @@ function voiceStudioPlugin(): Plugin {
       const projectRoot = server.config.root
       const dataDir = path.join(projectRoot, 'src', 'data')
       const manifestPath = path.join(dataDir, 'audio-manifest.json')
+      const activeGenerationItems = new Set<string>()
+      let buildCache: { items: any[]; at: number } | null = null
+      const cacheTtlMs = 2000
+      const invalidateBuildCache = () => { buildCache = null }
+      const sourceRoot = path.resolve(projectRoot, 'src') + path.sep
+      const invalidateOnSourceChange = (file: string) => {
+        const absolute = path.isAbsolute(file) ? path.resolve(file) : path.resolve(projectRoot, file)
+        if (absolute.startsWith(sourceRoot) && absolute !== path.resolve(manifestPath)) invalidateBuildCache()
+      }
+      server.watcher.on('change', invalidateOnSourceChange)
+      server.watcher.on('add', invalidateOnSourceChange)
+      server.watcher.on('unlink', invalidateOnSourceChange)
 
-      const buildItems = () => {
+      const buildItemsUncached = () => {
         type Item = {
           id: string
           type: string
@@ -89,8 +104,6 @@ function voiceStudioPlugin(): Plugin {
         const sentences = readJson<Array<Record<string, any>>>(path.join(dataDir, 'sentences.json'))
         const stories = readJson<Array<Record<string, any>>>(path.join(dataDir, 'stories.json'))
         const voicePrompts = readJson<{ worlds: Array<Record<string, any>> }>(path.join(dataDir, 'voice-prompts.json'))
-        const manifest = fs.existsSync(manifestPath) ? readJson<Record<string, any>>(manifestPath) : {}
-
         const items: Item[] = []
         const usedNames = new Set<string>()
 
@@ -310,6 +323,22 @@ function voiceStudioPlugin(): Plugin {
         const englishSentences = readJson<Array<Record<string, any>>>(path.join(projectRoot, 'src', 'english', 'data', 'sentences.json'))
         const englishStories = readJson<Array<Record<string, any>>>(path.join(projectRoot, 'src', 'english', 'data', 'stories.json'))
         const addProjectItem = (item: Item) => items.push(item)
+        const gameVoiceItems = new Set<string>()
+        let gameVoiceOrder = 0
+        const addEnglishGameVoice = (stableId: string, group: string, groupLabel: string, text: string) => {
+          const normalizedText = text.trim().replace(/\s+/g, ' ')
+          if (!normalizedText || gameVoiceItems.has(normalizedText)) return
+          gameVoiceItems.add(normalizedText)
+          gameVoiceOrder += 1
+          const id = `english:game-voice:${stableId}`
+          const filename = uniqueFilename(`english_game_${safeName(stableId)}.mp3`, usedNames)
+          addProjectItem({
+            id, type: 'prompt', group, groupLabel, text: normalizedText, filename,
+            relativePath: `/audio/english/games/${filename}`, sourceId: id, order: gameVoiceOrder,
+            contentHash: contentHash([id, normalizedText]),
+            meta: { section: 'english', contentId: stableId, kind: group },
+          })
+        }
 
         englishLetters.forEach((entry, index) => {
           const id = `english:letter:${String(entry.id)}`
@@ -348,6 +377,35 @@ function voiceStudioPlugin(): Plugin {
             addProjectItem({ id, type: 'prompt', group: 'stories', groupLabel: 'القصص', text: String(question.question), filename, relativePath: `/audio/english/stories/${filename}`, sourceId: id, order: storyIndex * 100 + 50 + questionIndex, contentHash: contentHash([id, question.question]), meta: { section: 'english', storyId: String(story.id), question: questionIndex + 1 } })
           })
         })
+
+        // Capture the exact voice strings produced by QuizRunner, including every
+        // data-driven letter/word variant used by Letter World and Final Test.
+        const questionLabel = 'أسئلة الألعاب'
+        const letterRules = ['start', 'middle', 'end', 'contains'] as const
+        englishLetters.forEach((letter) => {
+          letterRules.forEach((kind) => addEnglishGameVoice(`letter-${kind}-${letter.id}`, 'game-questions', questionLabel, ENGLISH_LETTER_QUESTION_VOICE[kind](String(letter.name))))
+        })
+        const countCharacter = (word: string, letter: string) => [...word.toUpperCase()].filter((character) => character === letter.toUpperCase()).length
+        const letterById = new Map(englishLetters.map((letter) => [String(letter.id).toUpperCase(), String(letter.name)]))
+        englishWords.forEach((word) => {
+          const wordId = String(word.id)
+          const wordText = String(word.text)
+          for (const character of [...new Set(wordText.toUpperCase())]) {
+            const letter = englishLetters.find((entry) => String(entry.id).toUpperCase() === character)
+            if (letter && countCharacter(wordText, character) === 1) {
+              addEnglishGameVoice(`where-${letter.id}-${wordId}`, 'game-questions', questionLabel, ENGLISH_LETTER_QUESTION_VOICE.whereIs(String(letter.name), wordText))
+            }
+          }
+          addEnglishGameVoice(`find-picture-${wordId}`, 'game-questions', questionLabel, ENGLISH_FINAL_QUESTION_VOICE.findPicture(wordText))
+          addEnglishGameVoice(`first-letter-${wordId}`, 'game-questions', questionLabel, ENGLISH_FINAL_QUESTION_VOICE.firstLetter(wordText))
+          addEnglishGameVoice(`last-letter-${wordId}`, 'game-questions', questionLabel, ENGLISH_FINAL_QUESTION_VOICE.lastLetter(wordText))
+          for (const character of new Set(wordText.toUpperCase())) {
+            const letterName = letterById.get(character) ?? character
+            addEnglishGameVoice(`count-${wordId}-${character}`, 'game-questions', questionLabel, ENGLISH_FINAL_QUESTION_VOICE.countLetter(letterName, wordText))
+          }
+        })
+        ENGLISH_FIXED_GAME_SPEECH.forEach((prompt) => addEnglishGameVoice(prompt.id, 'game-messages', 'التشجيع والمحاولة وتعليمات اللعبة', prompt.text))
+        ENGLISH_ENCOURAGEMENTS.forEach((text, index) => addEnglishGameVoice(`encouragement-${index + 1}`, 'game-messages', 'التشجيع والمحاولة وتعليمات اللعبة', text))
 
         const numberNames = ['', 'وَاحِد', 'اثْنَان', 'ثَلَاثَة', 'أَرْبَعَة', 'خَمْسَة', 'سِتَّة', 'سَبْعَة', 'ثَمَانِيَة', 'تِسْعَة', 'عَشَرَة', 'أَحَدَ عَشَر', 'اثْنَا عَشَر', 'ثَلَاثَةَ عَشَر', 'أَرْبَعَةَ عَشَر', 'خَمْسَةَ عَشَر', 'سِتَّةَ عَشَر', 'سَبْعَةَ عَشَر', 'ثَمَانِيَةَ عَشَر', 'تِسْعَةَ عَشَر', 'عِشْرُون']
         const numberPrompts: Array<{ id: string; text: string }> = []
@@ -423,16 +481,27 @@ function voiceStudioPlugin(): Plugin {
         addLearningItems('islamic', 'src/islamic/data')
         addLearningItems('skills', 'src/skills/data')
 
-        return items.map((item) => {
+        return items
+      }
+
+      const buildItems = () => {
+        let baseItems: any[]
+        if (buildCache && Date.now() - buildCache.at < cacheTtlMs) baseItems = buildCache.items
+        else {
+          baseItems = buildItemsUncached()
+          buildCache = { items: baseItems, at: Date.now() }
+        }
+        const manifest = fs.existsSync(manifestPath) ? readJson<Record<string, any>>(manifestPath) : {}
+        return baseItems.map((item) => {
           const saved = manifest[item.id]
           const expectedFile = path.resolve(projectRoot, 'public', item.relativePath.replace(/^\//, ''))
           if (saved?.contentHash && saved.contentHash !== item.contentHash) {
             return { ...item, status: 'stale' as const }
           }
-          if (saved?.status === 'approved' && saved.relativePath) {
+          if ((saved?.status === 'approved' || saved?.status === 'generated' || saved?.status === 'pending') && saved.relativePath) {
             const savedFile = path.resolve(projectRoot, 'public', saved.relativePath.replace(/^\//, ''))
             if (savedFile.startsWith(path.resolve(projectRoot, 'public') + path.sep) && fs.existsSync(savedFile)) {
-              return { ...item, status: 'approved' as const, relativePath: saved.relativePath }
+              return { ...item, status: saved.status as 'approved' | 'generated' | 'pending', filename: saved.filename ?? item.filename, relativePath: saved.relativePath, source: saved.source, voice: saved.voice, textHash: saved.textHash }
             }
           }
           return { ...item, status: fs.existsSync(expectedFile) ? 'recorded' as const : 'missing' as const }
@@ -466,6 +535,183 @@ function voiceStudioPlugin(): Plugin {
           res.setHeader('Content-Type', 'application/json; charset=utf-8')
           res.end(JSON.stringify({ error: error instanceof Error ? error.message : String(error) }))
         }
+      })
+
+      server.middlewares.use('/__voice-studio/generate-batch', (req, res) => {
+        if (req.method !== 'POST') {
+          res.statusCode = 405
+          res.end('Method Not Allowed')
+          return
+        }
+        let body = ''
+        req.setEncoding('utf8')
+        req.on('data', (chunk) => { body += chunk; if (body.length > 1024 * 1024) req.destroy() })
+        req.on('end', async () => {
+          let lockedItemId = ''
+          try {
+            const payload = JSON.parse(body) as { section?: string; voice?: string; itemId?: string }
+            const supportedSections = ['arabic', 'english', 'numbers', 'discover', 'islamic', 'skills']
+            if (!payload.section || !supportedSections.includes(payload.section)) throw new Error('القسم المحدد غير مدعوم للتوليد الآلي.')
+            if (!payload.itemId) throw new Error('يلزم تحديد عنصر واحد لكل طلب توليد.')
+            const voice = String(payload.voice || (payload.section === 'english' ? 'en-US-AnaNeural' : 'ar-SA-ZariyahNeural'))
+            if (!/^[a-z]{2,3}-[A-Z]{2,3}-[A-Za-z]+Neural$/.test(voice)) throw new Error('اسم صوت Edge-TTS غير صالح.')
+            if (activeGenerationItems.has(payload.itemId)) throw new Error('هذا العنصر قيد التوليد بالفعل.')
+            activeGenerationItems.add(payload.itemId)
+            lockedItemId = payload.itemId
+
+            const candidates = buildItems().filter((item) => item.id === payload.itemId && item.meta?.section === payload.section && item.text.trim() && item.status !== 'approved')
+            const results: Array<{ itemId: string; ok: boolean; error?: string; entry?: Record<string, any> }> = []
+            const python = process.env.EDGE_TTS_PYTHON || process.env.PYTHON_EXECUTABLE || (process.platform === 'win32' ? 'py' : 'python3')
+
+            for (let index = 0; index < candidates.length; index += 1) {
+              const item = candidates[index]
+              const textHash = crypto.createHash('sha256').update(item.text, 'utf8').digest('hex')
+              // Audio URLs use POSIX separators even when Vite runs on Windows.
+              const itemDir = path.posix.dirname(item.relativePath.replace(/^\/+/, ''))
+              const field = safeName(item.type || 'content')
+              const contentId = safeName(String(item.meta?.contentId || item.sourceId || item.id))
+              const filename = `${contentId}_${field}__${textHash.slice(0, 16)}.mp3`
+              const relativeAudio = `${itemDir}/${filename}`
+              if (!/^audio\/(?:arabic|english|numbers|discover|islamic|skills)\/[a-z0-9_-]+(?:\/[a-z0-9_-]+)*\/[a-z0-9_-]+\.mp3$/i.test(relativeAudio)) {
+                results.push({ itemId: item.id, ok: false, error: `مسار MP3 غير صالح: ${relativeAudio}` })
+                continue
+              }
+              const target = path.resolve(projectRoot, 'public', relativeAudio)
+              const publicRoot = path.resolve(projectRoot, 'public')
+              if (!target.startsWith(publicRoot + path.sep)) {
+                results.push({ itemId: item.id, ok: false, error: 'مسار الحفظ خارج مجلد الصوت.' })
+                continue
+              }
+              const tempBase = path.join(os.tmpdir(), `voice-studio-${crypto.randomUUID()}`)
+              const textFile = `${tempBase}.txt`
+              const outputFile = `${tempBase}.mp3`
+              try {
+                fs.writeFileSync(textFile, item.text, 'utf8')
+                let lastGenerationError: unknown
+                for (let attempt = 0; attempt < 2; attempt += 1) {
+                  try {
+                    await new Promise<void>((resolve, reject) => {
+                      const ttsArgs = ['-m', 'edge_tts', '--voice', voice]
+                      if (voice.startsWith('ar-')) ttsArgs.push('--rate=-10%', '--pitch=+5Hz')
+                      ttsArgs.push('--file', textFile, '--write-media', outputFile)
+                      const child = spawn(python, ttsArgs, { windowsHide: true })
+                      let stderr = ''
+                      let settled = false
+                      const finish = (error?: Error) => {
+                        if (settled) return
+                        settled = true
+                        clearTimeout(timeout)
+                        if (error) reject(error)
+                        else resolve()
+                      }
+                      child.stderr.setEncoding('utf8')
+                      child.stderr.on('data', (chunk: string) => { stderr = (stderr + chunk).slice(-4000) })
+                      const timeout = setTimeout(() => { child.kill(); finish(new Error('انتهت مهلة توليد الصوت.')) }, 120000)
+                      child.on('error', (error) => finish(new Error(`تعذر تشغيل Python/edge-tts (${error.message}). ثبّت حزمة edge-tts في بيئة Python المستخدمة أو عيّن EDGE_TTS_PYTHON.`)))
+                      child.on('close', (code) => code === 0 ? finish() : finish(new Error(stderr.trim() || `انتهى Edge-TTS برمز ${code}.`)))
+                    })
+                    lastGenerationError = undefined
+                    break
+                  } catch (error) {
+                    lastGenerationError = error
+                    if (attempt === 0) await new Promise((resolve) => setTimeout(resolve, 2000))
+                  }
+                }
+                if (lastGenerationError) throw lastGenerationError
+                const audio = fs.readFileSync(outputFile)
+                if (audio.length < 128 || audio.toString('ascii', 0, 3) !== 'ID3' && !(audio[0] === 0xff && (audio[1] & 0xe0) === 0xe0)) throw new Error('الناتج ليس ملف MP3 صالحًا.')
+                fs.mkdirSync(path.dirname(target), { recursive: true })
+                const staged = `${target}.tmp-${crypto.randomUUID()}`
+                fs.writeFileSync(staged, audio)
+                fs.renameSync(staged, target)
+                const entry = {
+                  itemId: item.id, sourceId: item.sourceId, type: item.type, text: item.text,
+                  filename, relativePath: `/${relativeAudio}`, status: 'approved', updatedAt: new Date().toISOString(),
+                  contentHash: item.contentHash, textHash, source: 'edge-tts', voice,
+                }
+                const latestManifest = fs.existsSync(manifestPath) ? readJson<Record<string, any>>(manifestPath) : {}
+                latestManifest[item.id] = entry
+                fs.writeFileSync(manifestPath, `${JSON.stringify(latestManifest, null, 2)}\n`, 'utf8')
+                    results.push({ itemId: item.id, ok: true, entry })
+              } catch (error) {
+                results.push({ itemId: item.id, ok: false, error: error instanceof Error ? error.message : String(error) })
+              } finally {
+                for (const temp of [textFile, outputFile]) if (fs.existsSync(temp)) fs.unlinkSync(temp)
+              }
+            }
+            res.setHeader('Content-Type', 'application/json; charset=utf-8')
+            res.end(JSON.stringify({ generated: results.filter((result) => result.ok).length, failed: results.filter((result) => !result.ok).length, results }))
+          } catch (error) {
+            res.statusCode = 400
+            res.setHeader('Content-Type', 'application/json; charset=utf-8')
+            res.end(JSON.stringify({ error: error instanceof Error ? error.message : String(error) }))
+          } finally {
+            if (lockedItemId) activeGenerationItems.delete(lockedItemId)
+          }
+        })
+      })
+
+      server.middlewares.use('/__voice-studio/approve-generated', (req, res) => {
+        if (req.method !== 'POST') { res.statusCode = 405; res.end('Method Not Allowed'); return }
+        let body = ''
+        req.setEncoding('utf8')
+        req.on('data', (chunk) => { body += chunk; if (body.length > 1024 * 1024) req.destroy() })
+        req.on('end', () => {
+          try {
+            const { section } = JSON.parse(body) as { section?: string }
+            if (!section || !['arabic', 'english', 'numbers', 'discover', 'islamic', 'skills'].includes(section)) throw new Error('القسم المحدد غير مدعوم.')
+            const manifest = fs.existsSync(manifestPath) ? readJson<Record<string, any>>(manifestPath) : {}
+            const currentItems = new Map(buildItems().map((item) => [item.id, item]))
+            const approved: Record<string, any>[] = []
+            for (const [itemId, entry] of Object.entries(manifest)) {
+              const current = currentItems.get(itemId)
+              if (!current || current.meta?.section !== section || entry.status !== 'generated' || entry.contentHash !== current.contentHash || !entry.relativePath) continue
+              const target = path.resolve(projectRoot, 'public', String(entry.relativePath).replace(/^\/+/, ''))
+              const publicRoot = path.resolve(projectRoot, 'public')
+              if (!target.startsWith(publicRoot + path.sep) || !fs.existsSync(target)) continue
+              entry.status = 'approved'
+              entry.updatedAt = new Date().toISOString()
+              manifest[itemId] = entry
+              approved.push(entry)
+            }
+            if (approved.length) fs.writeFileSync(manifestPath, `${JSON.stringify(manifest, null, 2)}\n`, 'utf8')
+            res.setHeader('Content-Type', 'application/json; charset=utf-8')
+            res.end(JSON.stringify({ approved }))
+          } catch (error) {
+            res.statusCode = 400
+            res.setHeader('Content-Type', 'application/json; charset=utf-8')
+            res.end(JSON.stringify({ error: error instanceof Error ? error.message : String(error) }))
+          }
+        })
+      })
+
+      server.middlewares.use('/__voice-studio/approve', (req, res) => {
+        if (req.method !== 'POST') { res.statusCode = 405; res.end('Method Not Allowed'); return }
+        let body = ''
+        req.setEncoding('utf8')
+        req.on('data', (chunk) => { body += chunk; if (body.length > 1024 * 1024) req.destroy() })
+        req.on('end', () => {
+          try {
+            const { itemId } = JSON.parse(body) as { itemId: string }
+            const manifest = fs.existsSync(manifestPath) ? readJson<Record<string, any>>(manifestPath) : {}
+            const entry = manifest[itemId]
+            const current = buildItems().find((item) => item.id === itemId)
+            if (!entry || entry.status !== 'generated' || !current || entry.contentHash !== current.contentHash) throw new Error('لا يمكن اعتماد هذا التسجيل؛ أعد التوليد أو حدّث القائمة.')
+            const target = path.resolve(projectRoot, 'public', String(entry.relativePath).replace(/^\/+/, ''))
+            const publicRoot = path.resolve(projectRoot, 'public')
+            if (!target.startsWith(publicRoot + path.sep) || !fs.existsSync(target)) throw new Error('ملف الصوت المولّد غير موجود في المسار المتوقع.')
+            entry.status = 'approved'
+            entry.updatedAt = new Date().toISOString()
+            manifest[itemId] = entry
+            fs.writeFileSync(manifestPath, `${JSON.stringify(manifest, null, 2)}\n`, 'utf8')
+            res.setHeader('Content-Type', 'application/json; charset=utf-8')
+            res.end(JSON.stringify({ entry }))
+          } catch (error) {
+            res.statusCode = 400
+            res.setHeader('Content-Type', 'application/json; charset=utf-8')
+            res.end(JSON.stringify({ error: error instanceof Error ? error.message : String(error) }))
+          }
+        })
       })
 
       server.middlewares.use('/__voice-studio/save', (req, res) => {
@@ -550,6 +796,8 @@ function voiceStudioPlugin(): Plugin {
               updatedAt: new Date().toISOString(),
               durationMs: payload.durationMs,
               contentHash: payload.contentHash,
+              textHash: crypto.createHash('sha256').update(currentItem.text, 'utf8').digest('hex'),
+              source: 'manual',
               processing: {
                 format: 'mp3',
                 channels: 1,
@@ -571,6 +819,64 @@ function voiceStudioPlugin(): Plugin {
             }))
           } catch (error) {
             res.statusCode = 400
+            res.setHeader('Content-Type', 'application/json; charset=utf-8')
+            res.end(JSON.stringify({ error: error instanceof Error ? error.message : String(error) }))
+          }
+        })
+      })
+
+      server.middlewares.use('/__voice-studio/delete-section', (req, res) => {
+        if (req.method !== 'POST') { res.statusCode = 405; res.end('Method Not Allowed'); return }
+        let body = ''
+        req.setEncoding('utf8')
+        req.on('data', (chunk) => { body += chunk; if (body.length > 1024 * 1024) req.destroy() })
+        req.on('end', () => {
+          try {
+            const { section, confirmed } = JSON.parse(body) as { section?: string; confirmed?: boolean }
+            const supportedSections = ['arabic', 'english', 'numbers', 'discover', 'islamic', 'skills']
+            if (!section || !supportedSections.includes(section)) throw new Error('القسم المحدد غير مدعوم للحذف.')
+            if (confirmed !== true) throw new Error('يلزم تأكيد حذف التسجيلات الصوتية للقسم.')
+            const currentItems = buildItems()
+            const sectionItems = currentItems.filter((item) => item.meta?.section === section)
+            if (sectionItems.some((item) => activeGenerationItems.has(item.id))) {
+              res.statusCode = 409
+              throw new Error('أوقف التوليد وانتظر انتهاء الأصوات الجارية قبل حذف ملفات القسم.')
+            }
+
+            const audioRoot = path.resolve(projectRoot, 'public', 'audio', section)
+            const publicAudioRoot = path.resolve(projectRoot, 'public', 'audio')
+            if (!audioRoot.startsWith(publicAudioRoot + path.sep)) throw new Error('مسار القسم غير صالح.')
+            let deletedFiles = 0
+            const removeMp3Files = (directory: string) => {
+              if (!fs.existsSync(directory)) return
+              for (const entry of fs.readdirSync(directory, { withFileTypes: true })) {
+                const target = path.join(directory, entry.name)
+                if (entry.isDirectory()) removeMp3Files(target)
+                else if (entry.isFile() && path.extname(entry.name).toLowerCase() === '.mp3') {
+                  fs.unlinkSync(target)
+                  deletedFiles += 1
+                }
+              }
+            }
+            removeMp3Files(audioRoot)
+
+            const manifest = fs.existsSync(manifestPath) ? readJson<Record<string, any>>(manifestPath) : {}
+            const sectionItemIds = new Set(sectionItems.map((item) => item.id))
+            let removedEntries = 0
+            const removedItemIds: string[] = []
+            for (const [itemId, entry] of Object.entries(manifest)) {
+              const relativePath = String(entry.relativePath || '').replaceAll('\\', '/').replace(/^\/+/, '')
+              if (sectionItemIds.has(itemId) || relativePath.startsWith(`audio/${section}/`)) {
+                delete manifest[itemId]
+                removedEntries += 1
+                removedItemIds.push(itemId)
+              }
+            }
+            fs.writeFileSync(manifestPath, `${JSON.stringify(manifest, null, 2)}\n`, 'utf8')
+            res.setHeader('Content-Type', 'application/json; charset=utf-8')
+            res.end(JSON.stringify({ section, deletedFiles, removedEntries, removedItemIds, localSave: true }))
+          } catch (error) {
+            if (!res.statusCode || res.statusCode < 400) res.statusCode = 400
             res.setHeader('Content-Type', 'application/json; charset=utf-8')
             res.end(JSON.stringify({ error: error instanceof Error ? error.message : String(error) }))
           }

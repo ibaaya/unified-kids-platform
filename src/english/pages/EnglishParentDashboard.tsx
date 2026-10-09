@@ -132,6 +132,15 @@ export function EnglishParentDashboard() {
     >
       <div className="mx-auto max-w-2xl">
 
+        <nav className="mb-4 flex flex-wrap items-center justify-between gap-2" aria-label="English parent navigation">
+          <Link to="/english" className="rounded-xl border border-blue-200 bg-white/90 px-4 py-2 text-sm font-bold text-blue-800 shadow-sm transition hover:bg-blue-50">
+            ← Return to child English page
+          </Link>
+          <Link to="/parent" className="rounded-xl border border-purple-200 bg-white/90 px-4 py-2 text-sm font-bold text-purple-800 shadow-sm transition hover:bg-purple-50">
+            ⚙️ Return to parent settings
+          </Link>
+        </nav>
+
         {/* Header */}
         <header className="mb-6 rounded-3xl border-2 border-blue-200 bg-white/85 p-4 text-center shadow-xl">
           <div className="absolute top-0 left-0 right-0 h-2 rounded-t-3xl"

@@ -13,6 +13,7 @@
  */
 import lettersData from '../data/letters.json'
 import wordsData from '../data/words.json'
+import { ENGLISH_FINAL_QUESTION_VOICE, ENGLISH_LETTER_QUESTION_VOICE } from '../data/voicePrompts'
 
 // ═══════════════════════════════════════════════════
 // الأنواع
@@ -219,13 +220,6 @@ const QUESTION_TEXT: Record<LetterRuleKind, (L: string) => string> = {
   end: (L) => `Which word ENDS with letter "${L}"?`,
   contains: (L) => `Which word CONTAINS the letter "${L}"?`,
 }
-const QUESTION_VOICE: Record<LetterRuleKind, (n: string) => string> = {
-  start: (n) => `Which word starts with the letter ${n}?`,
-  middle: (n) => `Which word has the letter ${n} in the middle?`,
-  end: (n) => `Which word ends with the letter ${n}?`,
-  contains: (n) => `Which word has the letter ${n} in it?`,
-}
-
 export function makeLetterQuestion(
   letter: EnglishLetter,
   kind: LetterQKind,
@@ -248,7 +242,7 @@ export function makeLetterQuestion(
       key: `whereIs:${L}:${word.text.toLowerCase()}`,
       kind,
       text: `Where is the letter "${L}" in this word?`,
-      voice: `Where is the letter ${letter.name} in the word ${word.text}?`,
+      voice: ENGLISH_LETTER_QUESTION_VOICE.whereIs(letter.name, word.text),
       prompt: {
         emoji: word.imageEmoji,
         word: word.text,
@@ -290,7 +284,7 @@ export function makeLetterQuestion(
     key: `${kind}:${L}:${word.text.toLowerCase()}`,
     kind,
     text: QUESTION_TEXT[kind](L),
-    voice: QUESTION_VOICE[kind](letter.name),
+    voice: ENGLISH_LETTER_QUESTION_VOICE[kind](letter.name),
     prompt: { big: `${letter.uppercase} ${letter.lowercase}` },
     display: 'wordWithPicture',
     options: shuffle([asWordOption(word, true, true), ...dist.map((d) => asWordOption(d, false, true))]),
@@ -462,7 +456,7 @@ function makeFinalQuestion(
     const q: QuizQuestion = {
       key: `pictureIs:${word.text.toLowerCase()}`, kind,
       text: 'This picture is...',
-      voice: 'What is this picture?',
+      voice: ENGLISH_FINAL_QUESTION_VOICE.picture(),
       prompt: { emoji: word.imageEmoji, speak: word.text },
       display: 'textOnly',
       // الصورة تظهر في السؤال فقط — لا تظهر في الخيارات أبداً
@@ -481,7 +475,7 @@ function makeFinalQuestion(
     const q: QuizQuestion = {
       key: `findPicture:${word.text.toLowerCase()}`, kind,
       text: `Which picture is "${word.text}"?`,
-      voice: `Find the picture of ${word.text}`,
+      voice: ENGLISH_FINAL_QUESTION_VOICE.findPicture(word.text),
       prompt: { word: word.text, speak: word.text },
       display: 'pictureOnly',
       options: shuffle([asWordOption(word, true, true), ...dist.map((d) => asWordOption(d, false, true))]),
@@ -500,7 +494,7 @@ function makeFinalQuestion(
     const q: QuizQuestion = {
       key: `${kind}:${word.text.toLowerCase()}`, kind,
       text: `What is the ${kind === 'firstLetter' ? 'FIRST' : 'LAST'} letter of "${word.text}"?`,
-      voice: `What is the ${kind === 'firstLetter' ? 'first' : 'last'} letter of the word ${word.text}?`,
+      voice: kind === 'firstLetter' ? ENGLISH_FINAL_QUESTION_VOICE.firstLetter(word.text) : ENGLISH_FINAL_QUESTION_VOICE.lastLetter(word.text),
       prompt: { emoji: word.imageEmoji, word: word.text, speak: word.text },
       display: 'letter',
       options: opts,
@@ -528,7 +522,7 @@ function makeFinalQuestion(
     const q: QuizQuestion = {
       key: `missingLetter:${word.text.toLowerCase()}:${idx}`, kind,
       text: 'Complete the missing letter',
-      voice: 'Complete the missing letter in the word',
+      voice: ENGLISH_FINAL_QUESTION_VOICE.missingLetter(),
       // الصورة تحدد الكلمة المقصودة فلا يحدث لبس بين كلمات مثل Cat / Hat
       prompt: { emoji: word.imageEmoji, word: displayed },
       display: 'letter',
@@ -547,7 +541,7 @@ function makeFinalQuestion(
     const q: QuizQuestion = {
       key: `spelling:${word.text.toLowerCase()}`, kind,
       text: 'Which is the correct spelling?',
-      voice: 'Which is the correct spelling?',
+      voice: ENGLISH_FINAL_QUESTION_VOICE.spelling(),
       prompt: { emoji: word.imageEmoji, speak: word.text },
       display: 'textOnly',
       options: shuffle([
@@ -575,7 +569,7 @@ function makeFinalQuestion(
     const q: QuizQuestion = {
       key: `countLetter:${word.text.toLowerCase()}:${L}`, kind,
       text: `How many times does the letter "${L}" appear in "${word.text}"?`,
-      voice: `How many times does the letter ${letterOf(L)?.name ?? L} appear in the word ${word.text}?`,
+      voice: ENGLISH_FINAL_QUESTION_VOICE.countLetter(letterOf(L)?.name ?? L, word.text),
       prompt: { emoji: word.imageEmoji, word: word.text, highlight: undefined, speak: word.text },
       display: 'letter',
       options: shuffle([

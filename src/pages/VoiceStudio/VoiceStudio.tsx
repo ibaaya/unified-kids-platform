@@ -2,7 +2,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import * as lamejs from '@breezystack/lamejs'
 import type { VoiceRecordingItem } from '../../types/voiceStudio'
-import { deleteVoiceRecording, loadVoiceItems, saveVoiceRecording } from '../../services/voiceStudioService'
+import { approveGeneratedVoice, approveGeneratedVoices, deleteVoiceRecording, deleteVoiceSectionAudio, generateAllBatchWithAI, loadVoiceItems, saveVoiceRecording } from '../../services/voiceStudioService'
 import { Card } from '../../components/ui/Card'
 import { Button } from '../../components/ui/Button'
 
@@ -20,6 +20,8 @@ const groupLabels: Record<string, string> = {
   'syllables-prompts': 'أسئلة عالم المقاطع',
   'words-prompts': 'أسئلة عالم الكلمات',
   'sentences-prompts': 'أسئلة عالم الجمل',
+  'game-questions': 'أسئلة الألعاب',
+  'game-messages': 'التشجيع والمحاولة وتعليمات اللعبة',
 }
 
 function formatTime(ms: number): string {
@@ -137,6 +139,7 @@ export function VoiceStudio({ section = 'arabic' }: { section?: 'arabic' | 'engl
   const [filter, setFilter] = useState<Filter>('all')
   const [search, setSearch] = useState('')
   const [onlyMissing, setOnlyMissing] = useState(false)
+  const [sortRemainingFirst, setSortRemainingFirst] = useState(true)
   const [autoNext, setAutoNext] = useState(true)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
@@ -148,6 +151,12 @@ export function VoiceStudio({ section = 'arabic' }: { section?: 'arabic' | 'engl
   const [processedDurationMs, setProcessedDurationMs] = useState(0)
   const [saving, setSaving] = useState(false)
   const [deleting, setDeleting] = useState(false)
+  const [deletingSection, setDeletingSection] = useState(false)
+  const [generating, setGenerating] = useState(false)
+  const [generationPaused, setGenerationPaused] = useState(false)
+  const [batchProgress, setBatchProgress] = useState({ completed: 0, total: 0, currentItemId: '' })
+  const [aiVoice, setAiVoice] = useState(section === 'english' ? 'en-US-AnaNeural' : 'ar-SA-ZariyahNeural')
+  const [approving, setApproving] = useState(false)
   const [inputDevices, setInputDevices] = useState<MediaDeviceInfo[]>([])
   const [selectedInputDeviceId, setSelectedInputDeviceId] = useState('')
   const [recordingMimeType, setRecordingMimeType] = useState('')
@@ -160,10 +169,11 @@ export function VoiceStudio({ section = 'arabic' }: { section?: 'arabic' | 'engl
   const previewAudioRef = useRef<HTMLAudioElement | null>(null)
   const startedAtRef = useRef(0)
   const timerRef = useRef<number | null>(null)
+  const stopGenerationRef = useRef(false)
 
-  const refresh = useCallback(async () => {
-    setLoading(true)
-    setError('')
+  const refresh = useCallback(async (showLoader = false, clearError = true) => {
+    if (showLoader) setLoading(true)
+    if (clearError) setError('')
     try {
       const loaded = (await loadVoiceItems()).filter((item) => item.meta?.section === section)
       setItems(loaded)
@@ -179,7 +189,32 @@ export function VoiceStudio({ section = 'arabic' }: { section?: 'arabic' | 'engl
     }
   }, [section])
 
-  useEffect(() => { void refresh() }, [refresh])
+  useEffect(() => {
+    let cancelled = false
+    void (async () => {
+      let approvedCount = 0
+      let approvalError = ''
+      try {
+        approvedCount = (await approveGeneratedVoices(section)).length
+      } catch (e) {
+        approvalError = e instanceof Error ? e.message : 'تعذر اعتماد الملفات المولّدة سابقًا.'
+      }
+      await refresh(true)
+      if (cancelled) return
+      if (approvedCount) setMessage(`تم اعتماد ${approvedCount} ملف صوتي مولّد سابقًا تلقائيًا.`)
+      if (approvalError) setError(approvalError)
+    })()
+    return () => { cancelled = true }
+  }, [refresh, section])
+
+  // Refresh the source-backed inventory while idle so new/edited lesson content
+  // appears in every studio without requiring a Vite restart or page reload.
+  useEffect(() => {
+    const timer = window.setInterval(() => {
+      if (!loading && !generating && !isRecording && !saving && !deleting && !deletingSection && !approving) void refresh(false, false)
+    }, 15000)
+    return () => window.clearInterval(timer)
+  }, [approving, deleting, deletingSection, generating, isRecording, loading, refresh, saving])
 
   const loadInputDevices = useCallback(async () => {
     if (!navigator.mediaDevices?.enumerateDevices) return
@@ -228,13 +263,16 @@ export function VoiceStudio({ section = 'arabic' }: { section?: 'arabic' | 'engl
 
   const filteredItems = useMemo(() => {
     const term = search.trim().toLowerCase()
-    return items.filter((item) => {
+    const filtered = items.filter((item) => {
       if (filter !== 'all' && item.group !== filter) return false
-      if (onlyMissing && item.status !== 'missing' && item.status !== 'stale') return false
+      if (onlyMissing && item.status !== 'missing' && item.status !== 'stale' && item.status !== 'generated' && item.status !== 'pending') return false
       if (!term) return true
       return item.text.includes(search.trim()) || item.filename.toLowerCase().includes(term)
     })
-  }, [filter, items, onlyMissing, search])
+    if (!sortRemainingFirst) return filtered
+    const rank = (status: VoiceRecordingItem['status']) => status === 'missing' || status === 'stale' ? 0 : status === 'pending' || status === 'generated' ? 1 : status === 'recorded' ? 2 : 3
+    return filtered.sort((left, right) => rank(left.status) - rank(right.status) || left.order - right.order)
+  }, [filter, items, onlyMissing, search, sortRemainingFirst])
 
   const current = items.find((item) => item.id === selectedId) ?? filteredItems[0] ?? null
   const currentIndex = current ? filteredItems.findIndex((item) => item.id === current.id) : -1
@@ -243,13 +281,15 @@ export function VoiceStudio({ section = 'arabic' }: { section?: 'arabic' | 'engl
 
   const counts = useMemo(() => {
     const approved = items.filter((item) => item.status === 'approved').length
+    const generated = items.filter((item) => item.status === 'generated').length
+    const aiApproved = items.filter((item) => item.status === 'approved' && item.source === 'edge-tts').length
     const stale = items.filter((item) => item.status === 'stale').length
-    return { total: items.length, approved, stale, missing: items.length - approved }
+    return { total: items.length, approved, generated, aiApproved, stale, missing: items.filter((item) => item.status === 'missing' || item.status === 'stale').length, remaining: items.filter((item) => ['missing', 'stale', 'pending', 'generated'].includes(item.status)).length, ready: approved + generated }
   }, [items])
 
   const groupCounts = useMemo(() => Array.from(new Set(items.map((item) => item.group))).map((key) => {
     const groupItems = items.filter((item) => item.group === key)
-    const done = groupItems.filter((item) => item.status === 'approved').length
+    const done = groupItems.filter((item) => item.status === 'approved' || item.status === 'generated').length
     return { key, label: groupLabels[key] ?? groupItems[0]?.groupLabel ?? key, total: groupItems.length, done }
   }), [items])
 
@@ -423,7 +463,7 @@ export function VoiceStudio({ section = 'arabic' }: { section?: 'arabic' | 'engl
 
   const deleteCurrent = async () => {
     if (!current || deleting || saving || isRecording) return
-    if (current.status !== 'approved' && current.status !== 'recorded' && current.status !== 'stale') return
+    if (current.status !== 'approved' && current.status !== 'recorded' && current.status !== 'generated' && current.status !== 'pending' && current.status !== 'stale') return
 
     const ok = window.confirm(`حذف التسجيل الصوتي لـ «${current.text}»؟\nلن يتم حذف الحرف/الكلمة من محتوى المشروع.`)
     if (!ok) return
@@ -439,6 +479,93 @@ export function VoiceStudio({ section = 'arabic' }: { section?: 'arabic' | 'engl
       setError(e instanceof Error ? e.message : 'تعذر حذف التسجيل.')
     } finally {
       setDeleting(false)
+    }
+  }
+
+  const deleteSectionRecordings = async () => {
+    if (deletingSection || generating || isRecording || saving) return
+    const sectionLabel = section === 'english' ? 'تعلم الإنجليزية' : section === 'numbers' ? 'مغامرة الأرقام' : section === 'discover' ? 'اكتشف ما حولك' : section === 'islamic' ? 'أخلاقي الجميلة' : section === 'skills' ? 'مدينة المهارات' : 'تعلم العربية'
+    const listedAudioCount = items.filter((item) => ['approved', 'generated', 'recorded', 'pending', 'stale'].includes(item.status)).length
+    const confirmed = window.confirm(`تأكيد حذف جميع ملفات MP3 من قسم «${sectionLabel}»؟\nسيُحذف ${listedAudioCount} تسجيلاً معروفًا وأي ملف MP3 آخر داخل مجلد صوت القسم، وستُزال روابطها من المانيفست. لا يمكن التراجع عن الحذف.`)
+    if (!confirmed) return
+    setDeletingSection(true)
+    setError('')
+    try {
+      const result = await deleteVoiceSectionAudio(section)
+      releasePreview()
+      setMessage(`اكتمل حذف ${result.deletedFiles} ملف MP3 وإزالة ${result.removedEntries} سجل من قسم «${sectionLabel}». يمكنك بدء التسجيل من جديد.`)
+      await refresh()
+    } catch (e) {
+      setError(e instanceof Error ? e.message : 'تعذر حذف تسجيلات القسم.')
+    } finally {
+      setDeletingSection(false)
+    }
+  }
+
+  const generateBatch = async (onlyItemId?: string) => {
+    if (generating || isRecording || saving) return
+    const pendingCount = onlyItemId ? 1 : items.filter((item) => item.status === 'missing' || item.status === 'stale').length
+    const oldGeneratedCount = items.filter((item) => item.status === 'generated').length
+    if (!pendingCount && !oldGeneratedCount) { setMessage('لا توجد عناصر بحاجة إلى توليد أو اعتماد.'); return }
+    stopGenerationRef.current = false
+    setGenerationPaused(false)
+    setGenerating(true)
+    setError('')
+    setBatchProgress({ completed: 0, total: pendingCount, currentItemId: '' })
+    setMessage(`سيتم اعتماد الأصوات المولّدة سابقًا تلقائيًا، ثم توليد ${pendingCount} عنصرًا بالتوازي.`)
+    try {
+      const previouslyGenerated = await approveGeneratedVoices(section)
+      if (previouslyGenerated.length) {
+        const approvedById = new Map(previouslyGenerated.map((entry) => [entry.itemId, entry]))
+        setItems((previous) => previous.map((item) => {
+          const entry = approvedById.get(item.id)
+          return entry ? { ...item, status: 'approved', filename: entry.filename, relativePath: entry.relativePath, source: entry.source, voice: entry.voice, textHash: entry.textHash } : item
+        }))
+      }
+      const result = await generateAllBatchWithAI(section, aiVoice, (progress) => {
+        setBatchProgress({ completed: progress.completed, total: progress.total, currentItemId: progress.itemId })
+        setItems((previous) => previous.map((item) => item.id === progress.itemId && progress.ok && progress.entry
+          ? { ...item, status: 'approved', filename: progress.entry.filename, relativePath: progress.entry.relativePath, source: 'edge-tts', voice: progress.entry.voice, textHash: progress.entry.textHash }
+          : item))
+        if (progress.error) setError(`تعذر توليد «${items.find((item) => item.id === progress.itemId)?.text ?? progress.itemId}»: ${progress.error}`)
+        else setMessage(`تم توليد الصوت واعتماده تلقائيًا: ${progress.completed} من ${progress.total}.`)
+      }, () => !stopGenerationRef.current, onlyItemId)
+      await refresh()
+      const firstFailure = result.results.find((item) => !item.ok)
+      if (firstFailure?.error) {
+        setError(`تعذر توليد «${items.find((item) => item.id === firstFailure.itemId)?.text ?? firstFailure.itemId}»: ${firstFailure.error} (تمت متابعة بقية العناصر)`)
+      } else if (result.stopped) {
+        setMessage(`توقفت الدفعة بعد توليد واعتماد ${result.generated} ملفًا. اضغط «استئناف» لمتابعة العناصر المتبقية.`)
+        setGenerationPaused(true)
+      } else {
+        setMessage(`اكتمل التوليد والاعتماد تلقائيًا: ${result.generated} ملفًا جديدًا؛ تعذّر ${result.failed}. واعتمدنا ${previouslyGenerated.length} ملف سابق.`)
+        setGenerationPaused(false)
+      }
+    } catch (e) {
+      setError(e instanceof Error ? e.message : 'تعذر توليد الملفات الصوتية.')
+      setGenerationPaused(true)
+    } finally {
+      setGenerating(false)
+    }
+  }
+
+  const requestGenerationStop = () => {
+    stopGenerationRef.current = true
+    setMessage('سيتم إيقاف الدفعة بعد اكتمال الأصوات الجاري توليدها وحفظها واعتمادها.')
+  }
+
+  const approveCurrent = async () => {
+    if (!current || current.status !== 'generated' || approving) return
+    setApproving(true)
+    setError('')
+    try {
+      await approveGeneratedVoice(current.id)
+      setMessage(`تم اعتماد الصوت وربطه بالمحتوى: ${current.text}`)
+      await refresh()
+    } catch (e) {
+      setError(e instanceof Error ? e.message : 'تعذر اعتماد الملف الصوتي.')
+    } finally {
+      setApproving(false)
     }
   }
 
@@ -488,6 +615,8 @@ export function VoiceStudio({ section = 'arabic' }: { section?: 'arabic' | 'engl
 
   const statusLabel = current?.status === 'approved'
     ? 'مسجل ومعتمد'
+    : current?.status === 'generated'
+      ? 'مولّد • بانتظار المراجعة'
     : current?.status === 'stale'
       ? 'التسجيل القديم غير صالح'
       : current?.status === 'recorded'
@@ -505,7 +634,15 @@ export function VoiceStudio({ section = 'arabic' }: { section?: 'arabic' | 'engl
               التسجيل من محتوى المشروع نفسه • MP3 • Trim Silence • Normalize Volume • حفظ مباشر
             </p>
           </div>
-          <Button variant="ghost" onClick={() => navigate(parentDashboardPath)}>العودة للوحة ولي الأمر</Button>
+          <div className="flex flex-wrap items-center gap-2">
+            {section === 'arabic' && (
+              <>
+                <Button variant="ghost" onClick={() => navigate('/islamic/voice-studio')}>🎙️ استوديو أخلاقي الجميلة • Edge-TTS</Button>
+                <Button variant="ghost" onClick={() => navigate('/skills/voice-studio')}>🎙️ استوديو مدينة المهارات • Edge-TTS</Button>
+              </>
+            )}
+            <Button variant="ghost" onClick={() => navigate(parentDashboardPath)}>العودة للوحة ولي الأمر</Button>
+          </div>
         </header>
 
         {error && <Card className="mb-4 p-4 border-2 border-[var(--color-coral)]/30 bg-[var(--color-coral)]/5">
@@ -517,9 +654,9 @@ export function VoiceStudio({ section = 'arabic' }: { section?: 'arabic' | 'engl
 
         <section className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-5">
           <Stat title="كل العناصر" value={counts.total} />
-          <Stat title="تسجيلات معتمدة" value={counts.approved} />
-          <Stat title="تحتاج تسجيل/تحديث" value={counts.missing} />
-          <Stat title="نسبة الإنجاز" value={`${counts.total ? Math.round((counts.approved / counts.total) * 100) : 0}%`} />
+          <Stat title="مولّدة ومعتمدة آليًا" value={counts.aiApproved} />
+          <Stat title="معتمدة وتعمل بالمنصة" value={counts.approved} />
+          <Stat title="التوليد والاعتماد" value={`${counts.total ? Math.round((counts.ready / counts.total) * 100) : 0}%`} />
         </section>
 
         {counts.stale > 0 && (
@@ -544,7 +681,7 @@ export function VoiceStudio({ section = 'arabic' }: { section?: 'arabic' | 'engl
               ))}
               <label className="flex items-center gap-2 mt-3 pt-3 border-t border-black/10 cursor-pointer">
                 <input type="checkbox" checked={onlyMissing} onChange={(e) => setOnlyMissing(e.target.checked)} />
-                <span>عرض غير المسجل / القديم</span>
+                <span>عرض غير المسجّل أو القديم أو غير المعتمد</span>
               </label>
               <label className="flex items-center gap-2 mt-2 cursor-pointer">
                 <input type="checkbox" checked={autoNext} onChange={(e) => setAutoNext(e.target.checked)} />
@@ -574,8 +711,25 @@ export function VoiceStudio({ section = 'arabic' }: { section?: 'arabic' | 'engl
               <div className="flex flex-wrap gap-3 items-center">
                 <input value={search} onChange={(e) => setSearch(e.target.value)} placeholder="ابحث في الكلمات أو الجمل…" className="flex-1 min-w-[220px] rounded-xl border border-black/10 px-4 py-3 bg-white outline-none focus:border-[var(--color-sky)]" />
                 <span className="text-sm text-[var(--color-ink-soft)]">{filteredItems.length} عنصر</span>
+                <span className="text-sm font-bold text-amber-700">المتبقي: {counts.remaining}</span>
+                <select value={sortRemainingFirst ? 'remaining' : 'source'} onChange={(event) => setSortRemainingFirst(event.target.value === 'remaining')} aria-label="ترتيب المحتوى" className="rounded-xl border border-black/10 bg-white px-3 py-2 text-sm">
+                  <option value="remaining">ترتيب: غير المسجّل أولاً</option>
+                  <option value="source">ترتيب المحتوى الأصلي</option>
+                </select>
                 <Button variant="ghost" onClick={() => void refresh()}>🔄 تحديث المحتوى</Button>
+                <Button variant="ghost" className="text-rose-700 hover:bg-rose-50" disabled={deletingSection || generating || isRecording || saving} onClick={() => void deleteSectionRecordings()}>{deletingSection ? 'جارٍ حذف ملفات القسم…' : '🗑️ حذف جميع تسجيلات القسم'}</Button>
+                <select value={aiVoice} onChange={(event) => setAiVoice(event.target.value)} disabled={generating} aria-label="صوت التوليد الآلي" className="rounded-xl border border-black/10 bg-white px-3 py-2 text-sm">
+                  {section === 'english' ? <option value="en-US-AnaNeural">English • Ana Neural</option> : <>
+                    <option value="ar-SA-ZariyahNeural">زارية • سعودي (أنثى)</option>
+                    <option value="ar-SA-HamedNeural">حامد • سعودي (ذكر)</option>
+                    <option value="ar-EG-ShakirNeural">شاكر • مصري (ذكر)</option>
+                  </>}
+                </select>
+                <Button disabled={generating || isRecording || saving || (counts.missing === 0 && counts.generated === 0)} onClick={() => void generateBatch()}>{generating ? `⏳ توليد واعتماد ${batchProgress.completed}/${batchProgress.total}…` : generationPaused ? '▶️ استئناف التوليد' : counts.missing === 0 && counts.generated > 0 ? '✅ اعتماد التوليدات السابقة' : '✨ توليد الكل بالذكاء الاصطناعي (Edge-TTS)'}</Button>
+                {generating && <Button variant="ghost" onClick={requestGenerationStop}>⏸️ إيقاف بعد الأصوات الجارية</Button>}
+                {batchProgress.total > 0 && <span className="text-sm font-bold text-[var(--color-sky)]">{batchProgress.completed}/{batchProgress.total} • إجمالي القسم: {counts.ready}/{counts.total}</span>}
               </div>
+              {batchProgress.total > 0 && <div className="mt-3 h-2 overflow-hidden rounded-full bg-black/5"><div className="h-full rounded-full bg-[var(--color-sky)] transition-all" style={{ width: `${batchProgress.total ? (batchProgress.completed / batchProgress.total) * 100 : 0}%` }} /></div>}
             </Card>
 
             <div className="grid xl:grid-cols-[minmax(0,1fr)_330px] gap-4">
@@ -589,6 +743,7 @@ export function VoiceStudio({ section = 'arabic' }: { section?: 'arabic' | 'engl
                       </div>
                       <span className={`rounded-full px-3 py-1 text-xs font-bold ${
                         current.status === 'approved' ? 'bg-emerald-100 text-emerald-800' :
+                        current.status === 'generated' ? 'bg-sky-100 text-sky-800' :
                         current.status === 'stale' ? 'bg-amber-100 text-amber-800' :
                         'bg-slate-100 text-slate-700'
                       }`}>{statusLabel}</span>
@@ -606,11 +761,11 @@ export function VoiceStudio({ section = 'arabic' }: { section?: 'arabic' | 'engl
                       )}
                     </div>
 
-                    {current.status === 'approved' && !previewUrl && (
+                    {(current.status === 'approved' || current.status === 'generated') && !previewUrl && (
                       <div className="mb-5 p-4 rounded-2xl bg-emerald-50/60">
-                        <p className="text-sm font-bold mb-2">التسجيل المحفوظ حاليًا</p>
+                        <p className="text-sm font-bold mb-2">{current.status === 'generated' ? 'معاينة الصوت المولّد — راجعه قبل الاعتماد' : 'التسجيل المحفوظ حاليًا'}</p>
                         <audio controls src={current.relativePath} className="w-full" />
-                        <p className="text-xs text-[var(--color-ink-soft)] mt-2">MP3 • Mono • 24kHz • 64kbps</p>
+                        <p className="text-xs text-[var(--color-ink-soft)] mt-2">MP3{current.voice ? ` • ${current.voice}` : ' • Mono • 24kHz • 64kbps'}</p>
                       </div>
                     )}
 
@@ -659,6 +814,9 @@ export function VoiceStudio({ section = 'arabic' }: { section?: 'arabic' | 'engl
                     <div className="flex flex-wrap justify-center gap-3">
                       <Button variant="ghost" disabled={isRecording || saving || deleting} onClick={previousItem}>السابق ←</Button>
 
+                      {current.status !== 'approved' && current.status !== 'generated' && <Button variant="ghost" disabled={generating || approving || isRecording || saving} onClick={() => void generateBatch(current.id)}>✨ توليد هذا العنصر</Button>}
+                      {current.status === 'generated' && <Button disabled={approving} onClick={() => void approveCurrent()}>{approving ? 'جارٍ الاعتماد…' : '✅ اعتماد الصوت المولّد'}</Button>}
+
                       {!isRecording && !previewBlob && (
                         <Button disabled={saving || deleting} onClick={() => void startRecording()}>🔴 بدء التسجيل</Button>
                       )}
@@ -672,7 +830,7 @@ export function VoiceStudio({ section = 'arabic' }: { section?: 'arabic' | 'engl
                         </>
                       )}
 
-                      {!isRecording && !previewBlob && (current.status === 'approved' || current.status === 'recorded' || current.status === 'stale') && (
+                      {!isRecording && !previewBlob && (current.status === 'approved' || current.status === 'recorded' || current.status === 'generated' || current.status === 'pending' || current.status === 'stale') && (
                         <Button variant="ghost" disabled={saving || deleting} onClick={() => void deleteCurrent()}>
                           {deleting ? 'جاري الحذف…' : '🗑️ حذف التسجيل'}
                         </Button>
@@ -702,7 +860,7 @@ export function VoiceStudio({ section = 'arabic' }: { section?: 'arabic' | 'engl
                   {filteredItems.map((item) => (
                     <button key={item.id} onClick={() => selectItem(item.id)} className={`w-full text-right rounded-xl p-3 transition ${item.id === current?.id ? 'bg-[var(--color-sky)]/10 ring-1 ring-[var(--color-sky)]/20' : 'hover:bg-black/[0.03]'}`}>
                       <div className="flex items-center gap-2">
-                        <span className={`w-2.5 h-2.5 rounded-full shrink-0 ${item.status === 'approved' ? 'bg-emerald-500' : item.status === 'stale' ? 'bg-amber-500' : 'bg-slate-300'}`} />
+                        <span className={`w-2.5 h-2.5 rounded-full shrink-0 ${item.status === 'approved' ? 'bg-emerald-500' : item.status === 'generated' ? 'bg-sky-500' : item.status === 'stale' ? 'bg-amber-500' : 'bg-slate-300'}`} />
                         <span className="font-bold truncate">{item.text}</span>
                       </div>
                       <div className="text-[10px] text-[var(--color-ink-soft)] mt-1 truncate">{item.filename}</div>

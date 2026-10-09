@@ -69,6 +69,7 @@ export async function saveVoiceRecording(
       audioBase64: await toBase64(blob),
       durationMs,
       contentHash: item.contentHash,
+      textHash: item.textHash,
     }),
   })
 
@@ -88,6 +89,108 @@ export async function saveVoiceRecording(
   }
   if (result.entry) setRecordedAudioEntry(result.entry)
   return result
+}
+
+export interface VoiceBatchResult {
+  generated: number
+  failed: number
+  total: number
+  stopped: boolean
+  results: Array<{ itemId: string; ok: boolean; error?: string; entry?: AudioManifest[string] }>
+}
+
+export interface VoiceBatchProgress {
+  completed: number
+  total: number
+  itemId: string
+  ok: boolean
+  entry?: AudioManifest[string]
+  error?: string
+}
+
+export type VoiceStudioSection = 'arabic' | 'english' | 'numbers' | 'discover' | 'islamic' | 'skills'
+
+export async function deleteVoiceSectionAudio(section: VoiceStudioSection): Promise<{ deletedFiles: number; removedEntries: number; itemIds: string[] }> {
+  const response = await fetch('/__voice-studio/delete-section', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ section, confirmed: true }),
+  })
+  if (!response.ok) throw new Error(await readError(response) || 'تعذر حذف تسجيلات هذا القسم.')
+  const result = await response.json() as { deletedFiles: number; removedEntries: number; removedItemIds: string[] }
+  for (const itemId of result.removedItemIds) removeRecordedAudioEntry(itemId)
+  return { deletedFiles: result.deletedFiles, removedEntries: result.removedEntries, itemIds: result.removedItemIds }
+}
+
+export async function approveGeneratedVoices(section: VoiceStudioSection): Promise<AudioManifest[string][]> {
+  const response = await fetch('/__voice-studio/approve-generated', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ section }),
+  })
+  if (!response.ok) throw new Error(await readError(response) || 'تعذر اعتماد التسجيلات السابقة.')
+  const result = await response.json() as { approved: AudioManifest[string][] }
+  for (const entry of result.approved) setRecordedAudioEntry(entry)
+  return result.approved
+}
+
+export async function generateAllBatchWithAI(
+  section: VoiceStudioSection,
+  voice: string,
+  onProgress: (progress: VoiceBatchProgress) => void,
+  shouldContinue: () => boolean,
+  onlyItemId?: string,
+): Promise<VoiceBatchResult> {
+  const candidates = onlyItemId
+    ? (await loadVoiceItems()).filter((item) => item.id === onlyItemId && item.meta?.section === section && item.status !== 'approved')
+    : (await loadVoiceItems()).filter((item) => item.meta?.section === section && (item.status === 'missing' || item.status === 'stale'))
+  const result: VoiceBatchResult = { generated: 0, failed: 0, total: candidates.length, stopped: false, results: [] }
+
+  let nextIndex = 0
+  let completed = 0
+  const worker = async () => {
+    while (shouldContinue()) {
+      const index = nextIndex++
+      if (index >= candidates.length) return
+      const item = candidates[index]
+      let itemResult: VoiceBatchResult['results'][number]
+      try {
+        const response = await fetch('/__voice-studio/generate-batch', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ section, itemId: item.id, voice }),
+        })
+        if (!response.ok) throw new Error(await readError(response) || 'تعذر توليد الملف الصوتي.')
+        const payload = await response.json() as { generated: number; failed: number; results: VoiceBatchResult['results'] }
+        itemResult = payload.results[0] ?? { itemId: item.id, ok: false, error: 'لم يُرجع الخادم نتيجة لهذا العنصر.' }
+      } catch (error) {
+        itemResult = { itemId: item.id, ok: false, error: error instanceof Error ? error.message : String(error) }
+      }
+      completed += 1
+      result.results.push(itemResult)
+      if (itemResult.ok && itemResult.entry) {
+        result.generated += 1
+        setRecordedAudioEntry(itemResult.entry)
+      } else result.failed += 1
+      onProgress({ completed, total: candidates.length, itemId: item.id, ok: itemResult.ok, entry: itemResult.entry, error: itemResult.error })
+    }
+  }
+
+  await Promise.all(Array.from({ length: Math.min(4, candidates.length) }, () => worker()))
+  result.stopped = completed < candidates.length && !shouldContinue()
+  return result
+}
+
+export async function approveGeneratedVoice(itemId: string): Promise<AudioManifest[string]> {
+  const response = await fetch('/__voice-studio/approve', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ itemId }),
+  })
+  if (!response.ok) throw new Error(await readError(response) || 'تعذر اعتماد الملف الصوتي.')
+  const result = await response.json() as { entry: AudioManifest[string] }
+  setRecordedAudioEntry(result.entry)
+  return result.entry
 }
 
 export async function deleteVoiceRecording(

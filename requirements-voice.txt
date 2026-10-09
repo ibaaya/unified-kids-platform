@@ -1,0 +1,2 @@
+# Optional runtime dependency for in-platform Edge-TTS generation in the Vite dev server.
+edge-tts

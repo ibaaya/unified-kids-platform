@@ -9,7 +9,7 @@ export type VoiceItemType =
   | 'story-question'
   | 'sentence-question'
 
-export type VoiceItemStatus = 'missing' | 'recorded' | 'approved' | 'stale'
+export type VoiceItemStatus = 'missing' | 'recorded' | 'approved' | 'generated' | 'pending' | 'stale'
 
 export interface VoiceRecordingItem {
   id: string
@@ -23,6 +23,9 @@ export interface VoiceRecordingItem {
   sourceId: string
   order: number
   contentHash: string
+  textHash?: string
+  source?: 'manual' | 'edge-tts'
+  voice?: string
   meta?: Record<string, string | number | undefined>
 }
 
@@ -33,10 +36,13 @@ export interface AudioManifestEntry {
   text: string
   filename: string
   relativePath: string
-  status: 'recorded' | 'approved'
+  status: 'recorded' | 'pending' | 'generated' | 'approved'
   updatedAt: string
   durationMs?: number
   contentHash: string
+  textHash?: string
+  source?: 'manual' | 'edge-tts'
+  voice?: string
   processing?: {
     format: 'mp3'
     channels: 1
