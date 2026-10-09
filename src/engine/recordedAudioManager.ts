@@ -107,6 +107,39 @@ export function playRecordedAudio(
   return true
 }
 
+function normalizedAudioText(text: string): string {
+  return text.trim().replace(/[.!?؟،؛:]+$/u, '').replace(/\s+/g, ' ')
+}
+
+/** Plays exact recordings, including simple phrases composed from separately recorded pieces. */
+export function playRecordedAudioText(
+  text: string,
+  onEnd?: () => void,
+  onError?: () => void,
+): boolean {
+  if (playRecordedAudio(text, onEnd, onError)) return true
+
+  const parts = text
+    .split(/\s*(?:،\s*أَو\s*|[.!?؟]+\s*)\s*/u)
+    .map(normalizedAudioText)
+    .filter(Boolean)
+  if (parts.length < 2) return false
+
+  const entries = parts.map((part) => Object.values(audioManifest).find((entry) =>
+    entry.status === 'approved' && entry.relativePath && normalizedAudioText(entry.text) === part,
+  ))
+  if (entries.some((entry) => !entry)) return false
+
+  const playNext = (index: number): void => {
+    const entry = entries[index]
+    if (!entry) { onEnd?.(); return }
+    const ended = index + 1 === entries.length ? onEnd : () => playNext(index + 1)
+    playRecordedAudio(entry.itemId, ended, onError)
+  }
+  playNext(0)
+  return true
+}
+
 export function stopRecordedAudio(): void {
   audioRequestId += 1
   if (currentAudio) {

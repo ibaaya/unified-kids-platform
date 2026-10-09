@@ -10,42 +10,28 @@
 // ——— نوع العنصر الواحد ———
 export interface DiscoverItem {
   id: string
-  /** الاسم العربي المشكَّل */
   nameAr: string
-  /** الاسم الإنجليزي */
   nameEn: string
-  /** إيموجي تعبيري */
   emoji: string
-  /** وصف قصير عربي للطفل (اختياري) */
   descAr?: string
-  /** وصف قصير إنجليزي (اختياري) */
   descEn?: string
-  /** لون خلفية البطاقة (اختياري) */
   color?: string
 }
 
 // ——— نوع العالم ———
 export interface DiscoverWorld {
   id: string
-  /** اسم العالم بالعربية */
   titleAr: string
-  /** اسم العالم بالإنجليزية */
   titleEn: string
-  /** إيموجي رمز العالم */
   emoji: string
-  /** لون أساسي للعالم */
   color: string
-  /** لون تدرج ثاني */
   colorEnd: string
-  /** إيموجي خلفية المشهد (للبيئة البصرية) */
   sceneEmojis: string[]
-  /** عناصر العالم */
   items: DiscoverItem[]
 }
 
 // ════════════════════════════════════════════════
 // ——— بيانات العوالم ———
-// لإضافة عالم جديد: انسخ كائناً وعدّل فيه فقط
 // ════════════════════════════════════════════════
 export const DISCOVER_WORLDS: DiscoverWorld[] = [
 
@@ -70,7 +56,6 @@ export const DISCOVER_WORLDS: DiscoverWorld[] = [
       { id: 'fridge', nameAr: 'ثَلَّاجَةٌ', nameEn: 'Refrigerator', emoji: '🧊', descAr: 'تحفظ الطعام بارداً', descEn: 'Keeps food cold' },
       { id: 'kitchen',nameAr: 'مَطْبَخٌ', nameEn: 'Kitchen',      emoji: '🍳', descAr: 'نطبخ فيه', descEn: 'We cook here' },
       { id: 'bath',   nameAr: 'حَمَّامٌ', nameEn: 'Bathroom',     emoji: '🚿', descAr: 'نستحم فيه', descEn: 'We shower here' },
-
       { id: 'pillow', nameAr: 'وِسَادَةٌ', nameEn: 'Pillow', emoji: '🛏️', descAr: 'نضعها تحت الرأس عند النوم', descEn: 'We put it under the head when sleeping' },
       { id: 'closet', nameAr: 'خِزَانَةٌ', nameEn: 'Closet', emoji: '🗄️', descAr: 'نضع فيها الملابس', descEn: 'We keep clothes in it' },
       { id: 'mirror', nameAr: 'مِرْآةٌ', nameEn: 'Mirror', emoji: '🪞', descAr: 'نرى صورتنا فيها', descEn: 'We see our reflection in it' },
@@ -79,6 +64,11 @@ export const DISCOVER_WORLDS: DiscoverWorld[] = [
       { id: 'spoon', nameAr: 'مِلْعَقَةٌ', nameEn: 'Spoon', emoji: '🥄', descAr: 'نستخدمها لتناول الطعام', descEn: 'We use it to eat' },
       { id: 'cup', nameAr: 'كُوبٌ', nameEn: 'Cup', emoji: '🥤', descAr: 'نشرب فيه', descEn: 'We drink from it' },
       { id: 'plate', nameAr: 'صَحْنٌ', nameEn: 'Plate', emoji: '🍽️', descAr: 'نضع الطعام عليه', descEn: 'We put food on it' },
+      // ——— إضافات جديدة ———
+      { id: 'guestroom', nameAr: 'غُرْفَةُ الضُّيُوفِ', nameEn: 'Guest Room', emoji: '🛋️', descAr: 'نستقبل فيها الضيوف', descEn: 'We welcome guests here' },
+      { id: 'garden', nameAr: 'حَدِيقَةُ الْبَيْتِ', nameEn: 'Home Garden', emoji: '🌷', descAr: 'نزرع فيها الأزهار', descEn: 'We plant flowers here' },
+      { id: 'key', nameAr: 'مِفْتَاحٌ', nameEn: 'Key', emoji: '🔑', descAr: 'نفتح به الباب', descEn: 'We open the door with it' },
+      { id: 'stairs', nameAr: 'سُلَّمٌ', nameEn: 'Stairs', emoji: '🪜', descAr: 'نصعد عليه للطابق الأعلى', descEn: 'We climb it to the upper floor' },
     ],
   },
 
@@ -102,7 +92,6 @@ export const DISCOVER_WORLDS: DiscoverWorld[] = [
       { id: 'black',  nameAr: 'أَسْوَدُ',   nameEn: 'Black',  emoji: '⚫', color: '#000000' },
       { id: 'white',  nameAr: 'أَبْيَضُ',   nameEn: 'White',  emoji: '⚪', color: '#ffffff' },
       { id: 'brown',  nameAr: 'بُنِّيٌّ',   nameEn: 'Brown',  emoji: '🟤', color: '#903a04' },
-
       { id: 'gray', nameAr: 'رَمَادِيٌّ', nameEn: 'Gray', emoji: '🩶' },
       { id: 'turquoise', nameAr: 'فِيرُوزِيٌّ', nameEn: 'Turquoise', emoji: '🩵' },
       { id: 'gold', nameAr: 'ذَهَبِيٌّ', nameEn: 'Gold', emoji: '🥇' },
@@ -131,7 +120,6 @@ export const DISCOVER_WORLDS: DiscoverWorld[] = [
       { id: 'motorcycle', nameAr: 'دَرَّاجَةٌ نَارِيَّةٌ', nameEn: 'Motorcycle', emoji: '🏍️' },
       { id: 'ambulance',  nameAr: 'سَيَّارَةُ إِسْعَافٍ', nameEn: 'Ambulance', emoji: '🚑' },
       { id: 'firetruck',  nameAr: 'سَيَّارَةُ إِطْفَاءٍ', nameEn: 'Fire Truck', emoji: '🚒' },
-
       { id: 'helicopter', nameAr: 'طَائِرَةٌ مِرْوَحِيَّةٌ', nameEn: 'Helicopter', emoji: '🚁' },
       { id: 'subway', nameAr: 'قِطَارُ الْمِتْرُو', nameEn: 'Subway', emoji: '🚇' },
       { id: 'taxi', nameAr: 'سَيَّارَةُ أُجْرَةٍ', nameEn: 'Taxi', emoji: '🚕' },
@@ -161,7 +149,6 @@ export const DISCOVER_WORLDS: DiscoverWorld[] = [
       { id: 'barn',    nameAr: 'حَظِيرَةٌ',  nameEn: 'Barn',    emoji: '🏚️' },
       { id: 'tree',    nameAr: 'شَجَرَةٌ',   nameEn: 'Tree',    emoji: '🌳' },
       { id: 'crop',    nameAr: 'مَحْصُولٌ',  nameEn: 'Crop',    emoji: '🌽' },
-
       { id: 'goat', nameAr: 'مَاعِزٌ', nameEn: 'Goat', emoji: '🐐' },
       { id: 'duck', nameAr: 'بَطَّةٌ', nameEn: 'Duck', emoji: '🦆' },
       { id: 'bee', nameAr: 'نَحْلَةٌ', nameEn: 'Bee', emoji: '🐝' },
@@ -192,7 +179,6 @@ export const DISCOVER_WORLDS: DiscoverWorld[] = [
       { id: 'dog',     nameAr: 'كَلْبٌ',    nameEn: 'Dog',      emoji: '🐶' },
       { id: 'bird',    nameAr: 'طَائِرٌ',   nameEn: 'Bird',     emoji: '🐦' },
       { id: 'fish',    nameAr: 'سَمَكَةٌ',  nameEn: 'Fish',     emoji: '🐟' },
-
       { id: 'tiger', nameAr: 'نَمِرٌ', nameEn: 'Tiger', emoji: '🐯' },
       { id: 'zebra', nameAr: 'حِمَارٌ وَحْشِيٌّ', nameEn: 'Zebra', emoji: '🦓' },
       { id: 'fox', nameAr: 'ثَعْلَبٌ', nameEn: 'Fox', emoji: '🦊' },
@@ -201,6 +187,15 @@ export const DISCOVER_WORLDS: DiscoverWorld[] = [
       { id: 'turtle', nameAr: 'سُلَحْفَاةٌ', nameEn: 'Turtle', emoji: '🐢' },
       { id: 'dolphin', nameAr: 'دُلْفِينٌ', nameEn: 'Dolphin', emoji: '🐬' },
       { id: 'penguin', nameAr: 'بِطْرِيقٌ', nameEn: 'Penguin', emoji: '🐧' },
+      // ——— إضافات: بحرية + حشرات ———
+      { id: 'whale', nameAr: 'حُوتٌ', nameEn: 'Whale', emoji: '🐋', descAr: 'أكبر حيوان في البحر', descEn: 'The largest sea animal' },
+      { id: 'octopus', nameAr: 'أَخْطَبُوطٌ', nameEn: 'Octopus', emoji: '🐙', descAr: 'له ثمانية أذرع', descEn: 'It has eight arms' },
+      { id: 'shark', nameAr: 'قِرْشٌ', nameEn: 'Shark', emoji: '🦈', descAr: 'سمكة قوية', descEn: 'A strong fish' },
+      { id: 'crab', nameAr: 'سَرَطَانٌ', nameEn: 'Crab', emoji: '🦀', descAr: 'يمشي بشكل جانبي', descEn: 'Walks sideways' },
+      { id: 'butterfly', nameAr: 'فَرَاشَةٌ', nameEn: 'Butterfly', emoji: '🦋', descAr: 'حشرة جميلة الألوان', descEn: 'A colorful insect' },
+      { id: 'ant', nameAr: 'نَمْلَةٌ', nameEn: 'Ant', emoji: '🐜', descAr: 'حشرة صغيرة مجتهدة', descEn: 'A small hardworking insect' },
+      { id: 'spider', nameAr: 'عَنْكَبُوتٌ', nameEn: 'Spider', emoji: '🕷️', descAr: 'ينسج شبكة', descEn: 'It spins a web' },
+      { id: 'snail', nameAr: 'حَلَزُونٌ', nameEn: 'Snail', emoji: '🐌', descAr: 'يحمل بيته معه', descEn: 'It carries its home' },
     ],
   },
 
@@ -224,7 +219,6 @@ export const DISCOVER_WORLDS: DiscoverWorld[] = [
       { id: 'egg',    nameAr: 'بَيْضَةٌ',    nameEn: 'Egg',    emoji: '🥚' },
       { id: 'water',  nameAr: 'مَاءٌ',       nameEn: 'Water',  emoji: '💧' },
       { id: 'grape',  nameAr: 'عِنَبٌ',      nameEn: 'Grape',  emoji: '🍇' },
-
       { id: 'strawberry', nameAr: 'فَرَاوِلَةٌ', nameEn: 'Strawberry', emoji: '🍓' },
       { id: 'watermelon', nameAr: 'بِطِّيخٌ', nameEn: 'Watermelon', emoji: '🍉' },
       { id: 'tomato', nameAr: 'طَمَاطِمُ', nameEn: 'Tomato', emoji: '🍅' },
@@ -233,6 +227,11 @@ export const DISCOVER_WORLDS: DiscoverWorld[] = [
       { id: 'dates', nameAr: 'تَمْرٌ', nameEn: 'Dates', emoji: '🌴' },
       { id: 'honey', nameAr: 'عَسَلٌ', nameEn: 'Honey', emoji: '🍯' },
       { id: 'cake', nameAr: 'كَعْكٌ', nameEn: 'Cake', emoji: '🍰' },
+      // ——— إضافات: حلويات + مشروبات ———
+      { id: 'juice', nameAr: 'عَصِيرٌ', nameEn: 'Juice', emoji: '🧃', descAr: 'نشربه من الفواكه', descEn: 'Made from fruits' },
+      { id: 'tea', nameAr: 'شَايٌ', nameEn: 'Tea', emoji: '🍵', descAr: 'شراب ساخن', descEn: 'A hot drink' },
+      { id: 'icecream', nameAr: 'آيْسْ كْرِيم', nameEn: 'Ice cream', emoji: '🍦', descAr: 'حلوى باردة', descEn: 'A cold dessert' },
+      { id: 'chocolate', nameAr: 'شُوكُولَاتَةٌ', nameEn: 'Chocolate', emoji: '🍫', descAr: 'حلوى بنية', descEn: 'A brown sweet' },
     ],
   },
 
@@ -254,7 +253,6 @@ export const DISCOVER_WORLDS: DiscoverWorld[] = [
       { id: 'sock',   nameAr: 'جَوْرَبٌ', nameEn: 'Sock',    emoji: '🧦' },
       { id: 'coat',   nameAr: 'مِعْطَفٌ', nameEn: 'Coat',    emoji: '🧥' },
       { id: 'gloves', nameAr: 'قُفَّازَانِ', nameEn: 'Gloves', emoji: '🧤' },
-
       { id: 'tshirt', nameAr: 'قَمِيصٌ قَصِيرُ الْكُمِّ', nameEn: 'T-shirt', emoji: '👕' },
       { id: 'skirt', nameAr: 'تَنُّورَةٌ', nameEn: 'Skirt', emoji: '🩳' },
       { id: 'scarf', nameAr: 'وِشَاحٌ', nameEn: 'Scarf', emoji: '🧣' },
@@ -262,6 +260,12 @@ export const DISCOVER_WORLDS: DiscoverWorld[] = [
       { id: 'belt', nameAr: 'حِزَامٌ', nameEn: 'Belt', emoji: '🪢' },
       { id: 'sandals', nameAr: 'صَنْدَلٌ', nameEn: 'Sandals', emoji: '👡' },
       { id: 'uniform', nameAr: 'زِيٌّ مَدْرَسِيٌّ', nameEn: 'Uniform', emoji: '🥋' },
+      // ——— إضافات: ملابس الفصول + إكسسوارات ———
+      { id: 'rainboots', nameAr: 'حِذَاءُ الْمَطَرِ', nameEn: 'Rain boots', emoji: '🥾', descAr: 'نلبسه في المطر', descEn: 'We wear them in rain' },
+      { id: 'swimsuit', nameAr: 'لِبَاسُ السِّبَاحَةِ', nameEn: 'Swimsuit', emoji: '🩱', descAr: 'نلبسه عند السباحة', descEn: 'We wear it when swimming' },
+      { id: 'watch', nameAr: 'سَاعَةُ الْيَدِ', nameEn: 'Watch', emoji: '⌚', descAr: 'نعرف بها الوقت', descEn: 'Tells us the time' },
+      { id: 'glasses', nameAr: 'نَظَّارَةٌ', nameEn: 'Glasses', emoji: '👓', descAr: 'نساعد بها العين', descEn: 'Helps our eyes' },
+      { id: 'umbrella2', nameAr: 'مِظَلَّةٌ', nameEn: 'Umbrella', emoji: '☂️', descAr: 'تحمينا من المطر', descEn: 'Protects us from rain' },
     ],
   },
 
@@ -285,15 +289,18 @@ export const DISCOVER_WORLDS: DiscoverWorld[] = [
       { id: 'river',    nameAr: 'نَهْرٌ',   nameEn: 'River',    emoji: '🌊' },
       { id: 'sea',      nameAr: 'بَحْرٌ',   nameEn: 'Sea',      emoji: '🌊' },
       { id: 'star',     nameAr: 'نَجْمَةٌ', nameEn: 'Star',     emoji: '⭐' },
-
       { id: 'grass', nameAr: 'عُشْبٌ', nameEn: 'Grass', emoji: '🌱' },
       { id: 'leaf', nameAr: 'وَرَقَةٌ', nameEn: 'Leaf', emoji: '🍃' },
       { id: 'seed', nameAr: 'بِذْرَةٌ', nameEn: 'Seed', emoji: '🌱' },
-      { id: 'rainbow', nameAr: 'قَوْسُ قُزَحٍ', nameEn: 'Rainbow', emoji: '🌈' },
+      { id: 'rainbow', nameAr: 'قَوْسُ المَطَرْ', nameEn: 'Rainbow', emoji: '🌈' },
       { id: 'wind', nameAr: 'رِيحٌ', nameEn: 'Wind', emoji: '💨' },
       { id: 'snow', nameAr: 'ثَلْجٌ', nameEn: 'Snow', emoji: '❄️' },
       { id: 'island', nameAr: 'جَزِيرَةٌ', nameEn: 'Island', emoji: '🏝️' },
       { id: 'forest', nameAr: 'غَابَةٌ', nameEn: 'Forest', emoji: '🌲' },
+      // ——— إضافات ———
+      { id: 'waterfall', nameAr: 'شَلَّالٌ', nameEn: 'Waterfall', emoji: '💦', descAr: 'ماء ينزل من مكان عالٍ', descEn: 'Water falling from high' },
+      { id: 'desert', nameAr: 'صَحْرَاءُ', nameEn: 'Desert', emoji: '🏜️', descAr: 'أرض رملية واسعة', descEn: 'A wide sandy land' },
+      { id: 'valley', nameAr: 'وَادٍ', nameEn: 'Valley', emoji: '🏞️', descAr: 'أرض منخفضة بين الجبال', descEn: 'Low land between mountains' },
     ],
   },
 
@@ -316,7 +323,6 @@ export const DISCOVER_WORLDS: DiscoverWorld[] = [
       { id: 'ruler',   nameAr: 'مِسْطَرَةٌ', nameEn: 'Ruler',     emoji: '📏' },
       { id: 'eraser',  nameAr: 'مِمْحَاةٌ',  nameEn: 'Eraser',    emoji: '🟦' },
       { id: 'teacher', nameAr: 'مُعَلِّمٌ',  nameEn: 'Teacher',   emoji: '👩‍🏫' },
-
       { id: 'crayon', nameAr: 'قَلَمُ تَلْوِينٍ', nameEn: 'Crayon', emoji: '🖍️' },
       { id: 'scissors', nameAr: 'مِقَصٌّ', nameEn: 'Scissors', emoji: '✂️' },
       { id: 'glue', nameAr: 'غِرَاءٌ', nameEn: 'Glue', emoji: '🧴' },
@@ -346,7 +352,6 @@ export const DISCOVER_WORLDS: DiscoverWorld[] = [
       { id: 'farmer',     nameAr: 'مُزَارِعٌ',     nameEn: 'Farmer',        emoji: '👨‍🌾' },
       { id: 'firefighter',nameAr: 'رَجُلُ إِطْفَاءٍ', nameEn: 'Firefighter', emoji: '🧑‍🚒' },
       { id: 'pilot',      nameAr: 'طَيَّارٌ',      nameEn: 'Pilot',         emoji: '🧑‍✈️' },
-
       { id: 'nurse', nameAr: 'مُمَرِّضٌ', nameEn: 'Nurse', emoji: '👩‍⚕️' },
       { id: 'dentist', nameAr: 'طَبِيبُ أَسْنَانٍ', nameEn: 'Dentist', emoji: '🦷' },
       { id: 'veterinarian', nameAr: 'طَبِيبُ حَيَوَانَاتٍ', nameEn: 'Veterinarian', emoji: '🐾' },
@@ -408,11 +413,11 @@ export const DISCOVER_WORLDS: DiscoverWorld[] = [
     ],
   },
 
-  // ——— 🌦️ اكتشف الطقس ———
+  // ——— 🌦️ اكتشف الطقس والفصول ———
   {
     id: 'weather',
-    titleAr: 'اكْتَشِفِ الطَّقْسَ',
-    titleEn: 'Discover Weather',
+    titleAr: 'اكْتَشِفِ الطَّقْسَ وَالْفُصُولَ',
+    titleEn: 'Discover Weather & Seasons',
     emoji: '🌦️',
     color: '#3aa0d9',
     colorEnd: '#ffd166',
@@ -423,9 +428,19 @@ export const DISCOVER_WORLDS: DiscoverWorld[] = [
       { id: 'rainy', nameAr: 'مُمْطِرٌ', nameEn: 'Rainy', emoji: '🌧️', descAr: 'ينزل فيه المطر', descEn: 'Rain is falling' },
       { id: 'windy', nameAr: 'عَاصِفٌ', nameEn: 'Windy', emoji: '💨', descAr: 'تهب فيه الرياح', descEn: 'The wind is blowing' },
       { id: 'snowy', nameAr: 'مُثْلِجٌ', nameEn: 'Snowy', emoji: '🌨️', descAr: 'يتساقط فيه الثلج', descEn: 'Snow is falling' },
-      { id: 'rainbow2', nameAr: 'قَوْسُ قُزَحٍ', nameEn: 'Rainbow', emoji: '🌈', descAr: 'يظهر بألوان جميلة بعد المطر أحيانًا', descEn: 'It can appear with beautiful colors after rain' },
+      { id: 'rainbow2', nameAr: 'قَوْسُ المَطَرْ', nameEn: 'Rainbow', emoji: '🌈', descAr: 'يظهر بألوان جميلة بعد المطر أحيانًا', descEn: 'Appears after rain' },
       { id: 'umbrella', nameAr: 'مِظَلَّةٌ', nameEn: 'Umbrella', emoji: '☂️', descAr: 'تحمينا من المطر', descEn: 'Protects us from rain' },
       { id: 'raincoat', nameAr: 'مِعْطَفٌ مَطَرِيٌّ', nameEn: 'Raincoat', emoji: '🧥', descAr: 'يساعدنا على البقاء جافين', descEn: 'Helps keep us dry' },
+      // ——— إضافات: الفصول الأربعة ———
+      { id: 'spring', nameAr: 'الرَّبِيعُ', nameEn: 'Spring', emoji: '🌸', descAr: 'فصل الأزهار والاعتدال', descEn: 'Season of flowers' },
+      { id: 'summer', nameAr: 'الصَّيْفُ', nameEn: 'Summer', emoji: '🌞', descAr: 'فصل حار ومشمس', descEn: 'Hot and sunny season' },
+      { id: 'autumn', nameAr: 'الْخَرِيفُ', nameEn: 'Autumn', emoji: '🍂', descAr: 'تتساقط فيه أوراق الشجر', descEn: 'Leaves fall in this season' },
+      { id: 'winter', nameAr: 'الشِّتَاءُ', nameEn: 'Winter', emoji: '❄️', descAr: 'فصل بارد', descEn: 'Cold season' },
+      // ——— ظواهر طبيعية ———
+      { id: 'lightning', nameAr: 'بَرْقٌ', nameEn: 'Lightning', emoji: '⚡', descAr: 'ضوء قوي في السماء', descEn: 'A strong light in the sky' },
+      { id: 'thunder', nameAr: 'رَعْدٌ', nameEn: 'Thunder', emoji: '🌩️', descAr: 'صوت قوي في السماء', descEn: 'A loud sound in the sky' },
+      { id: 'fog', nameAr: 'ضَبَابٌ', nameEn: 'Fog', emoji: '🌫️', descAr: 'غيوم قريبة من الأرض', descEn: 'Clouds close to the ground' },
+      { id: 'dew', nameAr: 'نَدًى', nameEn: 'Dew', emoji: '💧', descAr: 'قطرات صغيرة في الصباح', descEn: 'Small drops in the morning' },
     ],
   },
 
@@ -440,7 +455,7 @@ export const DISCOVER_WORLDS: DiscoverWorld[] = [
     sceneEmojis: ['🛡️', '🚦', '⛑️', '⭐'],
     items: [
       { id: 'helmet', nameAr: 'خُوذَةٌ', nameEn: 'Helmet', emoji: '⛑️', descAr: 'تحمي الرأس', descEn: 'Protects the head' },
-      { id: 'seatbelt', nameAr: 'حِزَامُ الأَمَانِ', nameEn: 'Seat belt', emoji: '💺', descAr: 'نربطه في السيارة للسلامة', descEn: 'We fasten it in a car for safety' },
+      { id: 'seatbelt', nameAr: 'حِزَامُ الأَمَانِ', nameEn: 'Seat belt', emoji: '💺', descAr: 'نربطه في السيارة للسلامة', descEn: 'We fasten it in a car' },
       { id: 'crosswalk', nameAr: 'مَمَرُّ مُشَاةٍ', nameEn: 'Crosswalk', emoji: '🚸', descAr: 'نعبر الطريق من مكان آمن', descEn: 'A safer place to cross the road' },
       { id: 'stop', nameAr: 'تَوَقَّفْ', nameEn: 'Stop', emoji: '🛑', descAr: 'كلمة تعني أن نتوقف', descEn: 'A sign telling us to stop' },
       { id: 'firstaid', nameAr: 'حَقِيبَةُ إِسْعَافٍ', nameEn: 'First-aid kit', emoji: '🩹', descAr: 'تحتوي أدوات للإسعافات الأولية', descEn: 'Contains first-aid supplies' },
@@ -450,7 +465,7 @@ export const DISCOVER_WORLDS: DiscoverWorld[] = [
     ],
   },
 
-  // ——— 🧩 اكتشف الأشكال والأحجام ———
+  // ——— 🧩 اكتشف الأشكال ———
   {
     id: 'shapes',
     titleAr: 'اكْتَشِفِ الأَشْكَالَ',
@@ -468,10 +483,15 @@ export const DISCOVER_WORLDS: DiscoverWorld[] = [
       { id: 'heartshape', nameAr: 'قَلْبٌ', nameEn: 'Heart', emoji: '❤️', descAr: 'شكل يشبه القلب', descEn: 'A heart-shaped figure' },
       { id: 'oval', nameAr: 'بَيْضَاوِيٌّ', nameEn: 'Oval', emoji: '🥚', descAr: 'شكل مستدير وممتد', descEn: 'A stretched round shape' },
       { id: 'diamond', nameAr: 'مُعَيَّنٌ', nameEn: 'Diamond', emoji: '🔷', descAr: 'شكل له أربعة أضلاع', descEn: 'A four-sided shape' },
+      // ——— إضافات ———
+      { id: 'arrow', nameAr: 'سَهْمٌ', nameEn: 'Arrow', emoji: '➡️', descAr: 'يشير إلى اتجاه', descEn: 'It points to a direction' },
+      { id: 'parallelogram', nameAr: 'مُتَوَازِي الأَضْلَاعِ', nameEn: 'Parallelogram', emoji: '🔶', descAr: 'له أربعة أضلاع متوازية', descEn: 'Four parallel sides' },
+      { id: 'trapezoid', nameAr: 'شِبْهُ الْمُنْحَرِفِ', nameEn: 'Trapezoid', emoji: '🔻', descAr: 'له ضلعان متوازيان', descEn: 'Has two parallel sides' },
+      { id: 'cube', nameAr: 'مُكَعَّبٌ', nameEn: 'Cube', emoji: '🧊', descAr: 'شكل ثلاثي الأبعاد', descEn: 'A 3D shape' },
     ],
   },
 
-  // ——— 🥕 اكتشف النباتات ———
+  // ——— 🌱 اكتشف النباتات ———
   {
     id: 'plants',
     titleAr: 'اكْتَشِفِ النَّبَاتَاتِ',
@@ -492,21 +512,64 @@ export const DISCOVER_WORLDS: DiscoverWorld[] = [
     ],
   },
 
+  // ═══════════════════════════════════════════════
+  // ——— ⏰ عالم الوقت (جديد) ———
+  // ═══════════════════════════════════════════════
+  {
+    id: 'time',
+    titleAr: 'اكْتَشِفِ الْوَقْتَ',
+    titleEn: 'Discover Time',
+    emoji: '⏰',
+    color: '#8b5fbf',
+    colorEnd: '#3aa0d9',
+    sceneEmojis: ['⏰', '🕐', '📅', '🌅'],
+    items: [
+      // وحدات الوقت
+      { id: 'second', nameAr: 'ثَانِيَةٌ', nameEn: 'Second', emoji: '⏱️', descAr: 'أصغر وحدة للوقت', descEn: 'The smallest time unit' },
+      { id: 'minute', nameAr: 'دَقِيقَةٌ', nameEn: 'Minute', emoji: '⏲️', descAr: 'ستون ثانية', descEn: 'Sixty seconds' },
+      { id: 'hour', nameAr: 'سَاعَةٌ', nameEn: 'Hour', emoji: '🕐', descAr: 'ستون دقيقة', descEn: 'Sixty minutes' },
+      { id: 'day', nameAr: 'يَوْمٌ', nameEn: 'Day', emoji: '📆', descAr: 'أربع وعشرون ساعة', descEn: 'Twenty-four hours' },
+      { id: 'week', nameAr: 'أُسْبُوعٌ', nameEn: 'Week', emoji: '🗓️', descAr: 'سبعة أيام', descEn: 'Seven days' },
+      { id: 'month', nameAr: 'شَهْرٌ', nameEn: 'Month', emoji: '📅', descAr: 'حوالي ثلاثين يومًا', descEn: 'About thirty days' },
+      { id: 'year', nameAr: 'سَنَةٌ', nameEn: 'Year', emoji: '🎆', descAr: 'اثنا عشر شهرًا', descEn: 'Twelve months' },
+      // أوقات اليوم
+      { id: 'morning', nameAr: 'صَبَاحٌ', nameEn: 'Morning', emoji: '🌅', descAr: 'بداية اليوم', descEn: 'Start of the day' },
+      { id: 'noon', nameAr: 'ظُهْرٌ', nameEn: 'Noon', emoji: '🌞', descAr: 'منتصف النهار', descEn: 'Middle of the day' },
+      { id: 'evening', nameAr: 'مَسَاءٌ', nameEn: 'Evening', emoji: '🌆', descAr: 'آخر النهار', descEn: 'End of the day' },
+      { id: 'night', nameAr: 'لَيْلٌ', nameEn: 'Night', emoji: '🌙', descAr: 'وقت النوم والظلام', descEn: 'Time to sleep' },
+      // مفاهيم الزمن
+      { id: 'yesterday', nameAr: 'أَمْسِ', nameEn: 'Yesterday', emoji: '⬅️', descAr: 'اليوم السابق', descEn: 'The day before today' },
+      { id: 'today', nameAr: 'الْيَوْمَ', nameEn: 'Today', emoji: '⭐', descAr: 'اليوم الحالي', descEn: 'The current day' },
+      { id: 'tomorrow', nameAr: 'غَدًا', nameEn: 'Tomorrow', emoji: '➡️', descAr: 'اليوم القادم', descEn: 'The day after today' },
+      // أيام الأسبوع
+      { id: 'saturday', nameAr: 'السَّبْتُ', nameEn: 'Saturday', emoji: '1️⃣', descAr: 'أول أيام الأسبوع', descEn: 'First day of the week' },
+      { id: 'sunday', nameAr: 'الأَحَدُ', nameEn: 'Sunday', emoji: '2️⃣' },
+      { id: 'monday', nameAr: 'الاثْنَيْنِ', nameEn: 'Monday', emoji: '3️⃣' },
+      { id: 'tuesday', nameAr: 'الثُّلَاثَاءُ', nameEn: 'Tuesday', emoji: '4️⃣' },
+      { id: 'wednesday', nameAr: 'الأَرْبِعَاءُ', nameEn: 'Wednesday', emoji: '5️⃣' },
+      { id: 'thursday', nameAr: 'الْخَمِيسُ', nameEn: 'Thursday', emoji: '6️⃣' },
+      { id: 'friday', nameAr: 'الْجُمْعَةُ', nameEn: 'Friday', emoji: '7️⃣', descAr: 'آخر أيام الأسبوع', descEn: 'Last day of the week' },
+      // أدوات الوقت
+      { id: 'clock2', nameAr: 'سَاعَةٌ', nameEn: 'Clock', emoji: '🕰️', descAr: 'نعرف بها الوقت', descEn: 'Tells us the time' },
+      { id: 'watch2', nameAr: 'سَاعَةُ الْيَدِ', nameEn: 'Watch', emoji: '⌚', descAr: 'نلبسها في اليد', descEn: 'Worn on the wrist' },
+      { id: 'calendar', nameAr: 'تَقْوِيمٌ', nameEn: 'Calendar', emoji: '📅', descAr: 'يعرض الأيام والشهور', descEn: 'Shows days and months' },
+      { id: 'alarm', nameAr: 'مُنَبِّهٌ', nameEn: 'Alarm', emoji: '⏰', descAr: 'يوقظنا في الصباح', descEn: 'Wakes us up in the morning' },
+      { id: 'sandglass', nameAr: 'سَاعَةٌ رَمْلِيَّةٌ', nameEn: 'Hourglass', emoji: '⏳', descAr: 'تقيس زمنًا قصيرًا', descEn: 'Measures a short time' },
+    ],
+  },
+
 ]
 
 // ——— دوال مساعدة ———
 
-/** الحصول على عالم بمعرّفه */
 export function getWorldById(id: string): DiscoverWorld | undefined {
   return DISCOVER_WORLDS.find((w) => w.id === id)
 }
 
-/** الحصول على عنصر من عالم محدد */
 export function getItemById(worldId: string, itemId: string): DiscoverItem | undefined {
   return getWorldById(worldId)?.items.find((i) => i.id === itemId)
 }
 
-/** الحصول على عناصر عشوائية من عوالم متعددة (للأسئلة) */
 export function getRandomItemsExcept(
   correct: DiscoverItem,
   worldId: string,
@@ -515,6 +578,5 @@ export function getRandomItemsExcept(
   const world = getWorldById(worldId)
   if (!world) return []
   const others = world.items.filter((i) => i.id !== correct.id)
-  // خلط وأخذ العدد المطلوب
   return others.sort(() => Math.random() - 0.5).slice(0, count)
 }

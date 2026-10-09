@@ -64,12 +64,29 @@ const MODULES = [
     border: '#ff9f45',
     textColor: '#7c2d12',
     dir: 'rtl' as const,
-    flag: '🇸🇦',
+    flag: '',
     video: '/video/LearnArabic_Intro.mp4',
     // لون ظل البطاقة الخارجي
     shadowColor: 'rgba(232,93,117,.40)',
     // لون خلفية الأيقونة
     iconBg: 'linear-gradient(145deg, #ffe5cb, #ffb347)',
+  },
+  {
+    id: 'islamic',
+    title: 'أخلاقي الجميلة',
+    subtitle: 'Beautiful Morals',
+    desc: 'الأخلاق · الآداب · الوضوء · الصلاة · القصص',
+    emoji: '🕌',
+    path: '/islamic',
+    gradient: 'linear-gradient(135deg, #16a085 0%, #f5b82e 100%)',
+    glowColor: 'rgba(245,184,46,.50)',
+    border: '#f5c84c',
+    textColor: '#064e3b',
+    dir: 'rtl' as const,
+    flag: '',
+    video: '/video/LearnArabic_Intro.mp4', // لا يوجد فيديو تعريفي بعد: عند توفره ضع مساره هنا مثل '/video/islamic_intro.mp4'
+    shadowColor: 'rgba(22,160,133,.40)',
+    iconBg: 'linear-gradient(145deg, #d1fae5, #f5c84c)',
   },
   {
     id: 'english',
@@ -83,7 +100,7 @@ const MODULES = [
     border: '#4f80e2',
     textColor: '#1e3a8a',
     dir: 'ltr' as const,
-    flag: '🇬🇧',
+    flag: ' ',
     video: '/video/LearnEnglish_Intro.mp4',
     shadowColor: 'rgba(79,128,226,.40)',
     iconBg: 'linear-gradient(145deg, #dce8ff, #7baaf7)',
@@ -100,7 +117,7 @@ const MODULES = [
     border: '#8b5fbf',
     textColor: '#3b0764',
     dir: 'rtl' as const,
-    flag: '🔢',
+    flag: '',
     video: '/video/LearnNumbers_Intro.mp4',
     shadowColor: 'rgba(139,95,191,.40)',
     iconBg: 'linear-gradient(145deg, #e8daff, #c4a3ef)',
@@ -117,10 +134,27 @@ const MODULES = [
     border: '#2fb68c',
     textColor: '#e8fff7',
     dir: 'rtl' as const,
-    flag: '🌍',
+    flag: '',
     video: '/video/discover_intro.mp4',
     shadowColor: 'rgba(47,182,140,.40)',
     iconBg: 'linear-gradient(145deg, #c8f7e4, #6ddbb8)',
+  },
+  {
+    id: 'skills',
+    title: 'مدينة المهارات',
+    subtitle: 'Skills Adventure',
+    desc: 'ألعب · أفكر · أكتشف · أقرر · أبدع',
+    emoji: '🧠',
+    path: '/skills',
+    gradient: 'linear-gradient(135deg, #e85d75 0%, #8b5fbf 100%)',
+    glowColor: 'rgba(232,93,117,.50)',
+    border: '#e85d75',
+    textColor: '#fff',
+    dir: 'rtl' as const,
+    flag: '',
+    video: '/video/skills_intro.mp4', // إذا وُجد فيديو تعريفي أو يمكن إزالته/تعديله حسب المتوفر
+    shadowColor: 'rgba(232,93,117,.40)',
+    iconBg: 'linear-gradient(145deg, #ffd1d9, #e85d75)',
   },
 ]
 
@@ -449,7 +483,7 @@ export function HubPage() {
         {/* ══════════════════════════════════════
             شبكة البطاقات التعليمية
         ══════════════════════════════════════ */}
-        <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
+        <div className="grid grid-cols-3 gap-2 sm:gap-4">
           {MODULES.map((mod, idx) => (
             <div
               key={mod.id}
@@ -508,7 +542,7 @@ export function HubPage() {
 
                 {/* علم / رمز القسم */}
                 <div
-                  className="mt-4 text-2xl leading-none"
+                  className="mt-2 text-lg leading-none sm:mt-4 sm:text-2xl"
                   style={{ filter: 'drop-shadow(0 2px 4px rgba(0,0,0,.3))' }}
                 >
                   {mod.flag}
@@ -516,14 +550,14 @@ export function HubPage() {
 
                 {/* أيقونة القسم — دائرة مضيئة */}
                 <div
-                  className="mx-auto mt-3 flex items-center justify-center"
+                  className="mx-auto mt-2 flex items-center justify-center sm:mt-3"
                   style={{
-                    width: 100,
-                    height: 100,
+                    width: 'clamp(52px, 15vw, 100px)',
+                    height: 'clamp(52px, 15vw, 100px)',
                     borderRadius: '50%',
                     background: mod.iconBg,
                     boxShadow: `0 8px 28px ${mod.glowColor}, 0 2px 6px rgba(0,0,0,.2)`,
-                    fontSize: '3rem',
+                    fontSize: 'clamp(1.6rem, 6vw, 3rem)',
                     lineHeight: 1,
                     transition: 'transform .3s cubic-bezier(.22,.68,0,1.2)',
                   }}
@@ -533,9 +567,9 @@ export function HubPage() {
 
                 {/* اسم القسم */}
                 <h3
-                  className="mt-3 font-extrabold leading-tight"
+                  className="mt-2 px-1 font-extrabold leading-tight sm:mt-3"
                   style={{
-                    fontSize: 'clamp(1rem, 3.5vw, 1.25rem)',
+                    fontSize: 'clamp(.72rem, 2.9vw, 1.25rem)',
                     color: mod.border,
                     textShadow: '0 1px 3px rgba(0,0,0,.35)',
                   }}
@@ -545,7 +579,7 @@ export function HubPage() {
 
                 {/* الاسم الثانوي (اللغة الأخرى) */}
                 <p
-                  className="mt-0.5 text-xs font-semibold"
+                  className="mt-0.5 px-1 text-[10px] font-semibold sm:text-xs"
                   style={{ color: 'rgba(255,255,255,.65)' }}
                 >
                   {mod.subtitle}
@@ -553,7 +587,7 @@ export function HubPage() {
 
                 {/* وصف محتوى القسم */}
                 <p
-                  className="mx-4 mt-2 text-xs leading-relaxed"
+                  className="mx-4 mt-2 hidden text-xs leading-relaxed sm:block"
                   style={{ color: 'rgba(255,255,255,.78)' }}
                 >
                   {mod.desc}
@@ -561,10 +595,10 @@ export function HubPage() {
 
                 {/* زر الدخول */}
                 <div
-                  className="mt-4 inline-flex items-center gap-1 font-extrabold text-sm text-white"
+                  className="mt-3 inline-flex items-center gap-1 text-[11px] font-extrabold text-white sm:mt-4 sm:text-sm"
                   style={{
                     borderRadius: '999px',
-                    padding: '7px 20px',
+                    padding: 'clamp(5px, 1.5vw, 7px) clamp(10px, 3.5vw, 20px)',
                     background: mod.gradient,
                     boxShadow: `0 4px 16px ${mod.glowColor}`,
                     transition: 'transform .18s, box-shadow .18s',
@@ -584,12 +618,10 @@ export function HubPage() {
                   }}
                   aria-label={`شاهد مقدمة ${mod.title}`}
                   title="شاهد الفيديو التعريفي"
-                  className="absolute flex items-center justify-center text-white"
+                  className="absolute right-2 top-3 flex items-center justify-center text-white sm:bottom-3.5 sm:right-3.5 sm:top-auto"
                   style={{
-                    bottom: 14,
-                    right: 14,
-                    width: 36,
-                    height: 36,
+                    width: 'clamp(26px, 7vw, 36px)',
+                    height: 'clamp(26px, 7vw, 36px)',
                     borderRadius: '50%',
                     background: 'rgba(0,0,0,.50)',
                     border: `1.5px solid ${mod.border}88`,

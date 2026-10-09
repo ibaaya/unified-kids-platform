@@ -394,6 +394,35 @@ function voiceStudioPlugin(): Plugin {
           addDiscoverItem(`discover:quiz:${question.id}`, 'quiz', 'أسئلة الاختبار', question.prompt, index + 1, { worldId: question.worldId, level: question.level, questionId: question.id })
         })
 
+        const addLearningItems = (section: 'islamic' | 'skills', sourceDirectory: string) => {
+          const seen = new Set<string>()
+          let order = 0
+          const visit = (directory: string): void => {
+            for (const entry of fs.readdirSync(directory, { withFileTypes: true })) {
+              const absolute = path.join(directory, entry.name)
+              if (entry.isDirectory()) { visit(absolute); continue }
+              if (!entry.isFile() || !entry.name.endsWith('.ts') || /(?:types|index)\.ts$/i.test(entry.name)) continue
+              const relative = path.relative(projectRoot, absolute).replaceAll(path.sep, '/')
+              const group = safeName(path.basename(entry.name, '.ts'))
+              const source = fs.readFileSync(absolute, 'utf8')
+              const quotePattern = /(['"`])((?:\\.|(?!\1)[\s\S])*?)\1/g
+              for (const match of source.matchAll(quotePattern)) {
+                const text = match[2].replace(/\\(['"`\\])/g, '$1').trim()
+                if (!/[\u0600-\u06ff]/u.test(text) || text.includes('${') || text.length < 2 || seen.has(`${group}:${text}`)) continue
+                seen.add(`${group}:${text}`)
+                const sourceHash = crypto.createHash('sha1').update(`${relative}\0${text}`).digest('hex').slice(0, 12)
+                const id = `${section}:${group}:${sourceHash}`
+                const filename = uniqueFilename(`${section}_${group}_${sourceHash}.mp3`, usedNames)
+                order += 1
+                addProjectItem({ id, type: 'prompt', group, groupLabel: section === 'islamic' ? `أخلاقي الجميلة · ${group}` : `مدينة المهارات · ${group}`, text, filename, relativePath: `/audio/${section}/${group}/${filename}`, sourceId: id, order, contentHash: contentHash([id, text]), meta: { section, contentId: `${relative}#${order}` } })
+              }
+            }
+          }
+          visit(path.join(projectRoot, sourceDirectory))
+        }
+        addLearningItems('islamic', 'src/islamic/data')
+        addLearningItems('skills', 'src/skills/data')
+
         return items.map((item) => {
           const saved = manifest[item.id]
           const expectedFile = path.resolve(projectRoot, 'public', item.relativePath.replace(/^\//, ''))
@@ -479,7 +508,7 @@ function voiceStudioPlugin(): Plugin {
             // المسار لا يأتي من المتصفح كمسار حر؛ نأخذ المسار المولّد من محتوى المشروع نفسه.
             // هذا يمنع أخطاء 400 الناتجة عن اختلاف اسم الملف، ويضمن الحفظ داخل public/audio فقط.
             const relativeAudio = currentItem.relativePath.replace(/^\/+/, '')
-            if (!/^audio\/(?:arabic|english|numbers|discover)\/[a-z-]+\/[a-z0-9_-]+\.mp3$/i.test(relativeAudio)) {
+            if (!/^audio\/(?:arabic|english|numbers|discover|islamic|skills)\/[a-z0-9_-]+\/[a-z0-9_-]+\.mp3$/i.test(relativeAudio)) {
               throw new Error(`مسار MP3 غير صالح للعنصر: ${relativeAudio}`)
             }
 

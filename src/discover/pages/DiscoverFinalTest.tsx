@@ -1,15 +1,11 @@
 /**
  * DiscoverFinalTest — الاختبار الشامل لقسم «اكتشف ما حولك»
  *
- * القواعد:
- * 1) سهل: 25 سؤالًا، متاح دائمًا.
- * 2) متوسط: 25 سؤالًا، يفتح بعد إكمال السهل.
- * 3) صعب: 25 سؤالًا، يفتح بعد إكمال المتوسط.
- * 4) لا نكرر السؤال داخل المستوى، وكل سؤال له ID مستقل.
- * 5) النتيجة تحفظ محليًا، ويظهر مجموع المستويات المكتملة.
- *
- * ملاحظة هندسية:
- * الصفحة تعتمد على بنك الأسئلة والتقدم فقط، ولا تغيّر مكونات العوالم الحالية.
+ * المزايا الجديدة:
+ * - 30 سؤالاً لكل مستوى.
+ * - دعم أسئلة صح/خطأ (trueFalse) في المستوى السهل.
+ * - زر تلميح (hint) في المستوى الصعب.
+ * - شاشة نتيجة تحليلية: أفضل/أضعف عالم + رسالة تشجيعية.
  */
 import { useEffect, useMemo, useState } from 'react'
 import { Link } from 'react-router-dom'
@@ -26,6 +22,7 @@ import {
   getDiscoverQuizQuestionItems,
   type DiscoverQuizQuestion,
 } from '../data/discoverQuizData'
+import { DISCOVER_WORLDS } from '../data/discoverData'
 import { speakArabic } from '../../engine/soundManager'
 
 const LEVELS: {
@@ -40,12 +37,77 @@ const LEVELS: {
   { id: 'hard', title: 'المستوى الصعب', subtitle: 'أتحدى نفسي', emoji: '🏆', color: '#8b5fbf' },
 ]
 
+// ——— سجل إجابات المستخدم (لتحليل الأخطاء) ———
+interface AnswerRecord {
+  worldId: string
+  correct: boolean
+}
+
 function shuffle<T>(items: T[]): T[] {
   return [...items].sort(() => Math.random() - 0.5)
 }
 
 function levelTitle(level: DiscoverTestLevel): string {
   return LEVELS.find((item) => item.id === level)?.title ?? ''
+}
+
+function worldTitle(worldId: string): string {
+  return DISCOVER_WORLDS.find((w) => w.id === worldId)?.titleAr ?? worldId
+}
+
+function worldEmoji(worldId: string): string {
+  return DISCOVER_WORLDS.find((w) => w.id === worldId)?.emoji ?? '🌍'
+}
+
+// ——— تحليل الأخطاء ———
+interface AnalysisResult {
+  strongestWorld: { id: string; correct: number; total: number } | null
+  weakestWorld: { id: string; correct: number; total: number } | null
+  message: string
+}
+
+function analyzeAnswers(records: AnswerRecord[]): AnalysisResult {
+  if (records.length === 0) {
+    return { strongestWorld: null, weakestWorld: null, message: '' }
+  }
+  const byWorld = new Map<string, { correct: number; total: number }>()
+  for (const r of records) {
+    const cur = byWorld.get(r.worldId) ?? { correct: 0, total: 0 }
+    cur.total += 1
+    if (r.correct) cur.correct += 1
+    byWorld.set(r.worldId, cur)
+  }
+  const entries = [...byWorld.entries()].map(([id, v]) => ({ id, ...v }))
+
+  // الأقوى: أعلى نسبة، وعند التعادل الأكثر إجابات صحيحة
+  const strongest = [...entries].sort((a, b) => {
+    const ra = a.correct / a.total
+    const rb = b.correct / b.total
+    if (rb !== ra) return rb - ra
+    return b.correct - a.correct
+  })[0]
+
+  // الأضعف: أقل نسبة، وعند التعادل الأكثر أخطاء
+  const weakest = [...entries].sort((a, b) => {
+    const ra = a.correct / a.total
+    const rb = b.correct / b.total
+    if (ra !== rb) return ra - rb
+    return (a.total - a.correct) - (b.total - b.correct)
+  })[0]
+
+  // رسالة تشجيعية
+  let message = ''
+  if (strongest && weakest && strongest.id !== weakest.id) {
+    message = `أَنْتَ مُمْتَازٌ فِي ${worldTitle(strongest.id)}! تَدَرَّبْ أَكْثَرَ عَلَى ${worldTitle(weakest.id)}.`
+  } else if (strongest) {
+    message = `أَدَاؤُكَ جَيِّدٌ فِي ${worldTitle(strongest.id)}! اسْتَمِرَّ.`
+  }
+
+  return {
+    strongestWorld: strongest ? { id: strongest.id, correct: strongest.correct, total: strongest.total } : null,
+    weakestWorld: weakest ? { id: weakest.id, correct: weakest.correct, total: weakest.total } : null,
+    message,
+  }
 }
 
 export function DiscoverFinalTest() {
@@ -56,20 +118,32 @@ export function DiscoverFinalTest() {
   const [finished, setFinished] = useState(false)
   const [lastResult, setLastResult] = useState<{ score: number; total: number } | null>(null)
   const [attemptKey, setAttemptKey] = useState(0)
+  const [showHint, setShowHint] = useState(false)
+  const [answers, setAnswers] = useState<AnswerRecord[]>([])
 
-  const questions = useMemo(
-    () => (selectedLevel ? shuffle(getDiscoverQuestionsByLevel(selectedLevel)) : []),
-    [selectedLevel, attemptKey],
-  )
+  const questions = useMemo(() => {
+    if (!selectedLevel) return []
+    const list = shuffle(getDiscoverQuestionsByLevel(selectedLevel))
+    // نخلط خيارات كل سؤال مع الحفاظ على correctId صحيحًا.
+    return list.map((question) => ({
+      ...question,
+      optionIds: shuffle(question.optionIds),
+    }))
+  }, [selectedLevel, attemptKey])
 
   const question: DiscoverQuizQuestion | undefined = questions[questionIndex]
 
-  // قراءة السؤال تلقائيًا عند ظهوره.
+  // قراءة السؤال تلقائيًا
   useEffect(() => {
     if (!question || finished) return
     const timer = window.setTimeout(() => speakArabic(question.prompt), 250)
     return () => window.clearTimeout(timer)
   }, [question?.id, finished])
+
+  // إعادة تعيين التلميح عند تغيير السؤال
+  useEffect(() => {
+    setShowHint(false)
+  }, [question?.id])
 
   const startLevel = (level: DiscoverTestLevel) => {
     if (!isDiscoverTestLevelUnlocked(level)) return
@@ -79,8 +153,9 @@ export function DiscoverFinalTest() {
     setSelectedId(null)
     setFinished(false)
     setLastResult(null)
-    // مفتاح جديد يعيد خلط الأسئلة في كل محاولة دون تكرار نفس ترتيب المحاولة السابقة.
-    setAttemptKey((value) => value + 1)
+    setAnswers([])
+    setShowHint(false)
+    setAttemptKey((v) => v + 1)
   }
 
   const answer = (optionId: string) => {
@@ -89,10 +164,13 @@ export function DiscoverFinalTest() {
     setSelectedId(optionId)
     const isCorrect = optionId === question.correctId
     const nextScore = score + (isCorrect ? 1 : 0)
+    const record: AnswerRecord = { worldId: question.worldId, correct: isCorrect }
+    const nextAnswers = [...answers, record]
 
     window.setTimeout(() => {
       if (questionIndex + 1 >= questions.length) {
         setScore(nextScore)
+        setAnswers(nextAnswers)
         setLastResult({ score: nextScore, total: questions.length })
         setFinished(true)
         if (selectedLevel) {
@@ -100,7 +178,8 @@ export function DiscoverFinalTest() {
         }
       } else {
         setScore(nextScore)
-        setQuestionIndex((value) => value + 1)
+        setAnswers(nextAnswers)
+        setQuestionIndex((v) => v + 1)
         setSelectedId(null)
       }
     }, 850)
@@ -112,9 +191,12 @@ export function DiscoverFinalTest() {
     setSelectedId(null)
     setFinished(false)
     setLastResult(null)
+    setAnswers([])
   }
 
-  // ——— شاشة اختيار المستوى ———
+  // ═══════════════════════════════════════════════
+  // شاشة اختيار المستوى
+  // ═══════════════════════════════════════════════
   if (!selectedLevel) {
     const progress = loadDiscoverProgress()
     const overall = getDiscoverOverallTestPercentage()
@@ -129,15 +211,38 @@ export function DiscoverFinalTest() {
         <div className="mx-auto max-w-3xl">
           <header className="mb-6 rounded-3xl border-2 border-white/80 bg-white/90 p-5 text-center shadow-xl">
             <Link
-              to="/discover"
-              className="mb-4 inline-flex rounded-2xl bg-gray-50 px-4 py-2 text-sm font-bold text-gray-600"
+            to="/discover"
+            className="group mb-5 inline-flex items-center gap-2.5 overflow-hidden rounded-2xl px-5 py-3 font-extrabold text-white shadow-lg transition-all duration-300 hover:-translate-y-0.5 hover:shadow-2xl active:scale-95"
+            style={{
+              background: 'linear-gradient(135deg, #2fb68c, #3aa0d9)',
+              boxShadow: '0 10px 28px rgba(47,182,140,.40), inset 0 1px 0 rgba(255,255,255,.35)',
+              fontSize: '1rem',
+              letterSpacing: '.02em',
+              textShadow: '0 1px 3px rgba(0,0,0,.25)',
+            }}
+          >
+            {/* لمعة عابرة عند التحويم */}
+            <span className="pointer-events-none absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/25 to-transparent transition-transform duration-700 group-hover:translate-x-full" />
+
+            {/* أيقونة الكرة الأرضية في دائرة شفافة */}
+            <span
+              className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-white/25 text-lg shadow-inner transition-transform duration-300 group-hover:rotate-12"
             >
-              ← العودة إلى الاكتشاف
-            </Link>
+              🌍
+            </span>
+
+            {/* النص */}
+            <span className="relative z-10">العودة إلى الاكتشاف</span>
+
+            {/* سهم صغير يتحرك */}
+            <span className="relative z-10 text-lg transition-transform duration-300 group-hover:-translate-x-1">
+              ←
+            </span>
+          </Link>
             <div className="text-6xl">🏆</div>
             <h1 className="mt-2 text-3xl font-extrabold text-gray-800">الاختبار الشامل</h1>
             <p className="mt-1 text-sm font-semibold text-gray-500">
-              25 سؤالًا في كل مستوى — هل تستطيع إكمال الرحلة كلها؟
+              ٣٠ سؤالًا في كل مستوى — هل تستطيع إكمال الرحلة كلها؟
             </p>
           </header>
 
@@ -191,17 +296,20 @@ export function DiscoverFinalTest() {
           </div>
 
           <div className="mt-6 rounded-3xl border border-white/80 bg-white/70 p-4 text-center text-sm font-semibold text-gray-500">
-            💡 لا يوجد انتقال تلقائي بسبب الإجابة الصحيحة؛ المطلوب هو إكمال المستوى كاملًا لفتح المستوى التالي.
+            💡 راجع كل المستويات لفتح المستوى التالي — لا يشترط نسبة معينة، فقط إكمال الأسئلة.
           </div>
         </div>
       </div>
     )
   }
 
-  // ——— النتيجة ———
+  // ═══════════════════════════════════════════════
+  // شاشة النتيجة التحليلية
+  // ═══════════════════════════════════════════════
   if (finished && lastResult) {
     const pct = Math.round((lastResult.score / lastResult.total) * 100)
     const passed = pct >= 80
+    const analysis = analyzeAnswers(answers)
 
     return (
       <div
@@ -230,10 +338,42 @@ export function DiscoverFinalTest() {
           </div>
           <p className="mt-2 text-lg font-extrabold text-gray-700">{pct}%</p>
 
+          {/* ——— تحليل الأخطاء ——— */}
+          {analysis.strongestWorld && (
+            <div className="mt-5 grid grid-cols-2 gap-3 text-right">
+              <div className="rounded-2xl border-2 border-emerald-200 bg-emerald-50 p-3">
+                <p className="text-xs font-bold text-emerald-700">💪 أقوى عالم</p>
+                <p className="mt-1 text-sm font-extrabold text-emerald-900">
+                  {worldEmoji(analysis.strongestWorld.id)} {worldTitle(analysis.strongestWorld.id)}
+                </p>
+                <p className="text-xs text-emerald-700">
+                  {analysis.strongestWorld.correct}/{analysis.strongestWorld.total}
+                </p>
+              </div>
+              {analysis.weakestWorld && analysis.weakestWorld.id !== analysis.strongestWorld.id && (
+                <div className="rounded-2xl border-2 border-amber-200 bg-amber-50 p-3">
+                  <p className="text-xs font-bold text-amber-700">📚 يحتاج تدريبًا</p>
+                  <p className="mt-1 text-sm font-extrabold text-amber-900">
+                    {worldEmoji(analysis.weakestWorld.id)} {worldTitle(analysis.weakestWorld.id)}
+                  </p>
+                  <p className="text-xs text-amber-700">
+                    {analysis.weakestWorld.correct}/{analysis.weakestWorld.total}
+                  </p>
+                </div>
+              )}
+            </div>
+          )}
+
+          {analysis.message && (
+            <p className="mt-4 rounded-2xl bg-blue-50 p-3 text-sm font-bold text-blue-800">
+              {analysis.message}
+            </p>
+          )}
+
           {isDiscoverTestLevelUnlocked(
             selectedLevel === 'easy' ? 'medium' : selectedLevel === 'medium' ? 'hard' : 'hard',
           ) && selectedLevel !== 'hard' ? (
-            <p className="mt-5 rounded-2xl bg-green-50 p-3 text-sm font-bold text-green-700">
+            <p className="mt-4 rounded-2xl bg-green-50 p-3 text-sm font-bold text-green-700">
               🔓 المستوى التالي أصبح متاحًا!
             </p>
           ) : null}
@@ -268,6 +408,8 @@ export function DiscoverFinalTest() {
 
   const options = getDiscoverQuizQuestionItems(question)
   const level = LEVELS.find((item) => item.id === selectedLevel)!
+  const isTrueFalse = question.type === 'trueFalse'
+  const showHintButton = selectedLevel === 'hard' && Boolean(question.hint)
 
   return (
     <div
@@ -302,7 +444,7 @@ export function DiscoverFinalTest() {
         </div>
 
         <section className="rounded-3xl border-2 border-white/80 bg-white/95 p-6 text-center shadow-xl">
-          <div className="mb-4 text-5xl">🧩</div>
+          <div className="mb-4 text-5xl">{isTrueFalse ? '✅❌' : '🧩'}</div>
           <div className="flex items-center justify-center gap-2">
             <h2 className="text-xl font-extrabold leading-relaxed text-gray-800">{question.prompt}</h2>
             <button
@@ -314,39 +456,99 @@ export function DiscoverFinalTest() {
             </button>
           </div>
 
+          {/* زر التلميح */}
+          {showHintButton && (
+            <div className="mt-3">
+              {!showHint ? (
+                <button
+                  onClick={() => setShowHint(true)}
+                  className="rounded-2xl bg-amber-50 px-4 py-2 text-sm font-bold text-amber-700 transition hover:scale-105"
+                >
+                  💡 أظهر التلميح
+                </button>
+              ) : (
+                <p className="rounded-2xl bg-amber-50 p-3 text-sm font-bold text-amber-800">
+                  💡 {question.hint}
+                </p>
+              )}
+            </div>
+          )}
+
           {question.explanation && selectedId && (
-            <p className="mt-3 rounded-2xl bg-amber-50 p-2 text-sm font-semibold text-amber-800">
+            <p className="mt-3 rounded-2xl bg-blue-50 p-2 text-sm font-semibold text-blue-800">
               💡 {question.explanation}
             </p>
           )}
         </section>
 
-        <div className="mt-5 grid grid-cols-2 gap-4">
-          {options.map((option) => {
-            const isSelected = selectedId === option.id
-            const isCorrect = option.id === question.correctId
-            let stateClass = 'border-white/70 bg-white/90 hover:-translate-y-1'
+        {/* ——— الخيارات ——— */}
+        {isTrueFalse && options.length >= 2 ? (
+          // صح أم خطأ: نعرض خياري صح / خطأ فقط
+          <div className="mt-5 grid grid-cols-2 gap-4">
+            {[
+              { id: 'true', label: '✅ صَحِيح', color: '#2fb68c' },
+              { id: 'false', label: '❌ خَطَأ', color: '#e85d75' },
+            ].map((opt) => {
+              // نحدد أي زر هو الصحيح بناءً على correctId: إن كان يساوي optionIds[0] → صح، وإلا → خطأ
+              const isCorrectAnswer = question.correctId === question.optionIds[0]
+              const thisIsTrue = opt.id === 'true'
+              
+              const isSelectedThis = selectedId === opt.id
+              const isThisCorrect = thisIsTrue ? isCorrectAnswer : !isCorrectAnswer
 
-            if (selectedId) {
-              if (isCorrect) stateClass = 'border-green-400 bg-green-50'
-              else if (isSelected) stateClass = 'border-red-400 bg-red-50'
-              else stateClass = 'border-white/50 bg-white/60 opacity-70'
-            }
+              let cls = 'border-white/70 bg-white/90 hover:-translate-y-1'
+              if (selectedId) {
+                if (isThisCorrect) cls = 'border-green-400 bg-green-50'
+                else if (isSelectedThis) cls = 'border-red-400 bg-red-50'
+                else cls = 'border-white/50 bg-white/60 opacity-70'
+              }
 
-            return (
-              <button
-                key={option.id}
-                onClick={() => answer(option.id)}
-                disabled={selectedId !== null}
-                className={`flex min-h-32 flex-col items-center justify-center gap-2 rounded-3xl border-2 p-4 text-center shadow-lg transition ${stateClass}`}
-              >
-                <span className="text-5xl">{option.emoji}</span>
-                <span className="text-base font-extrabold text-gray-800">{option.nameAr}</span>
-                <span className="text-xs font-semibold text-gray-500" dir="ltr">{option.nameEn}</span>
-              </button>
-            )
-          })}
-        </div>
+              return (
+                <button
+                  key={opt.id}
+                  onClick={() => {
+                    // نحوّل الاختيار إلى id الإجابة الصحيحة/الخاطئة الفعلي في بنك الأسئلة
+                    const realId = thisIsTrue ? question.optionIds[0] : question.optionIds[1]
+                    answer(realId)
+                  }}
+                  disabled={selectedId !== null}
+                  className={`flex min-h-32 flex-col items-center justify-center gap-3 rounded-3xl border-2 p-5 shadow-lg transition ${cls}`}
+                >
+                  <span className="text-6xl">{opt.id === 'true' ? '✅' : '❌'}</span>
+                  <span className="text-xl font-extrabold text-gray-800">{opt.label}</span>
+                </button>
+              )
+            })}
+          </div>
+        ) : (
+          // اختيار من متعدد عادي
+          <div className="mt-5 grid grid-cols-2 gap-4">
+            {options.map((option) => {
+              const isSelected = selectedId === option.id
+              const isCorrect = option.id === question.correctId
+              let stateClass = 'border-white/70 bg-white/90 hover:-translate-y-1'
+
+              if (selectedId) {
+                if (isCorrect) stateClass = 'border-green-400 bg-green-50'
+                else if (isSelected) stateClass = 'border-red-400 bg-red-50'
+                else stateClass = 'border-white/50 bg-white/60 opacity-70'
+              }
+
+              return (
+                <button
+                  key={option.id}
+                  onClick={() => answer(option.id)}
+                  disabled={selectedId !== null}
+                  className={`flex min-h-32 flex-col items-center justify-center gap-2 rounded-3xl border-2 p-4 text-center shadow-lg transition ${stateClass}`}
+                >
+                  <span className="text-5xl">{option.emoji}</span>
+                  <span className="text-base font-extrabold text-gray-800">{option.nameAr}</span>
+                  <span className="text-xs font-semibold text-gray-500" dir="ltr">{option.nameEn}</span>
+                </button>
+              )
+            })}
+          </div>
+        )}
 
         <p className="mt-5 text-center text-xs font-semibold text-gray-400">
           اختر إجابة واحدة فقط — لن ينتقل السؤال حتى تختار.

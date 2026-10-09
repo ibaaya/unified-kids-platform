@@ -9,6 +9,7 @@ import { ParentDashboard } from '../ParentDashboard/ParentDashboard'
 import { EnglishParentDashboard } from '../../english/pages/EnglishParentDashboard'
 import { NumbersParentPage } from '../../numbers/pages/NumbersParentPage'
 import { DiscoverParentSettings } from '../../discover/pages/DiscoverParentSettings'
+import { STUDIO_ENABLED } from '../../config/features'
 
 // القسم النشط حالياً
 type Section = 'arabic' | 'english' | 'numbers' | null
@@ -159,6 +160,13 @@ export function ParentHub() {
           </button>
         ))}
       </div>
+
+      {STUDIO_ENABLED && (
+        <div className="mt-5 flex w-full max-w-2xl flex-wrap justify-center gap-3">
+          <button onClick={() => navigate('/islamic/voice-studio')} className="rounded-2xl border border-white/20 bg-white/10 px-5 py-3 font-bold text-white shadow-lg transition hover:bg-white/20">🎙️ استوديو أخلاقي الجميلة</button>
+          <button onClick={() => navigate('/skills/voice-studio')} className="rounded-2xl border border-white/20 bg-white/10 px-5 py-3 font-bold text-white shadow-lg transition hover:bg-white/20">🎙️ استوديو مدينة المهارات</button>
+        </div>
+      )}
 
       {/* زر العودة للمنصة */}
       <button

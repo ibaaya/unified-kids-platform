@@ -11,21 +11,80 @@ import { useParams, Link } from 'react-router-dom'
 import { getWorldById } from '../data/discoverData'
 import type { DiscoverItem } from '../data/discoverData'
 import { ItemCard } from '../components/ItemCard'
-import { ActivityEngine } from '../components/ActivityEngine'
+import { ActivityEngine, type ActivityType } from '../components/ActivityEngine'
 import { markItemSeen, getWorldCompletion } from '../engine/discoverProgress'
 import { speakArabic } from '../../engine/soundManager'
 import { speakEnglish } from '../../english/engine/soundManager'
 
 
 type Mode = 'explore' | 'chooseActivity' | 'playing'
-type ActivityId = 'findIt' | 'whatIsThis' | 'listenPick' | 'quiz'
 
-// الأنشطة المتاحة لكل عالم
-const ACTIVITIES: { id: ActivityId; titleAr: string; titleEn: string; emoji: string; desc: string }[] = [
-  { id: 'findIt',     titleAr: 'أَيْنَ هُوَ؟',       titleEn: 'Find It!',       emoji: '🔍', desc: 'ابحث عن الشيء الصحيح' },
-  { id: 'whatIsThis', titleAr: 'مَا هَذَا؟',          titleEn: 'What Is This?',  emoji: '❓', desc: 'خمّن اسم الشيء' },
-  { id: 'listenPick', titleAr: 'اسْمَعْ وَاخْتَرْ',   titleEn: 'Listen & Pick',  emoji: '👂', desc: 'اسمع الكلمة واختر الصورة' },
-  { id: 'quiz',       titleAr: 'اخْتَبِرْ نَفْسَكَ',  titleEn: 'Quiz Yourself',  emoji: '🏆', desc: 'اختبار شامل سريع' },
+// ——— الأنشطة المتاحة — مع لون ووصف واضح ———
+interface ActivityMeta {
+  id: ActivityType
+  titleAr: string
+  titleEn: string
+  emoji: string
+  desc: string
+  color: string
+  colorEnd: string
+}
+
+const ACTIVITIES: ActivityMeta[] = [
+  {
+    id: 'discover',
+    titleAr: 'اِكْتَشِفْ وَاعْرِفْ',
+    titleEn: 'Discover & Learn',
+    emoji: '🔍',
+    desc: 'اختر الشيء الصحيح',
+    color: '#3aa0d9',
+    colorEnd: '#2fb68c',
+  },
+  {
+    id: 'listenPick',
+    titleAr: 'اسْمَعْ وَاخْتَرْ',
+    titleEn: 'Listen & Pick',
+    emoji: '👂',
+    desc: 'اسمع الكلمة واختر الصورة',
+    color: '#8b5fbf',
+    colorEnd: '#3aa0d9',
+  },
+  {
+    id: 'riddle',
+    titleAr: 'خَمِّنْ مِنَ الْوَصْفِ',
+    titleEn: 'Guess from Description',
+    emoji: '🧩',
+    desc: 'اقرأ الوصف وخمّن',
+    color: '#f59e0b',
+    colorEnd: '#e85d75',
+  },
+  {
+    id: 'whatMissing',
+    titleAr: 'مَا النَّاقِصُ؟',
+    titleEn: 'What Is Missing?',
+    emoji: '🎨',
+    desc: 'اكتشف الشيء المفقود',
+    color: '#e85d75',
+    colorEnd: '#8b5fbf',
+  },
+  {
+    id: 'sort',
+    titleAr: 'صَنِّفِ الأَشْيَاءَ',
+    titleEn: 'Sort Things',
+    emoji: '🔗',
+    desc: 'صنّف كل شيء لمجموعته',
+    color: '#2fb68c',
+    colorEnd: '#3aa0d9',
+  },
+  {
+    id: 'quiz',
+    titleAr: 'اخْتَبِرْ نَفْسَكَ',
+    titleEn: 'Quiz Yourself',
+    emoji: '🏆',
+    desc: 'اختبار شامل سريع',
+    color: '#fbbf24',
+    colorEnd: '#f97316',
+  },
 ]
 
 export function WorldPage() {
@@ -33,17 +92,15 @@ export function WorldPage() {
   const world = getWorldById(worldId ?? '')
   const [mode, setMode] = useState<Mode>('explore')
   const [selectedItem, setSelectedItem] = useState<DiscoverItem | null>(null)
-  const [activeActivity, setActiveActivity] = useState<ActivityId | null>(null)
+  const [activeActivity, setActiveActivity] = useState<ActivityType | null>(null)
   const [quizResult, setQuizResult] = useState<{ score: number; total: number } | null>(null)
 
-  // نطق العنصر بالعربية أولًا ثم الإنجليزية، مع مهلة قصيرة تمنع تداخل الصوتين.
   const speakItem = (item: DiscoverItem) => {
     speakArabic(item.nameAr)
     const arabicDuration = Math.max(850, Math.min(1800, 420 + item.nameAr.replace(/[^\u0600-\u06FF]/g, '').length * 95))
     window.setTimeout(() => speakEnglish(item.nameEn, { rate: 0.82 }), arabicDuration)
   }
 
-  // قراءة اسم العالم عند الدخول
   useEffect(() => {
     if (world) {
       const t = setTimeout(() => speakArabic(`مَرْحَبًا بِكَ فِي ${world.titleAr}`), 600)
@@ -72,7 +129,7 @@ export function WorldPage() {
       <ActivityEngine
         world={world}
         activityType={activeActivity}
-        questionsCount={activeActivity === 'quiz' ? 10 : 8}
+        questionsCount={activeActivity === 'quiz' ? 10 : 6}
         onComplete={(score, total) => {
           setQuizResult({ score, total })
           setMode('chooseActivity')
@@ -91,25 +148,24 @@ export function WorldPage() {
           background: `linear-gradient(160deg, ${world.color}18 0%, ${world.colorEnd}18 100%)`,
         }}
       >
-        <div className="mx-auto max-w-2xl">
-          {/* رأس الصفحة */}
-          <div className="mb-6 flex items-center justify-between">
-            <button
-              onClick={() => setMode('explore')}
+        <div className="mx-auto max-w-3xl">
+
+          {/* رأس الصفحة — زر اكتشف فقط */}
+          <div className="mb-6 flex items-center justify-between gap-3">
+            <Link
+              to={`/discover/${world.id}`}
+              onClick={(e) => { e.preventDefault(); setMode('explore') }}
               className="flex items-center gap-2 rounded-2xl border-2 border-white/70 bg-white/80 px-4 py-2 text-sm font-bold text-gray-700 shadow backdrop-blur-sm transition hover:scale-105"
             >
               ← الاستكشاف
-            </button>
-            <div className="flex items-center gap-2 rounded-2xl border-2 border-white/70 bg-white/80 px-4 py-2 shadow backdrop-blur-sm">
+            </Link>
+            <div
+              className="flex items-center gap-2 rounded-2xl border-2 border-white/70 bg-white/85 px-4 py-2 shadow backdrop-blur-sm"
+              style={{ boxShadow: `0 8px 24px ${world.color}25` }}
+            >
               <span className="text-2xl">{world.emoji}</span>
               <span className="text-base font-extrabold text-gray-800">{world.titleAr}</span>
             </div>
-            <Link
-              to="/discover"
-              className="flex items-center gap-1 rounded-2xl border-2 border-white/70 bg-white/80 px-3 py-2 text-sm font-bold text-gray-700 shadow backdrop-blur-sm transition hover:scale-105"
-            >
-              🏠
-            </Link>
           </div>
 
           {/* نتيجة آخر اختبار */}
@@ -127,29 +183,65 @@ export function WorldPage() {
             </div>
           )}
 
-          <h2 className="mb-4 text-center text-2xl font-extrabold text-gray-800">
-            🎯 اخْتَرْ نَشَاطًا
-          </h2>
+          {/* عنوان القسم */}
+          <div className="mb-5 text-center">
+            <h2 className="text-3xl font-extrabold text-gray-800">
+              🎯 اخْتَرْ نَشَاطًا
+            </h2>
+            <p className="mt-1 text-sm font-semibold text-gray-500">
+              ألعاب متنوعة لتعلّم أفضل
+            </p>
+          </div>
 
-          <div className="grid grid-cols-2 gap-4">
-            {ACTIVITIES.map((act) => (
-              <button
-                key={act.id}
-                onClick={() => { setActiveActivity(act.id); setMode('playing') }}
-                className="flex flex-col items-center gap-2 overflow-hidden rounded-3xl border-2 border-white/70 bg-white/85 p-5 text-center shadow-xl transition-all hover:scale-105 hover:-translate-y-1 backdrop-blur-sm"
-                style={{ boxShadow: `0 8px 24px ${world.color}22` }}
-              >
-                <div
-                  className="flex h-16 w-16 items-center justify-center rounded-full text-4xl shadow-inner"
-                  style={{ background: `${world.color}22` }}
+          {/* شبكة الأنشطة المحسّنة — بطاقة لكل نشاط بلونه */}
+          <div className="grid grid-cols-2 gap-4 sm:grid-cols-3">
+            {ACTIVITIES.map((act) => {
+              // إخفاء "صنّف الأشياء" إذا لم تكن هناك مجموعات لهذا العالم
+              if (act.id === 'sort') {
+                // فحص سريع: هل هذا العالم يدعم التصنيف؟ (نتركه للـActivityEngine)
+                // لا نخفيه الآن، الـActivityEngine سيتعامل مع الحالة الفارغة
+              }
+              return (
+                <button
+                  key={act.id}
+                  onClick={() => { setActiveActivity(act.id); setMode('playing') }}
+                  className="group relative flex flex-col items-center gap-2 overflow-hidden rounded-3xl border-2 border-white/70 bg-white/90 p-5 text-center shadow-xl transition-all duration-200 hover:scale-105 hover:-translate-y-1 backdrop-blur-sm active:scale-95"
+                  style={{ boxShadow: `0 10px 28px ${act.color}30` }}
                 >
-                  {act.emoji}
-                </div>
-                <h3 className="text-base font-extrabold text-gray-800">{act.titleAr}</h3>
-                <p className="text-xs text-gray-500" dir="ltr">{act.titleEn}</p>
-                <p className="text-xs text-gray-400">{act.desc}</p>
-              </button>
-            ))}
+                  {/* شريط لوني علوي */}
+                  <div
+                    className="absolute top-0 inset-x-0 h-1.5"
+                    style={{ background: `linear-gradient(90deg, ${act.color}, ${act.colorEnd})` }}
+                  />
+
+                  {/* أيقونة النشاط */}
+                  <div
+                    className="flex h-20 w-20 items-center justify-center rounded-full text-5xl shadow-inner transition-transform group-hover:scale-110"
+                    style={{
+                      background: `linear-gradient(135deg, ${act.color}22, ${act.colorEnd}22)`,
+                      border: `2px solid ${act.color}44`,
+                    }}
+                  >
+                    {act.emoji}
+                  </div>
+
+                  <h3 className="text-base font-extrabold text-gray-800 leading-tight">{act.titleAr}</h3>
+                  <p className="text-xs font-bold text-gray-500" dir="ltr">{act.titleEn}</p>
+                  <p className="text-xs text-gray-400 leading-snug">{act.desc}</p>
+
+                  {/* شارة "ابدأ" */}
+                  <span
+                    className="mt-1 rounded-full px-3 py-1 text-xs font-extrabold text-white"
+                    style={{
+                      background: `linear-gradient(90deg, ${act.color}, ${act.colorEnd})`,
+                      boxShadow: `0 3px 10px ${act.color}55`,
+                    }}
+                  >
+                    ابدأ ←
+                  </span>
+                </button>
+              )
+            })}
           </div>
         </div>
       </div>
@@ -183,33 +275,73 @@ export function WorldPage() {
 
       <div className="relative mx-auto max-w-3xl px-4 py-5">
 
-        {/* ——— الترويسة ——— */}
+        {/* ——— الترويسة — زر اكتشف فقط ——— */}
         <header className="mb-5">
-          <div className="flex items-center justify-between gap-2">
+          <div className="flex items-center justify-between gap-3">
             <Link
-              to="/discover"
-              className="flex items-center gap-2 rounded-2xl border-2 border-white/70 bg-white/80 px-3 py-2 text-sm font-bold text-gray-700 shadow backdrop-blur-sm transition hover:scale-105"
-            >
-              🌍 اكتشف
-            </Link>
+            to="/discover"
+            className="group relative flex items-center gap-2.5 overflow-hidden rounded-2xl px-5 py-3 font-extrabold text-white shadow-lg transition-all duration-300 hover:-translate-y-0.5 hover:shadow-2xl active:translate-y-0 active:scale-95"
+            style={{
+              background: `linear-gradient(135deg, ${world.color}, ${world.colorEnd})`,
+              boxShadow: `0 10px 28px ${world.color}55, inset 0 1px 0 rgba(255,255,255,.35)`,
+              fontSize: '1.05rem',
+              letterSpacing: '.02em',
+              textShadow: '0 1px 3px rgba(0,0,0,.25)',
+            }}
+          >
+            {/* لمعة علوية ديناميكية */}
+            <span
+              className="pointer-events-none absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/25 to-transparent transition-transform duration-700 group-hover:translate-x-full"
+            />
 
+            {/* أيقونة الكرة الأرضية في دائرة شفافة */}
+            <span
+              className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-white/25 text-lg shadow-inner transition-transform duration-300 group-hover:rotate-12"
+            >
+              🌍
+            </span>
+
+            {/* النص */}
+            <span className="relative z-10">اكتشف</span>
+
+            {/* سهم صغير يتحرك عند التحويم */}
+            <span className="relative z-10 text-base transition-transform duration-300 group-hover:-translate-x-1">
+              ←
+            </span>
+          </Link>
+          </div>
+
+          {/* ——— العنوان الرئيسي في الوسط (محسَّن) ——— */}
+          <div
+            className="mt-4 flex flex-col items-center gap-2 rounded-3xl border-2 border-white/70 bg-white/90 px-4 py-5 text-center shadow-2xl backdrop-blur-sm"
+            style={{ boxShadow: `0 14px 38px ${world.color}30, inset 0 1px 0 rgba(255,255,255,.5)` }}
+          >
             <div
-              className="flex items-center gap-3 rounded-3xl border-2 border-white/70 bg-white/85 px-4 py-3 shadow-xl backdrop-blur-sm"
-              style={{ boxShadow: `0 8px 24px ${world.color}25` }}
+              className="flex h-24 w-24 items-center justify-center rounded-full text-6xl shadow-lg"
+              style={{
+                background: `linear-gradient(135deg, ${world.color}30, ${world.colorEnd}30)`,
+                border: `3px solid ${world.color}66`,
+              }}
             >
-              <span className="text-3xl">{world.emoji}</span>
-              <div>
-                <h1 className="text-lg font-extrabold text-gray-800">{world.titleAr}</h1>
-                <p className="text-xs text-gray-500" dir="ltr">{world.titleEn}</p>
-              </div>
+              {world.emoji}
             </div>
-
-            <Link
-              to="/"
-              className="flex h-10 w-10 items-center justify-center rounded-2xl border-2 border-white/70 bg-white/80 text-lg shadow backdrop-blur-sm transition hover:scale-105"
+            <h1
+              className="mt-1 font-extrabold leading-tight"
+              style={{
+                fontSize: 'clamp(1.5rem, 5vw, 2.1rem)',
+                color: '#1f2937',
+                textShadow: `0 2px 8px ${world.color}33`,
+              }}
             >
-              🏠
-            </Link>
+              {world.titleAr}
+            </h1>
+            <p
+              className="text-sm font-bold text-gray-500"
+              dir="ltr"
+              style={{ letterSpacing: '.02em' }}
+            >
+              {world.titleEn}
+            </p>
           </div>
 
           {/* شريط التقدم */}

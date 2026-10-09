@@ -86,7 +86,7 @@ export function LetterWordsPage() {
 
   const goPrev = () => {
     if (prevSection) navigate(`/world/letters/${letterId}/words/${prevSection.position}`)
-    else navigate(`/world/letters/${letterId}`)
+    else navigate('/world/letters')
   }
   const goNext = () => {
     if (nextSection) navigate(`/world/letters/${letterId}/words/${nextSection.position}`)
@@ -94,12 +94,22 @@ export function LetterWordsPage() {
   }
 
   return (
-    <div className="min-h-screen max-w-4xl mx-auto px-4 py-8 pb-16">
+    <div className="min-h-screen max-w-4xl mx-auto px-4 pt-14 pb-16 sm:pt-16">
       <div className="mb-6 flex items-center justify-between">
         <Button variant="ghost" onClick={goPrev}>
           ← {prevSection ? prevSection.title : 'حرف ' + letter.name}
         </Button>
       </div>
+
+      <Card className="relative mb-6 border border-white/80 p-5 text-center shadow-xl backdrop-blur-md sm:p-6" style={{ background: 'linear-gradient(145deg, rgba(255,255,255,.20), rgba(255,255,255,.12))' }}>
+        <div className="content-scale text-8xl font-display font-extrabold text-white drop-shadow-[0_3px_5px_rgba(8,77,101,.85)]">
+          {letter.id}
+        </div>
+        <div className="mt-1 flex items-center justify-center gap-2">
+          <div className="content-scale text-lg font-extrabold text-white drop-shadow-[0_2px_3px_rgba(8,77,101,.85)]">حرف {letter.name}</div>
+          <SpeakButton text={letter.name} audioId={`letter:${letter.id}`} label={`استمع لاسم حرف ${letter.name}`} size="sm" />
+        </div>
+      </Card>
 
       {/* مؤشر التقدم عبر الأقسام الثلاثة */}
       <div className="flex items-center justify-center gap-3 mb-8">

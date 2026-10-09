@@ -1,0 +1,8 @@
+/* src/skills/pages/skills.css — حركات بسيطة فقط؛ بقية التصميم عبر Tailwind */
+@keyframes skills-shake { 0%,100% { transform: translateX(0) } 20% { transform: translateX(-8px) } 40% { transform: translateX(8px) } 60% { transform: translateX(-6px) } 80% { transform: translateX(6px) } }
+@keyframes skills-pop { 0% { transform: scale(.85); opacity: 0 } 100% { transform: scale(1); opacity: 1 } }
+.skills-shake { animation: skills-shake .45s ease; }
+.skills-pop { animation: skills-pop .25s ease-out; }
+.skills-root button, .skills-root a { -webkit-tap-highlight-color: transparent; touch-action: manipulation; }
+.skills-root { user-select: none; -webkit-user-select: none; }
+@media (prefers-reduced-motion: reduce) { .skills-shake, .skills-pop, .animate-pulse { animation: none !important; } }

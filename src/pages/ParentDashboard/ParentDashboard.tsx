@@ -270,6 +270,8 @@ export function ParentDashboard() {
         <div className="flex gap-3 flex-wrap">
           <Button onClick={() => navigate('/voice-studio')}>🌙 استوديو العربية</Button>
           <Button onClick={() => navigate('/english/voice-studio')}>🔤 English Voice Studio</Button>
+          <Button onClick={() => navigate('/islamic/voice-studio')}>🌙 استوديو أخلاقي الجميلة</Button>
+          <Button onClick={() => navigate('/skills/voice-studio')}>🧠 استوديو مدينة المهارات</Button>
         </div>
       </Card>}
 

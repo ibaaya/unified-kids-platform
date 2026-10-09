@@ -71,6 +71,14 @@ import { NumbersParentPage } from '../numbers/pages/NumbersParentPage'
 import { NumbersChallengePage } from '../numbers/pages/ChallengePage'
 import NumbersVoiceStudio from '../numbers/pages/NumbersVoiceStudio'
 
+// Skills module
+import SkillsHome from '../skills/pages/SkillsHome'
+import SkillsGamePage from '../skills/pages/SkillsGamePage'
+import SkillsLevelPage from '../skills/pages/SkillsLevelPage'
+
+// Islamic module (أخلاقي الجميلة)
+import { islamicRouteElements } from '../islamic'
+
 export function AppRoutes() {
   return (
     <Routes>
@@ -157,6 +165,16 @@ export function AppRoutes() {
       {STUDIO_ENABLED && <Route path="/discover/voice-studio" element={<ProtectedParentRoute><DiscoverVoiceStudio /></ProtectedParentRoute>} />}
       <Route path="/discover/test" element={<DiscoverFinalTest />} />
       <Route path="/discover/:worldId" element={<WorldPage />} />
+
+      {/* ==================== SKILLS MODULE (/skills) ==================== */}
+      <Route path="/skills" element={<SkillsHome />} />
+      <Route path="/skills/:gameId" element={<SkillsGamePage />} />
+      <Route path="/skills/:gameId/:level" element={<SkillsLevelPage />} />
+      {STUDIO_ENABLED && <Route path="/skills/voice-studio" element={<ProtectedParentRoute><VoiceStudio section="skills" /></ProtectedParentRoute>} />}
+
+      {/* ==================== ISLAMIC MODULE (/islamic) — أخلاقي الجميلة ==================== */}
+      {islamicRouteElements}
+      {STUDIO_ENABLED && <Route path="/islamic/voice-studio" element={<ProtectedParentRoute><VoiceStudio section="islamic" /></ProtectedParentRoute>} />}
     </Routes>
   )
 }

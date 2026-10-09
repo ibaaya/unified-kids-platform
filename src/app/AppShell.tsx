@@ -91,10 +91,26 @@ export function AppShell() {
       {isNumbersPage && (
         <Link
           to="/numbers"
-          className="fixed app-shell-nav app-shell-nav-start z-[60] inline-flex min-h-11 items-center gap-2 rounded-2xl border-2 border-white/90 bg-violet-800/90 px-3 py-2 text-sm font-extrabold text-white shadow-xl backdrop-blur-md transition hover:-translate-y-0.5 "
           dir="rtl"
+          className="group fixed app-shell-nav app-shell-nav-start z-[60] inline-flex items-center gap-2.5 overflow-hidden rounded-full px-4 py-2.5 font-extrabold text-white shadow-lg transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl active:scale-95"
+          style={{
+            background: 'linear-gradient(135deg, #7c3aed, #a855f7)',
+            boxShadow: '0 10px 28px rgba(124,58,237,.55), inset 0 1px 0 rgba(255,255,255,.30)',
+            fontSize: '.95rem',
+            letterSpacing: '.02em',
+            textShadow: '0 1px 3px rgba(0,0,0,.30)',
+          }}
         >
-          🔢 الأرقام
+          {/* لمعة عابرة عند التحويم */}
+          <span className="pointer-events-none absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/25 to-transparent transition-transform duration-700 group-hover:translate-x-full" />
+
+          {/* أيقونة الأرقام في دائرة شفافة */}
+          <span className="relative z-10 flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-white/25 text-base shadow-inner transition-transform duration-300 group-hover:rotate-12">
+            🔢
+          </span>
+
+          {/* النص */}
+          <span className="relative z-10">الأرقام</span>
         </Link>
       )}
 

@@ -20,7 +20,7 @@ export function LettersWorld() {
           <button
             key={letter.id}
             type="button"
-            onClick={() => navigate(`/world/letters/${encodeURIComponent(letter.id)}`)}
+            onClick={() => navigate(`/world/letters/${encodeURIComponent(letter.id)}/words/start`)}
             className="group relative flex min-h-24 flex-col items-center justify-center gap-1 overflow-hidden rounded-[1.35rem] border-2 border-white/90 px-2 py-3 text-center shadow-[0_12px_24px_rgba(11,74,98,.2),inset_0_2px_0_rgba(255,255,255,.95),inset_0_-5px_12px_rgba(76,157,178,.12)] backdrop-blur-sm transition duration-200 hover:-translate-y-1 hover:scale-[1.04] hover:shadow-[0_18px_30px_rgba(11,74,98,.28),inset_0_2px_0_rgba(255,255,255,1)] focus-visible:outline focus-visible:outline-4 focus-visible:outline-offset-2 focus-visible:outline-amber-300 sm:min-h-28"
             style={{ background: 'radial-gradient(ellipse at 30% 12%, rgba(255,255,255,.92), rgba(255,255,255,.50) 48%, rgba(231,250,255,.38))' }}
             aria-label={`حرف ${letter.name}`}

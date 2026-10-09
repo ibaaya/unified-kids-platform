@@ -1,0 +1,9 @@
+{
+  "name": "rihlaty-skills-module",
+  "private": true,
+  "version": "2.0.0",
+  "description": "Standalone مدينة المهارات module for Rihlaty",
+  "scripts": {
+    "validate:skills": "tsx src/skills/scripts/validateContent.ts"
+  }
+}
