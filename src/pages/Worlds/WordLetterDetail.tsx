@@ -2,7 +2,6 @@ import { useEffect } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import { Card } from '../../components/ui/Card'
 import { Button } from '../../components/ui/Button'
-import { Mascot } from '../../components/character/Mascot'
 import { HighlightedWord } from '../../components/ui/HighlightedWord'
 import { SpeakButton } from '../../components/ui/SpeakButton'
 import { EmojiIllustration } from '../../components/ui/EmojiIllustration'
@@ -12,6 +11,7 @@ import { getLetterPositionsInWord } from '../../utils/arabicText'
 import lettersData from '../../data/letters.json'
 import wordsData from '../../data/words.json'
 import type { Letter, Word } from '../../types/content'
+import { getDefiniteLetterName } from '../../utils/arabicLetterNames'
 
 const letters = lettersData as Letter[]
 const words = wordsData as Word[]
@@ -29,6 +29,11 @@ export function WordLetterDetail() {
   const letter = letters.find((item) => item.id === letterId)
   const sectionIndex = sections.findIndex((item) => item.position === position)
   const section = sections[sectionIndex]
+  const positionPhrase: Record<Word['position'], string> = {
+    start: 'فِي أَوَّلِ الْكَلِمَةِ',
+    middle: 'فِي وَسَطِ الْكَلِمَةِ',
+    end: 'فِي آخِرِ الْكَلِمَةِ',
+  }
 
   useEffect(() => {
     if (letterId && (!position || sectionIndex < 0)) {
@@ -76,17 +81,63 @@ export function WordLetterDetail() {
 
       <Card className="overflow-hidden mb-6 border-2 border-white/80 shadow-xl backdrop-blur-md" style={{ backgroundColor: 'rgba(255,255,255,.18)' }}>
         <div className="p-4 sm:p-5 text-center text-[var(--color-ink)] relative" style={{ background: `linear-gradient(135deg, color-mix(in srgb, ${section.color} 26%, transparent), color-mix(in srgb, ${section.color} 16%, transparent))` }}>
-          {isAllDone && <span className="absolute top-3 left-3 rounded-full bg-emerald-700 text-white px-3 py-1 font-extrabold shadow">✓ مكتمل</span>}
-          <div className="text-sm font-bold text-[var(--color-ink-soft)]">المحطة {sectionIndex + 1} من 3</div>
-          <h1 className="font-display text-3xl font-extrabold mt-1">{section.emoji} {section.title}</h1>
-          <p className="mt-2 font-semibold text-[var(--color-ink)]">{section.label} — حرف {letter.name} ({letter.id})</p>
-          <div className="inline-flex mt-3 rounded-full border border-white/80 bg-white/55 px-4 py-1 text-sm font-bold">أُنجز {completedCount} من {letterWords.length}</div>
-        </div>
+            {isAllDone && <span className="absolute top-3 left-3 rounded-full bg-emerald-700 text-white px-3 py-1 font-extrabold shadow">✓ مكتمل</span>}
+
+            {/* شريط علوي: عنوان المحطة إلى اليمين + مؤشر المحطة */}
+            <div className="flex items-start justify-between gap-3 mb-1">
+              <h1 className="font-display text-3xl font-extrabold text-left">
+                {section.emoji} {section.title}
+              </h1>
+              <div className="text-sm font-bold text-[var(--color-ink-soft)] shrink-0 pt-2">
+                المحطة {sectionIndex + 1} من 3
+              </div>
+            </div>
+
+            {/* وصف القسم */}
+            <p className="font-semibold text-[var(--color-ink)]">{section.label}</p>
+
+            {/* الحرف المستهدف في منتصف مربع خاص */}
+              <div className="mt-3 flex justify-center">
+                <div
+                  className="flex items-center justify-center rounded-2xl border-2 border-white/70 shadow-md"
+                  style={{
+                    width: 'clamp(5rem, 12vw, 6.5rem)',
+                    height: 'clamp(5rem, 12vw, 6.5rem)',
+                    backgroundColor: `color-mix(in srgb, ${section.color} 22%, white)`,
+                  }}
+                  aria-label={`الحرف ${letter.name}`}
+                >
+                  <span
+                    className="font-display font-extrabold text-[var(--world-letters)] drop-shadow-sm leading-none"
+                    style={{ fontSize: 'clamp(3rem, 8vw, 4.25rem)' }}
+                  >
+                    {letter.id}
+                  </span>
+                </div>
+              </div>
+
+            {/* العبارة الترحيبية: اسم الحرف بلون مميز */}
+            <p className="mt-3 text-xl sm:text-2xl font-extrabold text-[var(--color-ink)]">
+              لِنَكْتَشِفَ حَرْفَ{' '}
+              <span
+                className="font-extrabold"
+                style={{ color: 'var(--world-letters)' }}
+              >
+                {getDefiniteLetterName(letter.id)}
+              </span>{' '}
+              {positionPhrase[section.position]}
+            </p>
+
+            {/* مؤشر الإنجاز */}
+            <div className="flex justify-end mt-3">
+            <div className="inline-flex rounded-full border border-white/80 bg-white/55 px-4 py-1 text-sm font-bold">
+              أُنجز {completedCount} من {letterWords.length}
+            </div>
+          </div>
+          </div>
       </Card>
 
-      <div className="flex justify-center mb-5">
-        <Mascot message={`لنكتشف حرف ${letter.name} في ${section.title}!`} size={72} />
-      </div>
+      
 
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
         {letterWords.map((word, index) => {
@@ -98,7 +149,13 @@ export function WordLetterDetail() {
               <span className="absolute top-2 right-2 rounded-full bg-[var(--color-sky)]/10 text-[var(--color-sky)] text-xs font-bold px-2 py-1">كلمة {index + 1}</span>
               {isDone && <span className="absolute top-2 left-2 rounded-full bg-[var(--color-leaf)]/10 text-[var(--color-leaf)] px-2 py-1 text-xs font-bold">✓</span>}
               <EmojiIllustration emoji={word.imageEmoji} className="mt-5" />
-              <HighlightedWord text={word.text} letterId={letter.id} position={word.position} className="content-scale text-4xl font-extrabold" />
+              <HighlightedWord
+                  text={word.text}
+                  letterId={letter.id}
+                  position={word.position}
+                  className="font-extrabold"
+                  style={{ fontSize: 'clamp(2.75rem, 6vw, 3.5rem)' }}
+                />
               {!isUnambiguous && <span className="text-xs text-amber-700">ملاحظة: الحرف يتكرر في أكثر من موضع</span>}
               <div className="flex items-center gap-2 mt-auto">
                 <SpeakButton text={word.text} audioId={`word:${word.id}`} size="sm" label={`استمع لكلمة ${word.text}`} />

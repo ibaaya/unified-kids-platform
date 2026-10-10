@@ -7,7 +7,7 @@ import type { CapacitorConfig } from '@capacitor/cli'
  */
 const config: CapacitorConfig = {
   appId: 'com.example.kidslearning',
-  appName: 'منصة التعلم',
+  appName: 'رحلتي',
   webDir: 'dist',
   backgroundColor: '#edf8f5',
 

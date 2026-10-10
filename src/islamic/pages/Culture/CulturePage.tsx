@@ -11,18 +11,57 @@ const CultureDetail: React.FC<{ item: CultureItem; onClose: () => void }> = ({ i
   const speech = `${item.title}. ${item.description}`;
   useAutoSpeak(speech, item.id);
   return (
-    <Modal onClose={onClose} maxWidth={380}>
-      <div style={{ textAlign: 'center', marginBottom: 14 }}>
-        <div style={{ fontSize: '3.2rem', marginBottom: 6 }}>{item.icon}</div>
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 10 }}>
-          <h2 style={{ margin: 0, color: item.color }}>{item.title}</h2>
+    <Modal onClose={onClose} maxWidth={420}>
+      <div style={{ textAlign: 'center', marginBottom: 18 }}>
+        <div
+          style={{
+            width: 96,
+            height: 96,
+            borderRadius: '50%',
+            margin: '0 auto 12px',
+            background: `linear-gradient(135deg, ${item.color}30, ${item.color}15)`,
+            border: `3px solid ${item.color}40`,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            fontSize: '3.4rem',
+            boxShadow: `0 10px 24px ${item.color}30`,
+          }}
+        >
+          {item.icon}
+        </div>
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 10, flexWrap: 'wrap' }}>
+          <h2 style={{ margin: 0, color: item.color, fontSize: '1.6rem', fontWeight: 900 }}>{item.title}</h2>
           <SpeakButton text={speech} />
         </div>
       </div>
-      <div style={{ background: `${item.color}10`, borderRadius: 14, padding: '14px 16px', marginBottom: 16 }}>
-        <p style={{ margin: 0, fontWeight: 600, lineHeight: 1.8, color: '#333' }}>{item.description}</p>
+      <div
+        style={{
+          background: `linear-gradient(135deg, ${item.color}18, ${item.color}0a)`,
+          borderRadius: 18,
+          padding: '16px 18px',
+          marginBottom: 18,
+          border: `2px solid ${item.color}25`,
+        }}
+      >
+        <p style={{ margin: 0, fontWeight: 700, lineHeight: 1.9, color: '#3a4652', fontSize: '1.05rem' }}>
+          {item.description}
+        </p>
       </div>
-      <button type="button" className="btn-primary" style={{ width: '100%', background: `linear-gradient(135deg, ${item.color}, ${item.color}bb)` }} onClick={onClose}>
+      <button
+        type="button"
+        className="btn-primary"
+        style={{
+          width: '100%',
+          background: `linear-gradient(135deg, ${item.color}, ${item.color}bb)`,
+          fontSize: '1.15rem',
+          padding: '14px 20px',
+          borderRadius: 18,
+          fontWeight: 900,
+          boxShadow: `0 10px 22px ${item.color}40`,
+        }}
+        onClick={onClose}
+      >
         جَميل! 🌟
       </button>
     </Modal>
@@ -40,16 +79,52 @@ const CulturePage: React.FC = () => {
             type="button"
             key={item.id}
             className="world-card game-card-btn fade-in"
-            style={{ background: `${item.color}14`, animationDelay: `${i * 0.06}s` }}
+            style={{
+              background: `linear-gradient(135deg, ${item.color}20, ${item.color}0e)`,
+              animationDelay: `${i * 0.06}s`,
+              border: `3px solid ${item.color}30`,
+              borderRadius: 22,
+              boxShadow: `0 8px 20px ${item.color}22`,
+              padding: '20px 14px',
+              transition: 'transform .2s ease, box-shadow .25s ease',
+              position: 'relative',
+              overflow: 'hidden',
+            }}
             onClick={() => setSelected(item)}
           >
-            <span className="world-icon">{item.icon}</span>
-            <h3 style={{ color: item.color }}>{item.title}</h3>
+            <span
+              className="world-icon"
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                width: 72,
+                height: 72,
+                borderRadius: '50%',
+                background: `linear-gradient(135deg, ${item.color}30, ${item.color}15)`,
+                border: `2px solid ${item.color}40`,
+                fontSize: '2.4rem',
+                lineHeight: 1,
+                margin: '0 auto 12px',
+                boxShadow: `0 6px 14px ${item.color}25`,
+              }}
+              aria-hidden="true"
+            >
+              {item.icon}
+            </span>
+            <h3 style={{ color: item.color, fontSize: '1.2rem', fontWeight: 900, margin: 0, textAlign: 'center' }}>
+              {item.title}
+            </h3>
           </button>
         ))}
       </div>
-      <div style={{ textAlign: 'center', marginTop: 24 }}>
-        <button type="button" className="btn-primary" onClick={() => navigate('/islamic/quiz/culture')}>
+      <div style={{ textAlign: 'center', marginTop: 28 }}>
+        <button
+          type="button"
+          className="btn-primary"
+          onClick={() => navigate('/islamic/quiz/culture')}
+          style={{ fontSize: '1.15rem', padding: '14px 30px', borderRadius: 18, fontWeight: 900, boxShadow: '0 10px 24px rgba(121,85,72,.35)' }}
+        >
           اختَبِر نَفسَكَ ⭐
         </button>
       </div>

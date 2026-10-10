@@ -8,7 +8,7 @@
         {
           "id": "letter-position",
           "label": "تَحْدِيدُ مَوْضِعِ الْحَرْفِ",
-          "template": "أَيْنَ حَرْفُ {letterName} فِي هَذِهِ الْكَلِمَةِ؟",
+          "template": "أَيْنَ حَرْفُ {letterNameWithDefiniteArticle} فِي هَذِهِ الْكَلِمَةِ؟",
           "variantsFrom": "letters"
         },
         {

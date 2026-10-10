@@ -1,5 +1,6 @@
 // أسماء الأرقام والأرقام الشرقية والنطق (Web Speech API + Custom Audio)
 import { playRecordedAudio, stopRecordedAudio } from '../../engine/recordedAudioManager'
+import { normalizeAnswerFeedback } from '../../utils/feedbackPrompts'
 export const NAMES = ["", "وَاحِد", "اثْنَان", "ثَلَاثَة", "أَرْبَعَة", "خَمْسَة", "سِتَّة", "سَبْعَة", "ثَمَانِيَة", "تِسْعَة", "عَشَرَة", "أَحَدَ عَشَر", "اثْنَا عَشَر", "ثَلَاثَةَ عَشَر", "أَرْبَعَةَ عَشَر", "خَمْسَةَ عَشَر", "سِتَّةَ عَشَر", "سَبْعَةَ عَشَر", "ثَمَانِيَةَ عَشَر", "تِسْعَةَ عَشَر", "عِشْرُون"];
 export const toEastern = (n: number) => String(n).replace(/\d/g, (d) => "٠١٢٣٤٥٦٧٨٩"[+d]);
 let EAST = true; export const setDigits = (e: boolean) => { EAST = e; };
@@ -65,17 +66,18 @@ export function stopSpeaking() {
 
 export function speak(text: string, on = true) {
   if (!on || typeof window === "undefined") return;
+  const speechText = normalizeAnswerFeedback(text);
 
   // 1) أوقف أي صوت جارٍ أولاً (يمنع التداخل بين سؤال وآخر أو تشجيع وسؤال)
   stopSpeaking();
   const requestId = speechRequestId;
 
   // استخدم ملف MP3 المعتمد أولاً، ثم التسجيلات القديمة في المتصفح.
-  if (playRecordedAudio(text)) return;
+  if (playRecordedAudio(speechText)) return;
 
   // 2) جرّب التسجيل المخصص
   const map = loadAudioMap();
-  const id = findAudioId(text);
+  const id = findAudioId(speechText);
   if (id && map[id]) {
     try {
       const audio = new Audio(map[id]);
@@ -84,14 +86,14 @@ export function speak(text: string, on = true) {
         if (currentAudio === audio) currentAudio = null;
       });
       audio.play().catch(() => {
-        if (requestId === speechRequestId) fallbackSpeak(text);
+        if (requestId === speechRequestId) fallbackSpeak(speechText);
       });
       return;
     } catch { /* fallback below */ }
   }
 
   // 3) احتياطي: النطق الآلي
-  fallbackSpeak(text);
+  fallbackSpeak(speechText);
 }
 
 function fallbackSpeak(text: string) {

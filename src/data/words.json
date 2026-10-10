@@ -373,10 +373,10 @@
   },
   {
     "id": "word_tha_middle_01",
-    "text": "مُثَلْثٌ",
+    "text": "مُثَلَّجَاتٌ",
     "letterId": "ث",
     "position": "middle",
-    "imageEmoji": "📐",
+    "imageEmoji": "🍦",
     "soundId": "word_tha_middle_01",
     "difficulty": 2,
     "relatedLetterIds": [
@@ -409,7 +409,7 @@
   },
   {
     "id": "word_tha_end_02",
-    "text": "وَرَثَ",
+    "text": "مِيرَاثٌ",
     "letterId": "ث",
     "position": "end",
     "imageEmoji": "📜",
@@ -457,10 +457,10 @@
   },
   {
     "id": "word_jim_start_03",
-    "text": "جَنَّةٌ",
+    "text": "جَرَادَةٌ",
     "letterId": "ج",
     "position": "start",
-    "imageEmoji": "🌳",
+    "imageEmoji": "🦗",
     "soundId": "word_jim_start_03",
     "difficulty": 1,
     "relatedLetterIds": [
@@ -520,7 +520,7 @@
     "text": "بُرْجٌ",
     "letterId": "ج",
     "position": "end",
-    "imageEmoji": "🏰",
+    "imageEmoji": "🗼",
     "soundId": "word_jim_end_02",
     "difficulty": 2,
     "relatedLetterIds": [
@@ -529,10 +529,10 @@
   },
   {
     "id": "word_jim_end_03",
-    "text": "دَرَجٌ",
+    "text": "مَوْجٌ",
     "letterId": "ج",
     "position": "end",
-    "imageEmoji": "🪜",
+    "imageEmoji": "🌊",
     "soundId": "word_jim_end_03",
     "difficulty": 2,
     "relatedLetterIds": [
@@ -589,10 +589,10 @@
   },
   {
     "id": "word_ha_middle_01",
-    "text": "مُحَمَّدٌ",
+    "text": "لَحْمٌ",
     "letterId": "ح",
     "position": "middle",
-    "imageEmoji": "🕌",
+    "imageEmoji": "🥩",
     "soundId": "word_ha_middle_01",
     "difficulty": 2,
     "relatedLetterIds": [
@@ -709,10 +709,10 @@
   },
   {
     "id": "word_kha_middle_02",
-    "text": "بَخِيلٌ",
+    "text": "فَخَّارٌ",
     "letterId": "خ",
     "position": "middle",
-    "imageEmoji": "💰",
+    "imageEmoji": "🏺",
     "soundId": "word_kha_middle_02",
     "difficulty": 2,
     "relatedLetterIds": [
@@ -745,10 +745,10 @@
   },
   {
     "id": "word_kha_end_03",
-    "text": "طَبَخَ",
+    "text": "فَرْخٌ",
     "letterId": "خ",
     "position": "end",
-    "imageEmoji": "🍳",
+    "imageEmoji": "🐣",
     "soundId": "word_kha_end_03",
     "difficulty": 3,
     "relatedLetterIds": [
@@ -889,10 +889,10 @@
   },
   {
     "id": "word_dhal_start_02",
-    "text": "ذَهَبٌ",
+    "text": "ذُرَةٌ",
     "letterId": "ذ",
     "position": "start",
-    "imageEmoji": "🥇",
+    "imageEmoji": "🌽",
     "soundId": "word_dhal_start_02",
     "difficulty": 1,
     "relatedLetterIds": [
@@ -913,10 +913,10 @@
   },
   {
     "id": "word_dhal_middle_03",
-    "text": "جَذْرٌ",
+    "text": "حِذَاءٌ",
     "letterId": "ذ",
     "position": "middle",
-    "imageEmoji": "🌱",
+    "imageEmoji": "👟",
     "soundId": "word_dhal_middle_03",
     "difficulty": 2,
     "relatedLetterIds": [
@@ -925,10 +925,10 @@
   },
   {
     "id": "word_dhal_middle_04",
-    "text": "بَذْرٌ",
+    "text": "نَافِذَةٌ",
     "letterId": "ذ",
     "position": "middle",
-    "imageEmoji": "🌱",
+    "imageEmoji": "🪟",
     "soundId": "word_dhal_middle_04",
     "difficulty": 2,
     "relatedLetterIds": [
@@ -961,10 +961,10 @@
   },
   {
     "id": "word_dhal_end_03",
-    "text": "أَخَذَ",
+    "text": "فَخِذٌ",
     "letterId": "ذ",
     "position": "end",
-    "imageEmoji": "🤲",
+    "imageEmoji": "🦵",
     "soundId": "word_dhal_end_03",
     "difficulty": 3,
     "relatedLetterIds": [
@@ -1117,10 +1117,10 @@
   },
   {
     "id": "word_ز_middle",
-    "text": "مَاعِزٌ",
+    "text": "غَزَالٌ",
     "letterId": "ز",
     "position": "middle",
-    "imageEmoji": "🐐",
+    "imageEmoji": "🦌",
     "soundId": "word_ز_middle",
     "difficulty": 1,
     "relatedLetterIds": [
@@ -1285,10 +1285,10 @@
   },
   {
     "id": "word_sin_end_02",
-    "text": "أُنْسٌ",
+    "text": "فَأْسٌ",
     "letterId": "س",
     "position": "end",
-    "imageEmoji": "😊",
+    "imageEmoji": "🪓",
     "soundId": "word_sin_end_02",
     "difficulty": 2,
     "relatedLetterIds": [
@@ -1321,10 +1321,10 @@
   },
   {
     "id": "word_shin_start_03",
-    "text": "شَرِيكٌ",
+    "text": "شَمْعَةٌ",
     "letterId": "ش",
     "position": "start",
-    "imageEmoji": "🤝",
+    "imageEmoji": "🕯️",
     "soundId": "word_shin_start_03",
     "difficulty": 1,
     "relatedLetterIds": [
@@ -1345,10 +1345,10 @@
   },
   {
     "id": "word_shin_middle_01",
-    "text": "مَشْرُوبٌ",
+    "text": "كَشَّافٌ",
     "letterId": "ش",
     "position": "middle",
-    "imageEmoji": "🥤",
+    "imageEmoji": "🔦",
     "soundId": "word_shin_middle_01",
     "difficulty": 2,
     "relatedLetterIds": [
@@ -1357,10 +1357,10 @@
   },
   {
     "id": "word_shin_middle_02",
-    "text": "عَشَرَةٌ",
+    "text": "مِنْشَارٌ",
     "letterId": "ش",
     "position": "middle",
-    "imageEmoji": "🔟",
+    "imageEmoji": "🪚",
     "soundId": "word_shin_middle_02",
     "difficulty": 2,
     "relatedLetterIds": [
@@ -1381,10 +1381,10 @@
   },
   {
     "id": "word_shin_end_01",
-    "text": "عَرْشٌ",
+    "text": "قِرْشٌ",
     "letterId": "ش",
     "position": "end",
-    "imageEmoji": "👑",
+    "imageEmoji": "🦈",
     "soundId": "word_shin_end_01",
     "difficulty": 2,
     "relatedLetterIds": [
@@ -1393,10 +1393,10 @@
   },
   {
     "id": "word_shin_end_03",
-    "text": "عَاشَ",
+    "text": "كَبْشٌ",
     "letterId": "ش",
     "position": "end",
-    "imageEmoji": "❤️",
+    "imageEmoji": "🐏",
     "soundId": "word_shin_end_03",
     "difficulty": 3,
     "relatedLetterIds": [
@@ -1429,10 +1429,10 @@
   },
   {
     "id": "word_sad_start_03",
-    "text": "صَلَاةٌ",
+    "text": "صُنْدُوقٌ",
     "letterId": "ص",
     "position": "start",
-    "imageEmoji": "🕌",
+    "imageEmoji": "📦",
     "soundId": "word_sad_start_03",
     "difficulty": 1,
     "relatedLetterIds": [
@@ -1441,7 +1441,7 @@
   },
   {
     "id": "word_ص_middle",
-    "text": "عَصَافِيرُ",
+    "text": "عُصْفُورٌ",
     "letterId": "ص",
     "position": "middle",
     "imageEmoji": "🐦",
@@ -1537,10 +1537,10 @@
   },
   {
     "id": "word_dad_start_03",
-    "text": "ضَيْفٌ",
+    "text": "ضَرْسٌ",
     "letterId": "ض",
     "position": "start",
-    "imageEmoji": "🚪",
+    "imageEmoji": "🦷",
     "soundId": "word_dad_start_03",
     "difficulty": 1,
     "relatedLetterIds": [
@@ -1561,10 +1561,10 @@
   },
   {
     "id": "word_dad_middle_01",
-    "text": "مَضْرُوبٌ",
+    "text": "رِيَاضَةٌ",
     "letterId": "ض",
     "position": "middle",
-    "imageEmoji": "🥊",
+    "imageEmoji": "🏃",
     "soundId": "word_dad_middle_01",
     "difficulty": 2,
     "relatedLetterIds": [
@@ -1609,10 +1609,10 @@
   },
   {
     "id": "word_dad_end_03",
-    "text": "مَرِيضٌ",
+    "text": "حَوْضٌ",
     "letterId": "ض",
     "position": "end",
-    "imageEmoji": "🤒",
+    "imageEmoji": "🛁",
     "soundId": "word_dad_end_03",
     "difficulty": 2,
     "relatedLetterIds": [
@@ -1669,10 +1669,10 @@
   },
   {
     "id": "word_ta2_middle_01",
-    "text": "مَطْبَخٌ",
+    "text": "مِطْرَقَةٌ",
     "letterId": "ط",
     "position": "middle",
-    "imageEmoji": "🍳",
+    "imageEmoji": "🔨",
     "soundId": "word_ta2_middle_01",
     "difficulty": 2,
     "relatedLetterIds": [
@@ -1705,10 +1705,10 @@
   },
   {
     "id": "word_ta2_end_01",
-    "text": "قِطٌّ",
+    "text": "حَائِطٌ",
     "letterId": "ط",
     "position": "end",
-    "imageEmoji": "🐱",
+    "imageEmoji": "🧱",
     "soundId": "word_ta2_end_01",
     "difficulty": 2,
     "relatedLetterIds": [
@@ -1753,10 +1753,10 @@
   },
   {
     "id": "word_dha_start_02",
-    "text": "ظِلٌّ",
+    "text": "ظَلَامٌ",
     "letterId": "ظ",
     "position": "start",
-    "imageEmoji": "🌳",
+    "imageEmoji": "🌃",
     "soundId": "word_dha_start_02",
     "difficulty": 1,
     "relatedLetterIds": [
@@ -1777,10 +1777,10 @@
   },
   {
     "id": "word_dha_middle_01",
-    "text": "مَظْلُومٌ",
+    "text": "نَظَّارَةٌ",
     "letterId": "ظ",
     "position": "middle",
-    "imageEmoji": "😢",
+    "imageEmoji": "👓",
     "soundId": "word_dha_middle_01",
     "difficulty": 2,
     "relatedLetterIds": [
@@ -1789,10 +1789,10 @@
   },
   {
     "id": "word_dha_middle_02",
-    "text": "نَظَرَ",
+    "text": "عَظْمٌ",
     "letterId": "ظ",
     "position": "middle",
-    "imageEmoji": "👀",
+    "imageEmoji": "🦴",
     "soundId": "word_dha_middle_02",
     "difficulty": 2,
     "relatedLetterIds": [
@@ -1897,10 +1897,10 @@
   },
   {
     "id": "word_ain_middle_02",
-    "text": "سَعَادَةٌ",
+    "text": "مِلْعَقَةٌ",
     "letterId": "ع",
     "position": "middle",
-    "imageEmoji": "😊",
+    "imageEmoji": "🥄",
     "soundId": "word_ain_middle_02",
     "difficulty": 2,
     "relatedLetterIds": [
@@ -1921,10 +1921,10 @@
   },
   {
     "id": "word_ain_end_02",
-    "text": "جَمَعَ",
+    "text": "إِصْبَعٌ",
     "letterId": "ع",
     "position": "end",
-    "imageEmoji": "🤲",
+    "imageEmoji": "☝️",
     "soundId": "word_ain_end_02",
     "difficulty": 3,
     "relatedLetterIds": [
@@ -1933,10 +1933,10 @@
   },
   {
     "id": "word_ain_end_03",
-    "text": "رَكَعَ",
+    "text": "قِنَاعٌ",
     "letterId": "ع",
     "position": "end",
-    "imageEmoji": "🕌",
+    "imageEmoji": "🎭",
     "soundId": "word_ain_end_03",
     "difficulty": 3,
     "relatedLetterIds": [
@@ -1945,10 +1945,10 @@
   },
   {
     "id": "word_غ_start",
-    "text": "غُرْفَةٌ",
+    "text": "غَيْمَةٌ",
     "letterId": "غ",
     "position": "start",
-    "imageEmoji": "🛋️",
+    "imageEmoji": "☁️",
     "soundId": "word_غ_start",
     "difficulty": 1,
     "relatedLetterIds": [
@@ -2005,10 +2005,10 @@
   },
   {
     "id": "word_ghain_middle_02",
-    "text": "بَغْلٌ",
+    "text": "بَبَّغَاءُ",
     "letterId": "غ",
     "position": "middle",
-    "imageEmoji": "🐴",
+    "imageEmoji": "🦜",
     "soundId": "word_ghain_middle_02",
     "difficulty": 2,
     "relatedLetterIds": [
@@ -2029,10 +2029,10 @@
   },
   {
     "id": "word_ghain_end_02",
-    "text": "بَلَغَ",
+    "text": "دِمَاغٌ",
     "letterId": "غ",
     "position": "end",
-    "imageEmoji": "🎯",
+    "imageEmoji": "🧠",
     "soundId": "word_ghain_end_02",
     "difficulty": 3,
     "relatedLetterIds": [
@@ -2041,10 +2041,10 @@
   },
   {
     "id": "word_ghain_end_03",
-    "text": "صَبَغَ",
+    "text": "وَزَغٌ",
     "letterId": "غ",
     "position": "end",
-    "imageEmoji": "🎨",
+    "imageEmoji": "🦎",
     "soundId": "word_ghain_end_03",
     "difficulty": 3,
     "relatedLetterIds": [
@@ -2101,10 +2101,10 @@
   },
   {
     "id": "word_fa_middle_01",
-    "text": "مِفْتَاحٌ",
+    "text": "سَفِينَةٌ",
     "letterId": "ف",
     "position": "middle",
-    "imageEmoji": "🔑",
+    "imageEmoji": "🚢",
     "soundId": "word_fa_middle_01",
     "difficulty": 2,
     "relatedLetterIds": [
@@ -2293,10 +2293,10 @@
   },
   {
     "id": "word_kaf_start_03",
-    "text": "كَلْبٌ",
+    "text": "كُرسِيٌ",
     "letterId": "ك",
     "position": "start",
-    "imageEmoji": "🐕",
+    "imageEmoji": "🪑",
     "soundId": "word_kaf_start_03",
     "difficulty": 1,
     "relatedLetterIds": [
@@ -2305,10 +2305,10 @@
   },
   {
     "id": "word_ك_middle",
-    "text": "مَكْتَبٌ",
+    "text": "بُرْكَانٌ",
     "letterId": "ك",
     "position": "middle",
-    "imageEmoji": "🗄️",
+    "imageEmoji": "🌋",
     "soundId": "word_ك_middle",
     "difficulty": 1,
     "relatedLetterIds": [
@@ -2317,10 +2317,10 @@
   },
   {
     "id": "word_kaf_middle_01",
-    "text": "سُكَّرٌ",
+    "text": "مَرْكَبٌ",
     "letterId": "ك",
     "position": "middle",
-    "imageEmoji": "🍬",
+    "imageEmoji": "🚤",
     "soundId": "word_kaf_middle_01",
     "difficulty": 2,
     "relatedLetterIds": [
@@ -2353,10 +2353,10 @@
   },
   {
     "id": "word_kaf_end_02",
-    "text": "مَلِكٌ",
+    "text": "شَوْكٌ",
     "letterId": "ك",
     "position": "end",
-    "imageEmoji": "👑",
+    "imageEmoji": "🌵",
     "soundId": "word_kaf_end_02",
     "difficulty": 2,
     "relatedLetterIds": [
@@ -2401,10 +2401,10 @@
   },
   {
     "id": "word_lam_start_02",
-    "text": "لَعِبٌ",
+    "text": "لِسَانٌ",
     "letterId": "ل",
     "position": "start",
-    "imageEmoji": "⚽",
+    "imageEmoji": "👅",
     "soundId": "word_lam_start_02",
     "difficulty": 1,
     "relatedLetterIds": [
@@ -2425,10 +2425,10 @@
   },
   {
     "id": "word_lam_middle_01",
-    "text": "مَلِيكٌ",
+    "text": "سَلَّةٌ",
     "letterId": "ل",
     "position": "middle",
-    "imageEmoji": "👑",
+    "imageEmoji": "🧺",
     "soundId": "word_lam_middle_01",
     "difficulty": 2,
     "relatedLetterIds": [
@@ -2437,10 +2437,10 @@
   },
   {
     "id": "word_lam_middle_03",
-    "text": "سَلَامٌ",
+    "text": "حَلْوَى",
     "letterId": "ل",
     "position": "middle",
-    "imageEmoji": "🕊️",
+    "imageEmoji": "🍬",
     "soundId": "word_lam_middle_03",
     "difficulty": 2,
     "relatedLetterIds": [
@@ -2473,10 +2473,10 @@
   },
   {
     "id": "word_lam_end_03",
-    "text": "أَكَلَ",
+    "text": "حَبْلٌ",
     "letterId": "ل",
     "position": "end",
-    "imageEmoji": "🍽️",
+    "imageEmoji": "🪢",
     "soundId": "word_lam_end_03",
     "difficulty": 3,
     "relatedLetterIds": [
@@ -2593,10 +2593,10 @@
   },
   {
     "id": "word_ن_start",
-    "text": "نَجْمٌ",
+    "text": "نَوْمٌ",
     "letterId": "ن",
     "position": "start",
-    "imageEmoji": "⭐",
+    "imageEmoji": "😴",
     "soundId": "word_ن_start",
     "difficulty": 1,
     "relatedLetterIds": [
@@ -2653,10 +2653,10 @@
   },
   {
     "id": "word_nun_middle_02",
-    "text": "بِنْتٌ",
+    "text": "سِنْجَابٌ",
     "letterId": "ن",
     "position": "middle",
-    "imageEmoji": "👧",
+    "imageEmoji": "🐿️",
     "soundId": "word_nun_middle_02",
     "difficulty": 2,
     "relatedLetterIds": [
@@ -2737,10 +2737,10 @@
   },
   {
     "id": "word_ه_middle",
-    "text": "ذَهَبٌ",
+    "text": "أَهْلٌ",
     "letterId": "ه",
     "position": "middle",
-    "imageEmoji": "🪙",
+    "imageEmoji": "‍👨‍👩‍👧",
     "soundId": "word_ه_middle",
     "difficulty": 1,
     "relatedLetterIds": [
@@ -2749,10 +2749,10 @@
   },
   {
     "id": "word_ha2_middle_01",
-    "text": "مَهْرٌ",
+    "text": "فَهْدٌ",
     "letterId": "ه",
     "position": "middle",
-    "imageEmoji": "💍",
+    "imageEmoji": "🐆",
     "soundId": "word_ha2_middle_01",
     "difficulty": 2,
     "relatedLetterIds": [
@@ -2761,10 +2761,10 @@
   },
   {
     "id": "word_ha2_middle_02",
-    "text": "شَهْرٌ",
+    "text": "سَهْمٌ",
     "letterId": "ه",
     "position": "middle",
-    "imageEmoji": "📅",
+    "imageEmoji": "🏹",
     "soundId": "word_ha2_middle_02",
     "difficulty": 2,
     "relatedLetterIds": [
@@ -2785,10 +2785,10 @@
   },
   {
     "id": "word_ha2_end_02",
-    "text": "مِيَاهٌ",
+    "text": "مُنَبِهٌ",
     "letterId": "ه",
     "position": "end",
-    "imageEmoji": "💧",
+    "imageEmoji": "⏰",
     "soundId": "word_ha2_end_02",
     "difficulty": 1,
     "relatedLetterIds": [
@@ -2833,10 +2833,10 @@
   },
   {
     "id": "word_waw_start_02",
-    "text": "وَلَدٌ",
+    "text": "وَزَّةٌ",
     "letterId": "و",
     "position": "start",
-    "imageEmoji": "👦",
+    "imageEmoji": "🦢",
     "soundId": "word_waw_start_02",
     "difficulty": 1,
     "relatedLetterIds": [
@@ -2905,10 +2905,10 @@
   },
   {
     "id": "word_waw_end_03",
-    "text": "يَرْجُو",
+    "text": "جَرْوٌ",
     "letterId": "و",
     "position": "end",
-    "imageEmoji": "🌟",
+    "imageEmoji": "🐶",
     "soundId": "word_waw_end_03",
     "difficulty": 2,
     "relatedLetterIds": [
@@ -3001,10 +3001,10 @@
   },
   {
     "id": "word_ya_end_02",
-    "text": "نَبِيٌّ",
+    "text": "شُرْطِيٌّ",
     "letterId": "ي",
     "position": "end",
-    "imageEmoji": "🕌",
+    "imageEmoji": "👮",
     "soundId": "word_ya_end_02",
     "difficulty": 3,
     "relatedLetterIds": [

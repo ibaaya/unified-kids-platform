@@ -59,9 +59,15 @@ export function HarakaDetail() {
 
       <div className="mx-auto grid max-w-3xl grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-4">
         {examples.map((ex) => (
-          <Card key={ex.soundId} className="min-h-24 p-3 flex flex-row-reverse items-center justify-center gap-3 border-2 border-white/80 shadow-lg backdrop-blur-md sm:min-h-28 sm:p-4" style={{ backgroundColor: 'rgba(255,255,255,.17)' }}>
+          <Card key={ex.soundId} className="min-h-32 p-3 flex flex-row-reverse items-center justify-center gap-3 border-2 border-white/80 shadow-lg backdrop-blur-md sm:min-h-30 sm:p-4" style={{ backgroundColor: 'rgba(255,255,255,.17)' }}>
             <SpeakButton text={ex.form} audioId={`haraka:${ex.soundId}`} label={`استمع لـ ${ex.form}`} />
-            <HighlightedWord text={ex.form} letterId={ex.letterId} position="start" className="content-scale text-7xl sm:text-8xl" />
+            <HighlightedWord
+            text={ex.form}
+            letterId={ex.letterId}
+            position="start"
+            className="font-extrabold"
+            style={{ fontSize: 'clamp(4.5rem, 12vw, 6rem)' }}
+          />
           </Card>
         ))}
       </div>

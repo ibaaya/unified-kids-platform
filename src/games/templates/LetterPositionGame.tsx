@@ -12,6 +12,7 @@ import { useAnswerFeedback } from '../../hooks/useAnswerFeedback'
 import type { Word } from '../../types/content'
 import { getVoicePromptText } from '../../utils/voicePromptCatalog'
 import { voicePromptAudioId } from '../../utils/voicePromptIds'
+import { getDefiniteLetterName } from '../../utils/arabicLetterNames'
 import { EmojiIllustration } from '../../components/ui/EmojiIllustration'
 
 interface LetterPositionGameProps {
@@ -51,7 +52,8 @@ export function LetterPositionGame({
     [tokens, letterId, currentWord.position],
   )
 
-  const questionText = getVoicePromptText('letters', 'letter-position', { letterName })
+  const letterNameWithDefiniteArticle = getDefiniteLetterName(letterId)
+  const questionText = getVoicePromptText('letters', 'letter-position', { letterName, letterNameWithDefiniteArticle })
   const questionAudioId = voicePromptAudioId('letters', 'letter-position', letterId)
   useAutoReadQuestion(questionText, autoRead, questionIndex, 500, currentWord?.text, questionAudioId, currentWord ? `word:${currentWord.id}` : undefined)
 
@@ -100,9 +102,9 @@ export function LetterPositionGame({
 
       <div className="text-center">
         <p className="mb-1 text-2xl font-extrabold leading-relaxed sm:text-4xl">
-          {questionText.split(letterName)[0]}
-          <span className="px-1 text-3xl font-black sm:text-4xl" style={{ color: 'var(--world-letters)', textShadow: '0 1px 0 rgba(255,255,255,.9)' }}>{letterName}</span>
-          {questionText.split(letterName).slice(1).join(letterName)}
+          {questionText.split(letterNameWithDefiniteArticle)[0]}
+          <span className="px-1 text-3xl font-black sm:text-4xl" style={{ color: 'var(--world-letters)', textShadow: '0 1px 0 rgba(255,255,255,.9)' }}>{letterNameWithDefiniteArticle}</span>
+          {questionText.split(letterNameWithDefiniteArticle).slice(1).join(letterNameWithDefiniteArticle)}
         </p>
         <SpeakButton text={questionText} audioId={questionAudioId} label="أعد قراءة السؤال" />
       </div>

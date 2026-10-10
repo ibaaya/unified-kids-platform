@@ -6,6 +6,8 @@ interface HighlightedWordProps {
   position: LetterPosition
   /** حجم الخط، لإعادة الاستخدام في سياقات مختلفة (بطاقة كبيرة، قائمة صغيرة...) */
   className?: string
+  /** أنماط إضافية تُطبَّق على العنصر الأب (مثل fontSize) */
+  style?: React.CSSProperties
   /** تمييز حرف المد بلون مستقل في المقاطع الممدودة. */
   highlightMadd?: boolean
 }
@@ -14,12 +16,19 @@ interface HighlightedWordProps {
  * يعرض كلمة عربية مشكولة، مع تمييز الحرف المستهدف بلون عالم الحروف،
  * وحركته بلون عالم الحركات — بينما تبقى بقية الكلمة بلونها الطبيعي.
  */
-export function HighlightedWord({ text, letterId, position, className = '', highlightMadd = false }: HighlightedWordProps) {
+export function HighlightedWord({
+  text,
+  letterId,
+  position,
+  className = '',
+  style,
+  highlightMadd = false,
+}: HighlightedWordProps) {
   const tokens = tokenizeArabicWord(text)
   const highlightIndex = findHighlightIndex(tokens, letterId, position)
 
   return (
-    <span className={`font-display ${className}`} dir="rtl">
+    <span className={`font-display ${className}`} dir="rtl" style={style}>
       {tokens.map((token, idx) => {
         const isTarget = idx === highlightIndex
         const isMadd = highlightMadd && idx === tokens.length - 1 && tokens.length > 1

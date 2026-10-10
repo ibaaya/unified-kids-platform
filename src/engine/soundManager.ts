@@ -1,4 +1,5 @@
 import { playRecordedAudio, stopRecordedAudio } from './recordedAudioManager'
+import { normalizeAnswerFeedback } from '../utils/feedbackPrompts'
 
 /**
  * محرك النطق العربي: يبدأ بالتسجيلات الأصلية إن وُجدت، ثم يعود إلى Web Speech API.
@@ -68,10 +69,11 @@ function createUtterance(text: string, options: SpeakOptions): SpeechSynthesisUt
 
 /** ينطق نصًا واحدًا، مع حماية من تعارض النطق السابق أو تأخر تحميل الأصوات. */
 export function speakArabic(text: string, options: SpeakOptions = {}, audioId?: string): boolean {
-  if (!text.trim()) return false
+  const speechText = normalizeAnswerFeedback(text)
+  if (!speechText.trim()) return false
 
   // التسجيلات التي اعتمدها Voice Studio لها الأولوية على صوت المتصفح.
-  if (playRecordedAudio(audioId ?? text, options.onEnd, options.onError)) {
+  if (playRecordedAudio(audioId ?? speechText, options.onEnd, options.onError)) {
     speakRequestId += 1
     if (pendingSpeakTimer !== null && typeof window !== 'undefined') {
       window.clearTimeout(pendingSpeakTimer)
@@ -103,7 +105,7 @@ export function speakArabic(text: string, options: SpeakOptions = {}, audioId?: 
     pendingSpeakTimer = null
     if (requestId !== speakRequestId) return
 
-    const utterance = createUtterance(text, options)
+    const utterance = createUtterance(speechText, options)
     utterance.onend = () => {
       if (requestId === speakRequestId) options.onEnd?.()
     }

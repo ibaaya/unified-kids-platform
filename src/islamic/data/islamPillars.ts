@@ -128,7 +128,7 @@ export const prophetInfo = {
 export const selectedAdhkar = [
   {
     id: 'dhikr_basmalah',
-    text: 'بِسْمِ اللَّهِ الرَّحْمَنِ الرَّحِيم',
+    text: 'بِسْمِ اللَّهِ ',
     meaning: 'نَقولُها قَبلَ كُلِّ عَمَل',
     occasion: 'قَبلَ كُلِّ عَمَل',
     color: '#4CAF50',

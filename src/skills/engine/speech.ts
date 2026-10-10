@@ -2,6 +2,7 @@
 // النطق العربي: يُنطق النص المشكَّل فقط، وتُحذف الإيموجي والرموز تلقائيًا (لا نطق للصور).
 
 import { playRecordedAudioText, stopRecordedAudio } from '../../engine/recordedAudioManager';
+import { normalizeAnswerFeedback } from '../../utils/feedbackPrompts';
 
 const SOUND_KEY = 'skills-sound';
 
@@ -50,7 +51,8 @@ let timer: number | undefined;
 /** ينطق النص. force=true يتجاهل زر كتم الصوت (للأيقونة اليدوية «أعد السماع») */
 export function speak(text: string, opts: { force?: boolean; rate?: number } = {}): void {
   if (!opts.force && !isSoundOn()) return;
-  const clean = cleanForSpeech(text);
+  const speechText = normalizeAnswerFeedback(text);
+  const clean = cleanForSpeech(speechText);
   if (!clean) return;
   window.clearTimeout(timer);
   const speakWithSynthesis = () => {
@@ -68,7 +70,7 @@ export function speak(text: string, opts: { force?: boolean; rate?: number } = {
       window.speechSynthesis.speak(u);
     }, 80);
   };
-  if (playRecordedAudioText(text, undefined, speakWithSynthesis)) {
+  if (playRecordedAudioText(speechText, undefined, speakWithSynthesis)) {
     if (speechSupported()) window.speechSynthesis.cancel();
     return;
   }

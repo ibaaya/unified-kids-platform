@@ -121,12 +121,13 @@ export function SyllableDetail() {
               >
                 <SpeakButton text={syl.text} audioId={`syllable:${syl.id}`} size="md" label={`استمع لـ ${syl.text}`} />
                 <HighlightedWord
-                  text={syl.text}
-                  letterId={currentLetter.id}
-                  position="start"
-                  className="content-scale text-3xl font-extrabold"
-                  highlightMadd={tab === 'madd'}
-                />
+                text={syl.text}
+                letterId={currentLetter.id}
+                position="start"
+                className="font-extrabold"
+                style={{ fontSize: 'clamp(2.75rem, 7vw, 3.75rem)' }}
+                highlightMadd={tab === 'madd'}
+              />
               </div>
             ))}
           </div>

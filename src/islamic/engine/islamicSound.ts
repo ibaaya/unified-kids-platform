@@ -5,6 +5,7 @@
 // =====================================================
 
 import { playRecordedAudioText, stopRecordedAudio } from '../../engine/recordedAudioManager';
+import { normalizeAnswerFeedback, SUCCESS_FEEDBACK, RETRY_FEEDBACK } from '../../utils/feedbackPrompts';
 
 const SOUND_KEY = 'islamic-sound-enabled';
 
@@ -76,7 +77,8 @@ export const speakArabic = (text: string, options: SpeakOptions = {}): void => {
     onStop?.();
     return;
   }
-  const clean = stripForSpeech(text);
+  const speechText = normalizeAnswerFeedback(text);
+  const clean = stripForSpeech(speechText);
   if (!clean) {
     onStop?.();
     return;
@@ -101,7 +103,7 @@ export const speakArabic = (text: string, options: SpeakOptions = {}): void => {
       window.speechSynthesis.speak(utter);
     }, 60);
   };
-  if (playRecordedAudioText(text, onEnd, speakWithSynthesis)) {
+  if (playRecordedAudioText(speechText, onEnd, speakWithSynthesis)) {
     if (supported()) window.speechSynthesis.cancel();
     return;
   }
@@ -120,19 +122,8 @@ export const speakSequence = (texts: string[], gapMs = 250): void => {
 
 // ─── عبارات التشجيع (بدون عقوبات أو كلمات سلبية) ───
 
-const ENCOURAGEMENTS = [
-  'َأَحْسَنْت! أَنتَ رائِع!',
-  'إِجابَةٌ صَحيحَة!',
-  'مُمتاز! واصِل!',
-  '  رَائِع!',
-  'جَميل جِدّاً!  !',
-];
-const TRY_AGAIN = [
-  'حاوِل مَرَّةً أُخرى!',
-  'فَكِّر قَليلاً،.',
-  'قَريبٌ جِدّاً!.',
-  '   حاوِل مُجَدَّداً ',
-];
+const ENCOURAGEMENTS = [...SUCCESS_FEEDBACK]
+const TRY_AGAIN = [...RETRY_FEEDBACK]
 const GENTLE_MISS = [
   'لا بَأس! تَعَلَّمنا شَيئاً جَديداً.',
   'هَيّا نَتَعَلَّمُ مَعاً!',

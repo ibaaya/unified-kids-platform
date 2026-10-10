@@ -158,7 +158,7 @@ export function AppRoutes() {
       <Route path="/numbers/numberline" element={<NumberLinePage />} />
       <Route path="/numbers/challenge/:id" element={<NumbersChallengePage />} />
       {STUDIO_ENABLED && <Route path="/numbers/voice-studio" element={<ProtectedParentRoute><NumbersVoiceStudio /></ProtectedParentRoute>} />}
-      <Route path="/numbers/parent" element={<NumbersParentPage />} />
+      <Route path="/numbers/parent" element={<ProtectedParentRoute><NumbersParentPage /></ProtectedParentRoute>} />
 
       {/* ==================== DISCOVER MODULE (/discover) ==================== */}
       <Route path="/discover" element={<DiscoverHome />} />

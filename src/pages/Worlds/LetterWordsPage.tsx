@@ -9,9 +9,15 @@ import { useChildProfile } from '../../hooks/useChildProfile'
 import lettersData from '../../data/letters.json'
 import wordsData from '../../data/words.json'
 import type { Letter, Word } from '../../types/content'
+import { getDefiniteLetterName } from '../../utils/arabicLetterNames'
 
 const letters = lettersData as Letter[]
 const words = wordsData as Word[]
+const positionPhrase: Record<Word['position'], string> = {
+  start: 'فِي أَوَّلِ الْكَلِمَةِ',
+  middle: 'فِي وَسَطِ الْكَلِمَةِ',
+  end: 'فِي آخِرِ الْكَلِمَةِ',
+}
 
 const wordPositionSections: Array<{
   position: Word['position']
@@ -94,7 +100,7 @@ export function LetterWordsPage() {
   }
 
   return (
-    <div className="min-h-screen max-w-4xl mx-auto px-4 pt-14 pb-16 sm:pt-16">
+    <div className="min-h-screen max-w-4xl mx-auto px-4 pt-24 pb-16 sm:pt-28">
       <div className="mb-6 flex items-center justify-between">
         <Button variant="ghost" onClick={goPrev}>
           ← {prevSection ? prevSection.title : 'حرف ' + letter.name}
@@ -102,11 +108,18 @@ export function LetterWordsPage() {
       </div>
 
       <Card className="relative mb-6 border border-white/80 p-5 text-center shadow-xl backdrop-blur-md sm:p-6" style={{ background: 'linear-gradient(145deg, rgba(255,255,255,.20), rgba(255,255,255,.12))' }}>
-        <div className="content-scale text-8xl font-display font-extrabold text-white drop-shadow-[0_3px_5px_rgba(8,77,101,.85)]">
+        <div
+          className="font-display font-extrabold text-white drop-shadow-[0_3px_5px_rgba(8,77,101,.85)]"
+          style={{ fontSize: 'calc(6rem * var(--content-scale))' }}
+        >
           {letter.id}
         </div>
         <div className="mt-1 flex items-center justify-center gap-2">
-          <div className="content-scale text-lg font-extrabold text-white drop-shadow-[0_2px_3px_rgba(8,77,101,.85)]">حرف {letter.name}</div>
+          <div
+            className="font-extrabold text-white drop-shadow-[0_2px_3px_rgba(8,77,101,.85)]"
+            style={{ fontSize: 'calc(1.125rem * var(--content-scale))' }}>
+            حرف {letter.name}
+          </div>
           <SpeakButton text={letter.name} audioId={`letter:${letter.id}`} label={`استمع لاسم حرف ${letter.name}`} size="sm" />
         </div>
       </Card>
@@ -142,6 +155,11 @@ export function LetterWordsPage() {
                 {section.title}
               </h1>
               <p className="text-sm text-[var(--color-ink-soft)] mt-1">{section.description}</p>
+              <p className="mt-2 text-lg sm:text-xl font-extrabold text-[var(--color-ink)]">
+                لِنَكْتَشِفَ حَرْفَ {getDefiniteLetterName(letter.id)} {positionPhrase[section.position]} (
+                <span className="inline-block text-5xl sm:text-6xl align-middle text-[var(--world-letters)] drop-shadow-sm" aria-label={`الحرف ${letter.name}`}>{letter.id}</span>
+                )
+              </p>
             </div>
             <div className="shrink-0 rounded-full bg-black/[0.04] px-3 py-1.5 text-xs sm:text-sm font-bold text-[var(--color-ink-soft)]">
               {completedCount} / {sectionWords.length} ⭐
@@ -167,7 +185,8 @@ export function LetterWordsPage() {
                     text={word.text}
                     letterId={letter.id}
                     position={word.position}
-                    className="content-scale text-4xl font-extrabold min-h-11"
+                    className="font-extrabold min-h-16"
+                    style={{ fontSize: 'clamp(2.75rem, 6vw, 3.5rem)' }}
                   />
                   <SpeakButton text={word.text} audioId={`word:${word.id}`} label={`استمع لكلمة ${word.text}`} />
                 </Card>

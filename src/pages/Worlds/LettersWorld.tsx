@@ -9,7 +9,10 @@ export function LettersWorld() {
   const sorted = [...letters].sort((a, b) => a.order - b.order)
 
   return (
-    <div className="mx-auto min-h-screen max-w-5xl px-4 pb-16 pt-14 sm:pt-16">
+    //{*التحكم بالارتفاع  للمحتوى  في الصفحة*}
+    <div className="mx-auto min-h-screen max-w-5xl px-4 pb-16 pt-24 sm:pt-80">
+
+      
       <h1 className="sr-only">عالم الحروف</h1>
       <p className="mb-6 text-center font-display text-lg font-extrabold text-white drop-shadow-[0_2px_4px_rgba(12,60,79,.95)] sm:mb-7 sm:text-xl">
         اختر لؤلؤةً لتتعرف على الحرف وكلماته 🌟

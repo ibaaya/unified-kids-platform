@@ -90,3 +90,8 @@ body {
   font-size: calc(1em * var(--content-scale));
   transition: font-size var(--duration-med) var(--ease-bounce);
 }
+
+/* عندما يجتمع content-scale مع text-* من Tailwind، نحترم حجم Tailwind ونضاعفه بـ content-scale */
+.content-scale[class*="text-"] {
+  font-size: calc(1em * var(--content-scale));
+}

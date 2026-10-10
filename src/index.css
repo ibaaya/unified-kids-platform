@@ -111,3 +111,20 @@ body {
   outline: 3px solid var(--color-sky);
   outline-offset: 2px;
 }
+
+/* إضاءة الشعار الدوارة */
+@keyframes logo-glow-spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* لمعة عابرة على الشعار */
+@keyframes logo-shine-sweep {
+  0% { transform: translateX(-120%); }
+  60% { transform: translateX(220%); }
+  100% { transform: translateX(220%); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  [style*="logo-glow-spin"], [style*="logo-shine-sweep"] { animation: none; }
+}

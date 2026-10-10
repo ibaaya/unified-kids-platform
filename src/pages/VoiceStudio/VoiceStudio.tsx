@@ -22,6 +22,8 @@ const groupLabels: Record<string, string> = {
   'sentences-prompts': 'أسئلة عالم الجمل',
   'game-questions': 'أسئلة الألعاب',
   'game-messages': 'التشجيع والمحاولة وتعليمات اللعبة',
+  'feedback-success': 'عبارات التشجيع للإجابة الصحيحة',
+  'feedback-retry': 'عبارات إعادة المحاولة',
 }
 
 function formatTime(ms: number): string {

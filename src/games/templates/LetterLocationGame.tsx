@@ -12,6 +12,7 @@ import { shuffle } from '../../utils/distractors'
 import { getLetterPositionsInWord } from '../../utils/arabicText'
 import { getVoicePromptText } from '../../utils/voicePromptCatalog'
 import { voicePromptAudioId } from '../../utils/voicePromptIds'
+import { getDefiniteLetterName } from '../../utils/arabicLetterNames'
 import { EmojiIllustration } from '../../components/ui/EmojiIllustration'
 import type { Letter, Word } from '../../types/content'
 import type { LetterPosition } from '../../utils/arabicText'
@@ -49,7 +50,8 @@ export function LetterLocationGame({ letter, words, childId, autoRead, onFinishe
   const { feedback, showSuccess, showRetry, reset } = useAnswerFeedback()
   const currentWord = questions[questionIndex]
 
-  const questionText = getVoicePromptText('letters', 'letter-position', { letterName: letter.name })
+  const letterNameWithDefiniteArticle = getDefiniteLetterName(letter.id)
+  const questionText = getVoicePromptText('letters', 'letter-position', { letterName: letter.name, letterNameWithDefiniteArticle })
   const questionAudioId = voicePromptAudioId('letters', 'letter-position', letter.id)
   useAutoReadQuestion(
     questionText,

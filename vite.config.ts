@@ -11,6 +11,8 @@ import { voicePromptAudioId } from './src/utils/voicePromptIds.js'
 import { DISCOVER_WORLDS } from './src/discover/data/discoverData.ts'
 import { DISCOVER_QUIZ_QUESTIONS } from './src/discover/data/discoverQuizData.ts'
 import { ENGLISH_ENCOURAGEMENTS, ENGLISH_FIXED_GAME_SPEECH, ENGLISH_FINAL_QUESTION_VOICE, ENGLISH_LETTER_QUESTION_VOICE } from './src/english/data/voicePrompts.ts'
+import { SUCCESS_FEEDBACK, RETRY_FEEDBACK } from './src/utils/feedbackPrompts.ts'
+import { getDefiniteLetterName } from './src/utils/arabicLetterNames.ts'
 
 const ARABIC_DIACRITICS = /[\u064B-\u065F\u0670\u06D6-\u06ED]/g
 const ARABIC_LETTER_MAP: Record<string, string> = {
@@ -308,7 +310,7 @@ function voiceStudioPlugin(): Plugin {
           world.prompts.forEach((prompt: Record<string, any>) => {
             let variants: Array<{ id?: string; values?: Record<string, string> }> = []
             if (prompt.variantsFrom === 'letters') {
-              variants = letters.map((letter) => ({ id: String(letter.id), values: { letterName: String(letter.name) } }))
+              variants = letters.map((letter) => ({ id: String(letter.id), values: { letterName: String(letter.name), letterNameWithDefiniteArticle: getDefiniteLetterName(String(letter.id)) } }))
             } else if (Array.isArray(prompt.variants) && prompt.variants.length > 0) {
               variants = prompt.variants
             } else {
@@ -349,6 +351,17 @@ function voiceStudioPlugin(): Plugin {
               })
             })
           })
+        })
+
+        SUCCESS_FEEDBACK.forEach((text, index) => {
+          const id = `feedback:success:${index + 1}`
+          const filename = uniqueFilename(`feedback_success_${index + 1}.mp3`, usedNames)
+          items.push({ id, type: 'prompt', group: 'feedback-success', groupLabel: 'رسائل التشجيع بعد الإجابة الصحيحة', text, filename, relativePath: `/audio/feedback/${filename}`, sourceId: id, order: index + 1, contentHash: contentHash([id, text]), meta: { feedbackType: 'success' } })
+        })
+        RETRY_FEEDBACK.forEach((text, index) => {
+          const id = `feedback:retry:${index + 1}`
+          const filename = uniqueFilename(`feedback_retry_${index + 1}.mp3`, usedNames)
+          items.push({ id, type: 'prompt', group: 'feedback-retry', groupLabel: 'رسائل إعادة المحاولة', text, filename, relativePath: `/audio/feedback/${filename}`, sourceId: id, order: index + 1, contentHash: contentHash([id, text]), meta: { feedbackType: 'retry' } })
         })
 
         // Keep all language/subject recordings grouped under their own public/audio directory.
@@ -1061,9 +1074,9 @@ export default defineConfig(({ mode }) => {
         injectRegister: false,
         includeAssets: ['apple-touch-icon.png'],
         manifest: {
-          name: 'منصة التعلم الموحدة',
-          short_name: 'منصة التعلم',
-          description: 'تعلم العربية والإنجليزية والأرقام واكتشف ما حولك — للأطفال',
+          name: 'رحلتي — منصة التعلم للأطفال',
+          short_name: 'رحلتي',
+          description: 'تعلم العربية والإنجليزية والأرقام والاكتشاف والأخلاق والمهارات للأطفال',
           lang: 'ar',
           dir: 'rtl',
           start_url: '/',
