@@ -23,6 +23,13 @@ if errorlevel 1 (
     exit /b 1
 )
 
+REM --- إزالة ملف القفل العالق إن وُجد ---
+if exist ".git\index.lock" (
+    echo [WARN] Found stale index.lock. Removing...
+    del /f /q ".git\index.lock" >nul 2>nul
+    timeout /t 1 /nobreak >nul
+)
+
 REM --- التحقق من وجود version.json ---
 if not exist "version.json" (
     echo {> version.json
@@ -55,7 +62,14 @@ echo [INFO] New version will be: v%NEW_VERSION%
 echo.
 
 REM --- التحقق من وجود تغييرات ---
+echo [INFO] Staging changes...
 git add .
+if errorlevel 1 (
+    echo [ERROR] git add failed. Check for lock files or running Git processes.
+    pause
+    exit /b 1
+)
+
 git diff --cached --quiet
 if not errorlevel 1 (
     echo [WARN] No changes detected. Nothing to commit.
@@ -110,7 +124,7 @@ call npm version %NEW_VERSION% --no-git-tag-version --allow-same-version >nul 2>
 REM --- تحديث CHANGELOG.md ---
 echo ## [v%NEW_VERSION%] - %date% %time% >> CHANGELOG.md
 
-REM --- Commit الملفات المحدثة (version.json + package.json + CHANGELOG) ---
+REM --- Commit الملفات المحدثة ---
 echo [STEP 5/5] Committing version bump files...
 git add version.json package.json package-lock.json CHANGELOG.md >nul 2>nul
 git commit -m "Bump version to v%NEW_VERSION%" >nul 2>nul

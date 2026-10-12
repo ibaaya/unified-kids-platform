@@ -84,7 +84,7 @@ const MODULES = [
     textColor: '#064e3b',
     dir: 'rtl' as const,
     flag: '',
-    video: '/video/LearnArabic_Intro.mp4', // لا يوجد فيديو تعريفي بعد: عند توفره ضع مساره هنا مثل '/video/islamic_intro.mp4'
+    video: '/video/islamic_intro.mp4', // لا يوجد فيديو تعريفي بعد: عند توفره ضع مساره هنا مثل '/video/islamic_intro.mp4'
     shadowColor: 'rgba(22,160,133,.40)',
     iconBg: 'linear-gradient(145deg, #d1fae5, #f5c84c)',
   },

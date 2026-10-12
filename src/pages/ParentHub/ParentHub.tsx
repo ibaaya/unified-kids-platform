@@ -10,6 +10,7 @@ import { EnglishParentDashboard } from '../../english/pages/EnglishParentDashboa
 import { NumbersParentPage } from '../../numbers/pages/NumbersParentPage'
 import { DiscoverParentSettings } from '../../discover/pages/DiscoverParentSettings'
 import { STUDIO_ENABLED } from '../../config/features'
+import { DedicationCard } from '../../components/Dedication'
 
 // القسم النشط حالياً
 type Section = 'arabic' | 'english' | 'numbers' | null
@@ -87,6 +88,7 @@ export function ParentHub() {
           ← Back to sections
         </button>
         <EnglishParentDashboard />
+        <div className="mx-auto mb-8 w-full max-w-2xl px-4"><DedicationCard /></div>
       </div>
     )
   }
@@ -101,6 +103,7 @@ export function ParentHub() {
           ← اختيار القسم
         </button>
         <NumbersParentPage />
+        <div className="mx-auto mb-8 w-full max-w-2xl px-4"><DedicationCard /></div>
       </div>
     )
   }
@@ -115,6 +118,7 @@ export function ParentHub() {
           ← اختيار القسم
         </button>
         <DiscoverParentSettings />
+        <div className="mx-auto mb-8 w-full max-w-2xl px-4"><DedicationCard /></div>
       </div>
     )
   }
@@ -175,6 +179,7 @@ export function ParentHub() {
       >
         🏠 العودة للمنصة
       </button>
+      <div className="mt-6 w-full max-w-2xl"><DedicationCard /></div>
     </div>
   )
 }

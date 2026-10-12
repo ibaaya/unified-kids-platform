@@ -24,14 +24,14 @@
     "id": "syllable_short_ب_fatha",
     "letterId": "ب",
     "haraka": "fatha",
-    "text": "بَ",
+    "text": "بَ... بَ... بَـ",
     "type": "short"
   },
   {
     "id": "syllable_short_ب_damma",
     "letterId": "ب",
     "haraka": "damma",
-    "text": "بُ",
+    "text": "بُ... بُ... بُـ",
     "type": "short"
   },
   {

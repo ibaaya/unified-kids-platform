@@ -26,10 +26,14 @@ export function initPlatform(): void {
 
   // PWA: يعمل في النسخة المنشورة فقط، وليس أثناء التطوير
   if (import.meta.env.PROD) {
-    registerSW({
+    const updateSW = registerSW({
       immediate: true,
-      // النسخة الجديدة تنتظر حتى يُغلق المستخدم التطبيق ويفتحه من جديد، حتى لا نقاطع الطفل
-      onNeedRefresh() {},
+      // اترك القرار لولي الأمر، ثم أعد تحميل الصفحة بعد تثبيت النسخة الجديدة.
+      onNeedRefresh() {
+        if (window.confirm('يتوفر تحديث جديد للمنصة. هل تريد تثبيته الآن؟')) {
+          void updateSW(true)
+        }
+      },
     })
   }
 }

@@ -2,7 +2,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import * as lamejs from '@breezystack/lamejs'
 import type { VoiceRecordingItem } from '../../types/voiceStudio'
-import { approveGeneratedVoice, approveGeneratedVoices, deleteVoiceRecording, deleteVoiceSectionAudio, generateAllBatchWithAI, loadVoiceItems, saveVoiceRecording } from '../../services/voiceStudioService'
+import { approveGeneratedVoice, approveGeneratedVoices, deleteVoiceGroupAudio, deleteVoiceRecording, deleteVoiceSectionAudio, generateAllBatchWithAI, loadVoiceItems, saveVoiceRecording } from '../../services/voiceStudioService'
 import { Card } from '../../components/ui/Card'
 import { Button } from '../../components/ui/Button'
 
@@ -154,6 +154,7 @@ export function VoiceStudio({ section = 'arabic' }: { section?: 'arabic' | 'engl
   const [saving, setSaving] = useState(false)
   const [deleting, setDeleting] = useState(false)
   const [deletingSection, setDeletingSection] = useState(false)
+  const [deletingGroup, setDeletingGroup] = useState('')
   const [generating, setGenerating] = useState(false)
   const [generationPaused, setGenerationPaused] = useState(false)
   const [batchProgress, setBatchProgress] = useState({ completed: 0, total: 0, currentItemId: '' })
@@ -213,10 +214,10 @@ export function VoiceStudio({ section = 'arabic' }: { section?: 'arabic' | 'engl
   // appears in every studio without requiring a Vite restart or page reload.
   useEffect(() => {
     const timer = window.setInterval(() => {
-      if (!loading && !generating && !isRecording && !saving && !deleting && !deletingSection && !approving) void refresh(false, false)
+      if (!loading && !generating && !isRecording && !saving && !deleting && !deletingSection && !deletingGroup && !approving) void refresh(false, false)
     }, 15000)
     return () => window.clearInterval(timer)
-  }, [approving, deleting, deletingSection, generating, isRecording, loading, refresh, saving])
+  }, [approving, deleting, deletingGroup, deletingSection, generating, isRecording, loading, refresh, saving])
 
   const loadInputDevices = useCallback(async () => {
     if (!navigator.mediaDevices?.enumerateDevices) return
@@ -464,7 +465,7 @@ export function VoiceStudio({ section = 'arabic' }: { section?: 'arabic' | 'engl
   }
 
   const deleteCurrent = async () => {
-    if (!current || deleting || saving || isRecording) return
+    if (!current || deleting || deletingGroup || deletingSection || saving || isRecording) return
     if (current.status !== 'approved' && current.status !== 'recorded' && current.status !== 'generated' && current.status !== 'pending' && current.status !== 'stale') return
 
     const ok = window.confirm(`حذف التسجيل الصوتي لـ «${current.text}»؟\nلن يتم حذف الحرف/الكلمة من محتوى المشروع.`)
@@ -485,7 +486,7 @@ export function VoiceStudio({ section = 'arabic' }: { section?: 'arabic' | 'engl
   }
 
   const deleteSectionRecordings = async () => {
-    if (deletingSection || generating || isRecording || saving) return
+    if (deletingSection || deletingGroup || generating || isRecording || saving) return
     const sectionLabel = section === 'english' ? 'تعلم الإنجليزية' : section === 'numbers' ? 'مغامرة الأرقام' : section === 'discover' ? 'اكتشف ما حولك' : section === 'islamic' ? 'أخلاقي الجميلة' : section === 'skills' ? 'مدينة المهارات' : 'تعلم العربية'
     const listedAudioCount = items.filter((item) => ['approved', 'generated', 'recorded', 'pending', 'stale'].includes(item.status)).length
     const confirmed = window.confirm(`تأكيد حذف جميع ملفات MP3 من قسم «${sectionLabel}»؟\nسيُحذف ${listedAudioCount} تسجيلاً معروفًا وأي ملف MP3 آخر داخل مجلد صوت القسم، وستُزال روابطها من المانيفست. لا يمكن التراجع عن الحذف.`)
@@ -504,8 +505,28 @@ export function VoiceStudio({ section = 'arabic' }: { section?: 'arabic' | 'engl
     }
   }
 
+  const deleteGroupRecordings = async (group: typeof groupCounts[number]) => {
+    if (deletingSection || deletingGroup || generating || isRecording || saving) return
+    const sectionLabel = section === 'english' ? 'تعلم الإنجليزية' : section === 'numbers' ? 'مغامرة الأرقام' : section === 'discover' ? 'اكتشف ما حولك' : section === 'islamic' ? 'أخلاقي الجميلة' : section === 'skills' ? 'مدينة المهارات' : 'تعلم العربية'
+    const audioCount = items.filter((item) => item.group === group.key && ['approved', 'generated', 'recorded', 'pending', 'stale'].includes(item.status)).length
+    if (!window.confirm(`حذف تسجيلات مجموعة «${group.label}» من «${sectionLabel}»؟\nسيُحذف ${audioCount} تسجيلاً معروفًا وكل ملفات MP3 في مجلد هذه المجموعة، وتُزال روابطها من المانيفست. لن تتأثر بقية مجموعات القسم.`)) return
+
+    setDeletingGroup(group.key)
+    setError('')
+    try {
+      const result = await deleteVoiceGroupAudio(section, group.key)
+      releasePreview()
+      setMessage(`حُذفت ${result.deletedFiles} ملفات صوتية من «${group.label}»، وأُزيل ${result.removedEntries} سجل. بقيت بقية مجموعات «${sectionLabel}» كما هي.`)
+      await refresh()
+    } catch (e) {
+      setError(e instanceof Error ? e.message : 'تعذر حذف تسجيلات المجموعة.')
+    } finally {
+      setDeletingGroup('')
+    }
+  }
+
   const generateBatch = async (onlyItemId?: string) => {
-    if (generating || isRecording || saving) return
+    if (generating || deletingGroup || deletingSection || isRecording || saving) return
     const pendingCount = onlyItemId ? 1 : items.filter((item) => item.status === 'missing' || item.status === 'stale').length
     const oldGeneratedCount = items.filter((item) => item.status === 'generated').length
     if (!pendingCount && !oldGeneratedCount) { setMessage('لا توجد عناصر بحاجة إلى توليد أو اعتماد.'); return }
@@ -682,9 +703,14 @@ export function VoiceStudio({ section = 'arabic' }: { section?: 'arabic' | 'engl
                 الكل <span className="float-left">{items.length}</span>
               </button>
               {groupCounts.map((group) => (
-                <button key={group.key} onClick={() => setFilter(group.key as Filter)} className={`w-full text-right rounded-xl px-3 py-2 mb-1 ${filter === group.key ? 'bg-[var(--color-sky)]/10 font-extrabold' : ''}`}>
-                  {group.label}<span className="float-left text-xs">{group.done}/{group.total}</span>
-                </button>
+                <div key={group.key} className={`mb-1 flex items-center gap-1 rounded-xl px-2 ${filter === group.key ? 'bg-[var(--color-sky)]/10' : ''}`}>
+                  <button onClick={() => setFilter(group.key as Filter)} className={`min-w-0 flex-1 py-2 text-right ${filter === group.key ? 'font-extrabold' : ''}`}>
+                    <span>{group.label}</span><span className="float-left text-xs">{group.done}/{group.total}</span>
+                  </button>
+                  <button type="button" title={`حذف تسجيلات ${group.label}`} aria-label={`حذف تسجيلات ${group.label}`} disabled={Boolean(deletingGroup) || deletingSection || generating || isRecording || saving} onClick={() => void deleteGroupRecordings(group)} className="rounded-lg px-2 py-1 text-rose-700 hover:bg-rose-100 disabled:cursor-not-allowed disabled:opacity-40">
+                    {deletingGroup === group.key ? '…' : '🗑️'}
+                  </button>
+                </div>
               ))}
               <label className="flex items-center gap-2 mt-3 pt-3 border-t border-black/10 cursor-pointer">
                 <input type="checkbox" checked={onlyMissing} onChange={(e) => setOnlyMissing(e.target.checked)} />
@@ -724,7 +750,7 @@ export function VoiceStudio({ section = 'arabic' }: { section?: 'arabic' | 'engl
                   <option value="source">ترتيب المحتوى الأصلي</option>
                 </select>
                 <Button variant="ghost" onClick={() => void refresh()}>🔄 تحديث المحتوى</Button>
-                <Button variant="ghost" className="text-rose-700 hover:bg-rose-50" disabled={deletingSection || generating || isRecording || saving} onClick={() => void deleteSectionRecordings()}>{deletingSection ? 'جارٍ حذف ملفات القسم…' : '🗑️ حذف جميع تسجيلات القسم'}</Button>
+                <Button variant="ghost" className="text-rose-700 hover:bg-rose-50" disabled={deletingSection || Boolean(deletingGroup) || generating || isRecording || saving} onClick={() => void deleteSectionRecordings()}>{deletingSection ? 'جارٍ حذف ملفات القسم…' : '🗑️ حذف جميع تسجيلات القسم'}</Button>
                 <select value={aiVoice} onChange={(event) => setAiVoice(event.target.value)} disabled={generating} aria-label="صوت التوليد الآلي" className="rounded-xl border border-black/10 bg-white px-3 py-2 text-sm">
                   {section === 'english' ? <option value="en-US-AnaNeural">English • Ana Neural</option> : <>
                     <option value="ar-SA-ZariyahNeural">زارية • سعودي (أنثى)</option>

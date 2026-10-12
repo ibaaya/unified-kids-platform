@@ -18,6 +18,7 @@ import lettersData from '../../data/letters.json'
 import wordsData from '../../data/words.json'
 import type { Letter, Word } from '../../types/content'
 import { STUDIO_ENABLED } from '../../config/features'
+import { DedicationCard } from '../../components/Dedication'
 
 const letters = lettersData as Letter[]
 const words = wordsData as Word[]
@@ -301,6 +302,8 @@ export function ParentDashboard() {
           + إضافة طالب جديد
         </Button>
       </Card>
+
+      <DedicationCard />
 
     </div>
   )

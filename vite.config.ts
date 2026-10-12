@@ -504,34 +504,51 @@ function voiceStudioPlugin(): Plugin {
           addDiscoverItem(`discover:quiz:${question.id}`, 'quiz', 'أسئلة الاختبار', question.prompt, index + 1, { worldId: question.worldId, level: question.level, questionId: question.id })
         })
 
-        const addLearningItems = (section: 'islamic' | 'skills', sourceDirectory: string) => {
+        const addLearningItems = (section: 'islamic' | 'skills', sourceDirectories: string[]) => {
           const seen = new Set<string>()
           let order = 0
+          const addLearningText = (relative: string, group: string, text: string) => {
+            const cleanText = text.trim()
+            if (!/[\u0600-\u06ff]/u.test(cleanText) || cleanText.includes('${') || cleanText.length < 2 || seen.has(`${group}:${cleanText}`)) return
+            seen.add(`${group}:${cleanText}`)
+            const sourceHash = crypto.createHash('sha1').update(`${relative}\0${cleanText}`).digest('hex').slice(0, 12)
+            const id = `${section}:${group}:${sourceHash}`
+            const filename = uniqueFilename(`${section}_${group}_${sourceHash}.mp3`, usedNames)
+            order += 1
+            addProjectItem({ id, type: 'prompt', group, groupLabel: section === 'islamic' ? `أخلاقي الجميلة · ${group}` : `مدينة المهارات · ${group}`, text: cleanText, filename, relativePath: `/audio/${section}/${group}/${filename}`, sourceId: id, order, contentHash: contentHash([id, cleanText]), meta: { section, contentId: `${relative}#${order}` } })
+          }
           const visit = (directory: string): void => {
             for (const entry of fs.readdirSync(directory, { withFileTypes: true })) {
               const absolute = path.join(directory, entry.name)
               if (entry.isDirectory()) { visit(absolute); continue }
-              if (!entry.isFile() || !entry.name.endsWith('.ts') || /(?:types|index)\.ts$/i.test(entry.name)) continue
+              if (!entry.isFile() || !/\.tsx?$/i.test(entry.name) || /(?:types|index)\.tsx?$/i.test(entry.name)) continue
               const relative = path.relative(projectRoot, absolute).replaceAll(path.sep, '/')
-              const group = safeName(path.basename(entry.name, '.ts'))
+              const group = safeName(path.basename(entry.name, path.extname(entry.name)))
               const source = fs.readFileSync(absolute, 'utf8')
               const quotePattern = /(['"`])((?:\\.|(?!\1)[\s\S])*?)\1/g
               for (const match of source.matchAll(quotePattern)) {
                 const text = match[2].replace(/\\(['"`\\])/g, '$1').trim()
-                if (!/[\u0600-\u06ff]/u.test(text) || text.includes('${') || text.length < 2 || seen.has(`${group}:${text}`)) continue
-                seen.add(`${group}:${text}`)
-                const sourceHash = crypto.createHash('sha1').update(`${relative}\0${text}`).digest('hex').slice(0, 12)
-                const id = `${section}:${group}:${sourceHash}`
-                const filename = uniqueFilename(`${section}_${group}_${sourceHash}.mp3`, usedNames)
-                order += 1
-                addProjectItem({ id, type: 'prompt', group, groupLabel: section === 'islamic' ? `أخلاقي الجميلة · ${group}` : `مدينة المهارات · ${group}`, text, filename, relativePath: `/audio/${section}/${group}/${filename}`, sourceId: id, order, contentHash: contentHash([id, text]), meta: { section, contentId: `${relative}#${order}` } })
+                addLearningText(relative, group, text)
+              }
+
+              // Resolve Arabic template prompts used by randomized skill questions
+              // into the finite set of phrases users can actually hear in a game.
+              if (section === 'skills' && relative.endsWith('/generators/colors.ts') && source.includes('COLORS[col].name')) {
+                const kit = fs.readFileSync(path.join(projectRoot, 'src/skills/data/kit.ts'), 'utf8')
+                const names = Array.from(kit.matchAll(/name:\s*'([^']+)'/g), (entry) => entry[1])
+                for (const name of names) addLearningText(relative, group, `أَيُّ شَيْءٍ لَوْنُهُ ${name}؟`)
+              }
+              if (section === 'skills' && relative.endsWith('/generators/puzzles.ts') && source.includes('prompt: `كَمْ عَدَدُ ${name}؟`')) {
+                const countable = source.match(/const COUNTABLE:[\s\S]*?\n\];/)?.[0] ?? ''
+                const names = Array.from(countable.matchAll(/,\s*'([^']+)'\s*\]/g), (entry) => entry[1])
+                for (const name of names) addLearningText(relative, group, `كَمْ عَدَدُ ${name}؟`)
               }
             }
           }
-          visit(path.join(projectRoot, sourceDirectory))
+          for (const sourceDirectory of sourceDirectories) visit(path.join(projectRoot, sourceDirectory))
         }
-        addLearningItems('islamic', 'src/islamic/data')
-        addLearningItems('skills', 'src/skills/data')
+        addLearningItems('islamic', ['src/islamic/data'])
+        addLearningItems('skills', ['src/skills/data', 'src/skills/components'])
 
         return items
       }
@@ -671,6 +688,7 @@ function voiceStudioPlugin(): Plugin {
             const generateOne = async (job: Job): Promise<{ ok: boolean; error?: string; entry?: Record<string, any> }> => {
               const { item, textHash, relativeAudio, target, textFile, outputFile } = job
               try {
+                 await new Promise((resolve) => setTimeout(resolve, 150 + Math.random() * 350))
                 fs.writeFileSync(textFile, item.text, 'utf8')
                 let lastGenerationError: unknown
                 for (let attempt = 0; attempt < 2; attempt += 1) {
@@ -723,7 +741,7 @@ function voiceStudioPlugin(): Plugin {
             }
 
             //const concurrency = Math.min(4, jobs.length)
-            const concurrency = Math.min(8, jobs.length)
+            const concurrency = Math.min(4, jobs.length)
             const queue = [...jobs]
             const settled: Array<{ ok: boolean; error?: string; entry?: Record<string, any> }> = []
             const runWorker = async () => {
@@ -951,6 +969,71 @@ function voiceStudioPlugin(): Plugin {
         })
       })
 
+      // ---- POST /__voice-studio/delete-group ----
+      server.middlewares.use('/__voice-studio/delete-group', (req, res) => {
+        if (req.method !== 'POST') { res.statusCode = 405; res.end('Method Not Allowed'); return }
+        let body = ''
+        req.setEncoding('utf8')
+        req.on('data', (chunk) => { body += chunk; if (body.length > 1024 * 1024) req.destroy() })
+        req.on('end', async () => {
+          try {
+            const { section, group, confirmed } = JSON.parse(body) as { section?: string; group?: string; confirmed?: boolean }
+            const supportedSections = ['arabic', 'english', 'numbers', 'discover', 'islamic', 'skills']
+            if (!section || !supportedSections.includes(section)) throw new Error('القسم المحدد غير مدعوم للحذف.')
+            if (!group || !/^[a-z0-9_-]+$/i.test(group)) throw new Error('المجموعة المحددة غير صالحة.')
+            if (confirmed !== true) throw new Error('يلزم تأكيد حذف تسجيلات المجموعة المحددة.')
+
+            const currentItems = buildItems()
+            const groupItems = currentItems.filter((item) => item.meta?.section === section && item.group === group)
+            if (!groupItems.length) throw new Error('لم يتم العثور على مجموعة بهذا الاسم داخل القسم.')
+            if (groupItems.some((item) => activeGenerationItems.has(item.id))) {
+              res.statusCode = 409
+              throw new Error('أوقف التوليد وانتظر انتهاء الأصوات الجارية قبل حذف المجموعة.')
+            }
+
+            const publicAudioRoot = path.resolve(projectRoot, 'public', 'audio')
+            const audioRoot = path.resolve(publicAudioRoot, section, group)
+            if (!audioRoot.startsWith(publicAudioRoot + path.sep)) throw new Error('مسار المجموعة غير صالح.')
+            let deletedFiles = 0
+            const removeMp3Files = (directory: string) => {
+              if (!fs.existsSync(directory)) return
+              for (const entry of fs.readdirSync(directory, { withFileTypes: true })) {
+                const target = path.join(directory, entry.name)
+                if (entry.isDirectory()) removeMp3Files(target)
+                else if (entry.isFile() && path.extname(entry.name).toLowerCase() === '.mp3') {
+                  fs.unlinkSync(target)
+                  deletedFiles += 1
+                }
+              }
+            }
+            removeMp3Files(audioRoot)
+
+            const manifest = readManifest()
+            const groupItemIds = new Set(groupItems.map((item) => item.id))
+            const relativePrefix = `audio/${section}/${group}/`
+            const removedItemIds: string[] = []
+            for (const [itemId, entry] of Object.entries(manifest)) {
+              const relativePath = String(entry.relativePath || '').replaceAll('\\', '/').replace(/^\/+/, '')
+              if (groupItemIds.has(itemId) || relativePath.startsWith(relativePrefix)) {
+                delete manifest[itemId]
+                removedItemIds.push(itemId)
+              }
+            }
+            const snapshot = JSON.parse(JSON.stringify(manifest))
+            await writeManifestQueued((target) => {
+              for (const key of Object.keys(target)) delete target[key]
+              for (const [key, value] of Object.entries(snapshot)) target[key] = value
+            })
+            res.setHeader('Content-Type', 'application/json; charset=utf-8')
+            res.end(JSON.stringify({ section, group, deletedFiles, removedEntries: removedItemIds.length, removedItemIds, localSave: true }))
+          } catch (error) {
+            if (!res.statusCode || res.statusCode < 400) res.statusCode = 400
+            res.setHeader('Content-Type', 'application/json; charset=utf-8')
+            res.end(JSON.stringify({ error: error instanceof Error ? error.message : String(error) }))
+          }
+        })
+      })
+
       // ---- POST /__voice-studio/delete-section ----
       server.middlewares.use('/__voice-studio/delete-section', (req, res) => {
         if (req.method !== 'POST') { res.statusCode = 405; res.end('Method Not Allowed'); return }
@@ -1094,7 +1177,7 @@ export default defineConfig(({ mode }) => {
         workbox: {
           globPatterns: ['**/*.{js,css,html,svg,woff2}', 'pwa-*.png', 'apple-touch-icon.png'],
           globIgnores: ['audio/**', 'images/**', 'video/**'],
-          maximumFileSizeToCacheInBytes: 4 * 1024 * 1024,
+          maximumFileSizeToCacheInBytes: 5 * 1024 * 1024, //5MB
           navigateFallback: '/index.html',
           navigateFallbackDenylist: [/^\/__voice-studio/],
           cleanupOutdatedCaches: true,

@@ -110,6 +110,18 @@ export interface VoiceBatchProgress {
 
 export type VoiceStudioSection = 'arabic' | 'english' | 'numbers' | 'discover' | 'islamic' | 'skills'
 
+export async function deleteVoiceGroupAudio(section: VoiceStudioSection, group: string): Promise<{ deletedFiles: number; removedEntries: number; itemIds: string[] }> {
+  const response = await fetch('/__voice-studio/delete-group', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ section, group, confirmed: true }),
+  })
+  if (!response.ok) throw new Error(await readError(response) || 'تعذر حذف تسجيلات هذه المجموعة.')
+  const result = await response.json() as { deletedFiles: number; removedEntries: number; removedItemIds: string[] }
+  for (const itemId of result.removedItemIds) removeRecordedAudioEntry(itemId)
+  return { deletedFiles: result.deletedFiles, removedEntries: result.removedEntries, itemIds: result.removedItemIds }
+}
+
 export async function deleteVoiceSectionAudio(section: VoiceStudioSection): Promise<{ deletedFiles: number; removedEntries: number; itemIds: string[] }> {
   const response = await fetch('/__voice-studio/delete-section', {
     method: 'POST',
@@ -257,7 +269,7 @@ export async function generateAllBatchWithAI(
   }
 
   // 3 عمال × 8 عناصر = 24 عنصراً قيد التوليد في وقت واحد. توازن جيد بين السرعة والاستقرار.
-  await Promise.all(Array.from({ length: Math.min(3, batches.length) }, () => worker()))
+  await Promise.all(Array.from({ length: Math.min(2, batches.length) }, () => worker()))
   result.stopped = completed < candidates.length && !shouldContinue()
   return result
 }
