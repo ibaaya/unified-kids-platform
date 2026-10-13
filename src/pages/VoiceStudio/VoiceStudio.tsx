@@ -2,7 +2,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import * as lamejs from '@breezystack/lamejs'
 import type { VoiceRecordingItem } from '../../types/voiceStudio'
-import { approveGeneratedVoice, approveGeneratedVoices, deleteVoiceGroupAudio, deleteVoiceRecording, deleteVoiceSectionAudio, generateAllBatchWithAI, loadVoiceItems, saveVoiceRecording } from '../../services/voiceStudioService'
+import { approveGeneratedVoice, approveGeneratedVoices, deleteVoiceGroupAudio, deleteVoiceRecording, deleteVoiceSectionAudio, generateAllBatchWithAI, loadVoiceItems, saveVoiceRecording, type TtsProvider } from '../../services/voiceStudioService'
 import { Card } from '../../components/ui/Card'
 import { Button } from '../../components/ui/Button'
 
@@ -11,13 +11,11 @@ type Filter = 'all' | VoiceRecordingItem['group']
 const groupLabels: Record<string, string> = {
   letters: 'الحروف',
   harakat: 'الحركات',
-  syllables: 'المقاطع',
   words: 'الكلمات',
   sentences: 'الجمل',
   stories: 'القصص',
   'letters-prompts': 'أسئلة عالم الحروف',
   'harakat-prompts': 'أسئلة عالم الحركات',
-  'syllables-prompts': 'أسئلة عالم المقاطع',
   'words-prompts': 'أسئلة عالم الكلمات',
   'sentences-prompts': 'أسئلة عالم الجمل',
   'game-questions': 'أسئلة الألعاب',
@@ -159,6 +157,10 @@ export function VoiceStudio({ section = 'arabic' }: { section?: 'arabic' | 'engl
   const [generationPaused, setGenerationPaused] = useState(false)
   const [batchProgress, setBatchProgress] = useState({ completed: 0, total: 0, currentItemId: '' })
   const [aiVoice, setAiVoice] = useState(section === 'english' ? 'en-US-AnaNeural' : 'ar-SA-ZariyahNeural')
+  // [AZURE-V1] المزوّد المختار للتوليد الآلي. يُحفظ اختيارك في المتصفح حتى لا تعيده كل مرة.
+  const [aiProvider, setAiProvider] = useState<TtsProvider>(() => {
+    try { return localStorage.getItem('voiceStudio.provider') === 'azure' ? 'azure' : 'edge-tts' } catch { return 'edge-tts' }
+  })
   const [approving, setApproving] = useState(false)
   const [inputDevices, setInputDevices] = useState<MediaDeviceInfo[]>([])
   const [selectedInputDeviceId, setSelectedInputDeviceId] = useState('')
@@ -285,7 +287,7 @@ export function VoiceStudio({ section = 'arabic' }: { section?: 'arabic' | 'engl
   const counts = useMemo(() => {
     const approved = items.filter((item) => item.status === 'approved').length
     const generated = items.filter((item) => item.status === 'generated').length
-    const aiApproved = items.filter((item) => item.status === 'approved' && item.source === 'edge-tts').length
+    const aiApproved = items.filter((item) => item.status === 'approved' && (item.source === 'edge-tts' || item.source === 'azure')).length /* [AZURE-V2] نحتسب الأصوات الآلية من أي مزوّد. إن اشتكى TypeScript أضف 'azure' إلى نوع source في src/types/voiceStudio.ts */
     const stale = items.filter((item) => item.status === 'stale').length
     return { total: items.length, approved, generated, aiApproved, stale, missing: items.filter((item) => item.status === 'missing' || item.status === 'stale').length, remaining: items.filter((item) => ['missing', 'stale', 'pending', 'generated'].includes(item.status)).length, ready: approved + generated }
   }, [items])
@@ -548,14 +550,14 @@ export function VoiceStudio({ section = 'arabic' }: { section?: 'arabic' | 'engl
       const result = await generateAllBatchWithAI(section, aiVoice, (progress) => {
         setBatchProgress({ completed: progress.completed, total: progress.total, currentItemId: progress.itemId })
         setItems((previous) => previous.map((item) => item.id === progress.itemId && progress.ok && progress.entry
-          ? { ...item, status: 'approved', filename: progress.entry.filename, relativePath: progress.entry.relativePath, source: 'edge-tts', voice: progress.entry.voice, textHash: progress.entry.textHash }
+          ? { ...item, status: 'approved', filename: progress.entry.filename, relativePath: progress.entry.relativePath, source: progress.entry.source ?? aiProvider /* [AZURE-V3] كان 'edge-tts' ثابتًا */, voice: progress.entry.voice, textHash: progress.entry.textHash }
           : item))
         if (progress.error) setError(`تعذر توليد «${items.find((item) => item.id === progress.itemId)?.text ?? progress.itemId}»: ${progress.error}`)
         else {
           const remaining = progress.total - progress.completed
           setMessage(`تم توليد الصوت واعتماده تلقائيًا: ${progress.completed} من ${progress.total} • المتبقي ${remaining}.`)
         }
-      }, () => !stopGenerationRef.current, onlyItemId)
+      }, () => !stopGenerationRef.current, onlyItemId, aiProvider /* [AZURE-V4] تمرير المزوّد المختار إلى الخدمة */)
       // لا نعيد بناء القائمة كاملة بعد الدفعة؛ حدّثناها عبر onProgress.
       // تحديث خفيف بدون شاشة تحميل يكفي لمزامنة أي عناصر تغيّرت.
       void refresh(false, false)
@@ -751,6 +753,11 @@ export function VoiceStudio({ section = 'arabic' }: { section?: 'arabic' | 'engl
                 </select>
                 <Button variant="ghost" onClick={() => void refresh()}>🔄 تحديث المحتوى</Button>
                 <Button variant="ghost" className="text-rose-700 hover:bg-rose-50" disabled={deletingSection || Boolean(deletingGroup) || generating || isRecording || saving} onClick={() => void deleteSectionRecordings()}>{deletingSection ? 'جارٍ حذف ملفات القسم…' : '🗑️ حذف جميع تسجيلات القسم'}</Button>
+                {/* [AZURE-V5] قائمة اختيار المزوّد: Edge-TTS (الحالي) أو Azure Speech (الرسمي). */}
+                <select value={aiProvider} onChange={(event) => { const next = event.target.value === 'azure' ? 'azure' : 'edge-tts'; setAiProvider(next); try { localStorage.setItem('voiceStudio.provider', next) } catch { /* تجاهل */ } }} disabled={generating} aria-label="مزوّد التوليد الآلي" className="rounded-xl border border-black/10 bg-white px-3 py-2 text-sm">
+                  <option value="edge-tts">Edge-TTS (مجاني)</option>
+                  <option value="azure">Azure Speech (رسمي)</option>
+                </select>
                 <select value={aiVoice} onChange={(event) => setAiVoice(event.target.value)} disabled={generating} aria-label="صوت التوليد الآلي" className="rounded-xl border border-black/10 bg-white px-3 py-2 text-sm">
                   {section === 'english' ? <option value="en-US-AnaNeural">English • Ana Neural</option> : <>
                     <option value="ar-SA-ZariyahNeural">زارية • سعودي (أنثى)</option>
@@ -758,7 +765,7 @@ export function VoiceStudio({ section = 'arabic' }: { section?: 'arabic' | 'engl
                     <option value="ar-EG-ShakirNeural">شاكر • مصري (ذكر)</option>
                   </>}
                 </select>
-                <Button disabled={generating || isRecording || saving || (counts.missing === 0 && counts.generated === 0)} onClick={() => void generateBatch()}>{generating ? `⏳ توليد واعتماد ${batchProgress.completed}/${batchProgress.total}…` : generationPaused ? '▶️ استئناف التوليد' : counts.missing === 0 && counts.generated > 0 ? '✅ اعتماد التوليدات السابقة' : '✨ توليد الكل بالذكاء الاصطناعي (Edge-TTS)'}</Button>
+                <Button disabled={generating || isRecording || saving || (counts.missing === 0 && counts.generated === 0)} onClick={() => void generateBatch()}>{generating ? `⏳ توليد واعتماد ${batchProgress.completed}/${batchProgress.total}…` : generationPaused ? '▶️ استئناف التوليد' : counts.missing === 0 && counts.generated > 0 ? '✅ اعتماد التوليدات السابقة' : `✨ توليد الكل بالذكاء الاصطناعي (${aiProvider === 'azure' ? 'Azure' : 'Edge-TTS'})` /* [AZURE-V6] اسم المزوّد في الزر */}</Button>
                 {generating && <Button variant="ghost" onClick={requestGenerationStop}>⏸️ إيقاف بعد الأصوات الجارية</Button>}
                 {batchProgress.total > 0 && <span className="text-sm font-bold text-[var(--color-sky)]">{batchProgress.completed}/{batchProgress.total} • إجمالي القسم: {counts.ready}/{counts.total}</span>}
               </div>

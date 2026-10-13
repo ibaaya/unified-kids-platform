@@ -68,7 +68,7 @@ const getWorldConfig = (worldId: string) => {
       return { accent: 'var(--world-harakat)', path: '/arabic/world/harakat' }
     case 'syllables':
     case 'syllables-world':
-      return { accent: 'var(--world-syllables)', path: '/arabic/world/syllables' }
+      return { accent: 'var(--world-harakat)', path: '/arabic/world/harakat' }
     case 'words':
     case 'words-world':
       return { accent: 'var(--world-words)', path: '/arabic/world/words' }
@@ -89,6 +89,9 @@ const getWorldConfig = (worldId: string) => {
 export function Home() {
   const { child, loading, hasAnyChildren } = useChildProfile()
   const [now, setNow] = useState(() => new Date())
+  const unlockedWorldIds = child?.settings?.unlockMode === 'free'
+    ? worlds.map((world) => world.id)
+    : child?.unlockedWorldIds ?? []
 
   // تحديث الساعة كل دقيقة
   useEffect(() => {
@@ -547,7 +550,7 @@ export function Home() {
             </div>
 
             <div className="relative">
-              <LearningPath worlds={worlds} unlockedWorldIds={child.unlockedWorldIds} />
+              <LearningPath worlds={worlds} unlockedWorldIds={unlockedWorldIds} />
             </div>
           </Card>
         )}
@@ -558,7 +561,7 @@ export function Home() {
         {simpleMode && (
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
             {worlds.map((world, idx) => {
-              const isUnlocked = child.unlockedWorldIds.includes(world.id)
+              const isUnlocked = unlockedWorldIds.includes(world.id)
               const config     = getWorldConfig(world.id)
               const completion = getWorldCompletion(world.id, child.completedLessonIds)
 

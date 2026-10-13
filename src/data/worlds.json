@@ -9,34 +9,26 @@
   },
   {
     "id": "harakat",
-    "title": "عَالَمُ الحَرَكَات",
-    "emoji": "🎵",
+    "title": "عَالَمُ الحَرَكَاتِ وَالمَقَاطِع",
+    "emoji": "🔤",
     "colorVar": "var(--world-harakat)",
     "order": 2,
     "unlockRequirement": { "worldId": "letters", "masteryPercent": 80 }
-  },
-  {
-    "id": "syllables",
-    "title": "عَالَمُ  المَقَاطِع",
-    "emoji": "🧩",
-    "colorVar": "var(--world-syllables)",
-    "order": 3,
-    "unlockRequirement": { "worldId": "harakat", "masteryPercent": 80 }
   },
   {
     "id": "words",
     "title": "عَالَمُ الكَلِمَات",
     "emoji": "📝",
     "colorVar": "var(--world-words)",
-    "order": 4,
-    "unlockRequirement": { "worldId": "syllables", "masteryPercent": 80 }
+    "order": 3,
+    "unlockRequirement": { "worldId": "harakat", "masteryPercent": 80 }
   },
   {
     "id": "sentences",
     "title": " عَالَمُ الجُمَل",
     "emoji": "📖",
     "colorVar": "var(--world-sentences)",
-    "order": 5,
+    "order": 4,
     "unlockRequirement": { "worldId": "words", "masteryPercent": 80 }
   },
   {
@@ -44,7 +36,7 @@
     "title": "عَالَمُ القَصَص",
     "emoji": "📚",
     "colorVar": "var(--world-stories)",
-    "order": 6,
+    "order": 5,
     "unlockRequirement": { "worldId": "sentences", "masteryPercent": 80 }
   }
 ]

@@ -24,7 +24,7 @@ export interface VoiceRecordingItem {
   order: number
   contentHash: string
   textHash?: string
-  source?: 'manual' | 'edge-tts'
+  source?: 'manual' | 'edge-tts' | 'azure' // [AZURE-T1] أضفنا 'azure' ليقبل TypeScript المزوّد الجديد
   voice?: string
   meta?: Record<string, string | number | undefined>
 }
@@ -41,7 +41,7 @@ export interface AudioManifestEntry {
   durationMs?: number
   contentHash: string
   textHash?: string
-  source?: 'manual' | 'edge-tts'
+  source?: 'manual' | 'edge-tts' | 'azure' // [AZURE-T1] أضفنا 'azure' ليقبل TypeScript المزوّد الجديد
   voice?: string
   processing?: {
     format: 'mp3'

@@ -110,6 +110,10 @@ export interface VoiceBatchProgress {
 
 export type VoiceStudioSection = 'arabic' | 'english' | 'numbers' | 'discover' | 'islamic' | 'skills'
 
+// [AZURE-S1] مزوّدات التوليد المتاحة. لإضافة مزوّد جديد لاحقًا (مثل ElevenLabs) أضف اسمه هنا
+//   وفي vite.config.ts (TtsProvider) وفي قائمة الاختيار داخل VoiceStudio.tsx.
+export type TtsProvider = 'edge-tts' | 'azure'
+
 export async function deleteVoiceGroupAudio(section: VoiceStudioSection, group: string): Promise<{ deletedFiles: number; removedEntries: number; itemIds: string[] }> {
   const response = await fetch('/__voice-studio/delete-group', {
     method: 'POST',
@@ -159,6 +163,8 @@ export async function generateAllBatchWithAI(
   onProgress: (progress: VoiceBatchProgress) => void,
   shouldContinue: () => boolean,
   onlyItemId?: string,
+  // [AZURE-S2] معامل جديد اختياري في آخر القائمة؛ الاستدعاءات القديمة تبقى تعمل (الافتراضي edge-tts).
+  provider: TtsProvider = 'edge-tts',
 ): Promise<VoiceBatchResult> {
   const allItems = await loadVoiceItems()
   const candidates = onlyItemId
@@ -198,6 +204,7 @@ export async function generateAllBatchWithAI(
             section,
             itemIds: batch.map((item) => item.id),
             voice,
+            provider, // [AZURE-S3] يُرسَل إلى /__voice-studio/generate-batch في vite.config.ts
           }),
         })
 

@@ -11,15 +11,13 @@ import { lockParentSession } from './parentSession'
 
 const ARABIC_WORLD_NAV: Array<{ prefix: string; path: string; label: string; icon: string }> = [
   { prefix: '/arabic/world/letters', path: '/arabic/world/letters', label: 'عالم الحروف', icon: '🔤' },
-  { prefix: '/arabic/world/harakat', path: '/arabic/world/harakat', label: 'عالم الحركات', icon: '🎵' },
-  { prefix: '/arabic/world/syllables', path: '/arabic/world/syllables', label: 'عالم المقاطع', icon: '🧩' },
+  { prefix: '/arabic/world/harakat', path: '/arabic/world/harakat', label: 'الحركات والمقاطع', icon: '🎵' },
   { prefix: '/arabic/world/words', path: '/arabic/world/words', label: 'عالم الكلمات', icon: '✨' },
   { prefix: '/arabic/world/sentences', path: '/arabic/world/sentences', label: 'عالم الجمل', icon: '💬' },
   { prefix: '/arabic/world/stories', path: '/arabic/world/stories', label: 'عالم القصص', icon: '📚' },
   // backward compat
   { prefix: '/world/letters', path: '/world/letters', label: 'عالم الحروف', icon: '🔤' },
   { prefix: '/world/harakat', path: '/world/harakat', label: 'عالم الحركات', icon: '🎵' },
-  { prefix: '/world/syllables', path: '/world/syllables', label: 'عالم المقاطع', icon: '🧩' },
   { prefix: '/world/words', path: '/world/words', label: 'عالم الكلمات', icon: '✨' },
   { prefix: '/world/sentences', path: '/world/sentences', label: 'عالم الجمل', icon: '💬' },
   { prefix: '/world/stories', path: '/world/stories', label: 'عالم القصص', icon: '📚' },
@@ -71,14 +69,14 @@ export function AppShell() {
   return (
     <>
       <div
-            className="relative z-10 flex items-end justify-start pl-3 sm:pl-5 pb-2"
-            style={{ height: 'calc(var(--safe-top) + 7.5rem)' }}
-          >
-            <Link
-              to="/"
-              aria-label="العودة إلى الصفحة الرئيسية لمنصة رحلتي"
-              className="group relative inline-flex rounded-full transition-transform hover:scale-105 focus-visible:outline focus-visible:outline-4 focus-visible:outline-offset-2 focus-visible:outline-amber-400"
-            >
+        className="fixed left-3 z-[70] flex items-center sm:left-5"
+        style={{ top: 'calc(var(--safe-top, 0px) + .25rem)' }}
+      >
+        <Link
+          to="/"
+          aria-label="العودة إلى الصفحة الرئيسية لمنصة رحلتي"
+          className="group relative inline-flex rounded-full transition-transform hover:scale-105 focus-visible:outline focus-visible:outline-4 focus-visible:outline-offset-2 focus-visible:outline-amber-400"
+        >
               {/* هالة الإضاءة المتحركة */}
               <span
                 aria-hidden="true"
@@ -99,13 +97,13 @@ export function AppShell() {
                   style={{ animation: 'logo-shine-sweep 3.5s ease-in-out infinite' }}
                 />
               </span>
-              <img
+          <img
             src="/images/Rehlati_Logo_Clean.webp"
-                alt="رحلتي — تعلّم، نكتشف، نلعب"
-                className="relative h-16 w-16 rounded-full object-contain drop-shadow-md sm:h-20 sm:w-20"
-              />
-            </Link>
-          </div>
+            alt="رحلتي — تعلّم، نكتشف، نلعب"
+            className="relative h-12 w-12 rounded-full object-contain drop-shadow-md sm:h-14 sm:w-14"
+          />
+        </Link>
+      </div>
       <AppRoutes />
 
       {/* Arabic world — Home button + world breadcrumb */}

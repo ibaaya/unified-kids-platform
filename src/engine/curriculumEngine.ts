@@ -2,21 +2,19 @@ import { unlockWorld, getChildById, DEFAULT_CHILD_SETTINGS } from '../services/p
 import { computeSkillGroupMasteryPercent } from './masteryEngine'
 import lettersData from '../data/letters.json'
 import wordsData from '../data/words.json'
-import syllablesData from '../data/syllables.json'
 import worldsData from '../data/worlds.json'
-import { HARAKA_ORDER } from '../data/harakaLabels'
-import type { Letter, Word, Syllable, WorldDefinition } from '../types/content'
+import { HARAKAT_WORLD_MAP, HARAKA_WORLD_ORDER } from '../data/harakatWorld'
+import type { Letter, Word, WorldDefinition } from '../types/content'
 
 const letters = lettersData as Letter[]
 const words = wordsData as Word[]
-const syllables = syllablesData as Syllable[]
 const worlds = (worldsData as WorldDefinition[]).slice().sort((a, b) => a.order - b.order)
 
 /**
  * يربط كل عالم بمجموعة "المهارات" التي تُحسب منها نسبة إتقانه.
- * كل عوالم الحروف→الحركات→المقاطع→الكلمات تملك الآن ألعابًا حقيقية تُسجّل
- * محاولات فعلية (letter_/haraka_/syllable_/word_)، لذا أصبح شرط الفتح
- * التسلسلي حقيقيًا بينها جميعًا. عالمَا الجمل والقصص لا يزال محتواهما
+ * عوالم الحروف والحركات والكلمات تملك ألعابًا تسجّل محاولات فعلية
+ * (letter_/harakaworld_/word_)، لذا أصبح شرط الفتح التسلسلي حقيقيًا.
+ * عالما الجمل والقصص لا يزال محتواهما
  * التفاعلي قيد البناء، فتبقى بلا مهارات قابلة للقياس حتى الآن.
  */
 function skillIdsForWorld(worldId: string): string[] {
@@ -24,9 +22,9 @@ function skillIdsForWorld(worldId: string): string[] {
     case 'letters':
       return letters.map((l) => `letter_${l.id}`)
     case 'harakat':
-      return HARAKA_ORDER.map((h) => `haraka_${h}`)
-    case 'syllables':
-      return syllables.map((s) => `syllable_${s.id}`)
+      return HARAKA_WORLD_ORDER.flatMap((id) =>
+        (HARAKAT_WORLD_MAP.get(id)?.questions ?? []).map((question) => `harakaworld_${id}_${question.id}`),
+      )
     case 'words':
       return words.map((w) => `word_${w.id}`)
     default:

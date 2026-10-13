@@ -19,8 +19,7 @@ const ValueDetail: React.FC<{ value: IslamicValue; done: boolean; onClose: () =>
   onClose,
   onComplete,
 }) => {
-  const [showExample, setShowExample] = useState(false);
-  const speech = `${value.title}. ${value.description}`;
+  const speech = `${value.title}. ${value.description}. مِثالٌ على ${value.title}: ${value.example}`;
   useAutoSpeak(speech, value.id);
   return (
     <Modal onClose={onClose} maxWidth={440}>
@@ -44,7 +43,7 @@ const ValueDetail: React.FC<{ value: IslamicValue; done: boolean; onClose: () =>
         </div>
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 10, flexWrap: 'wrap' }}>
           <h2 style={{ margin: 0, color: value.color, fontSize: '1.6rem', fontWeight: 900 }}>{value.title}</h2>
-          <SpeakButton text={`${speech}. مِثال: ${value.example}`} />
+          <SpeakButton text={speech} />
         </div>
       </div>
       <div
@@ -58,31 +57,26 @@ const ValueDetail: React.FC<{ value: IslamicValue; done: boolean; onClose: () =>
       >
         <p style={{ margin: 0, fontWeight: 700, lineHeight: 1.9, color: '#3a4652', fontSize: '1.05rem' }}>{value.description}</p>
       </div>
-      <button
-        type="button"
-        onClick={() => setShowExample(true)}
+      <div
         style={{
           width: '100%',
-          background: showExample ? `linear-gradient(135deg, ${value.color}12, #ffffff)` : '#fafafa',
+          background: `linear-gradient(135deg, ${value.color}12, #ffffff)`,
           border: `2px dashed ${value.color}50`,
           borderRadius: 18,
           padding: '14px 18px',
           textAlign: 'right',
-          cursor: 'pointer',
+          cursor: 'default',
           fontFamily: 'inherit',
           marginBottom: 18,
           transition: 'all .2s ease',
         }}
       >
-        {showExample ? (
-          <span style={{ color: '#3a4652', lineHeight: 1.8, fontSize: '1.05rem' }}>
+        <span style={{ color: '#3a4652', lineHeight: 1.8, fontSize: '1.05rem', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 10 }}>
             <strong style={{ color: value.color }}>مِثال: </strong>
             {value.example}
+            <SpeakButton text={`مِثالٌ على ${value.title}: ${value.example}`} label="استمع إلى المثال" />
           </span>
-        ) : (
-          <span style={{ color: value.color, fontWeight: 900, fontSize: '1.05rem' }}>اضغَط لِتَرى مِثالاً ✨</span>
-        )}
-      </button>
+      </div>
       <div style={{ display: 'flex', gap: 10 }}>
         <button
           type="button"

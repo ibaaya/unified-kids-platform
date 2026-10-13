@@ -16,6 +16,7 @@ import {
 import type { ChildProfile, UnlockMode, SkillMastery } from '../../types/progress'
 import lettersData from '../../data/letters.json'
 import wordsData from '../../data/words.json'
+import worldsData from '../../data/worlds.json'
 import type { Letter, Word } from '../../types/content'
 import { STUDIO_ENABLED } from '../../config/features'
 import { DedicationCard } from '../../components/Dedication'
@@ -39,11 +40,12 @@ function skillReviewTarget(skillId: string): { label: string; path: string } {
     const word = words.find((item) => item.id === wordId)
     return { label: word ? `بناء كلمة ${word.text}` : 'لعبة الكلمات', path: `/world/words/${encodeURIComponent(wordId)}/play` }
   }
-  if (skillId.startsWith('haraka_')) {
-    const harakaType = skillId.slice('haraka_'.length)
-    return { label: 'تدريب الحركات', path: `/world/harakat/${encodeURIComponent(harakaType)}/play` }
+  if (skillId.startsWith('harakaworld_') || skillId.startsWith('haraka_')) {
+    const prefix = skillId.startsWith('harakaworld_') ? 'harakaworld_' : 'haraka_'
+    const harakaId = skillId.slice(prefix.length).split('_')[0]
+    return { label: 'تدريب الحركات والمقاطع', path: `/arabic/world/harakat/${encodeURIComponent(harakaId)}/play` }
   }
-  return { label: 'تدريب المقاطع', path: '/world/syllables' }
+  return { label: 'عالم الحركات والمقاطع', path: '/arabic/world/harakat' }
 }
 
 export function ParentDashboard() {
@@ -122,7 +124,7 @@ export function ParentDashboard() {
     }
   }
 
-  const unlockMode = child?.settings?.unlockMode ?? 'sequential'
+  const unlockMode = child?.settings?.unlockMode ?? 'free'
   const threshold = child?.settings?.sequentialThresholdPercent ?? 20
 
   return (
@@ -141,7 +143,7 @@ export function ParentDashboard() {
             <StatCard label="سلسلة التعلم" value={`${child.streakDays} أيام`} />
             <StatCard label="النقاط" value={child.points} />
             <StatCard label="النجوم" value={child.stars} />
-            <StatCard label="العوالم المفتوحة" value={child.unlockedWorldIds.length} />
+            <StatCard label="العوالم المفتوحة" value={unlockMode === 'free' ? worldsData.length : child.unlockedWorldIds.length} />
             <StatCard label="الدروس المكتملة" value={child.completedLessonIds.length} />
             <StatCard label="مهارات متقنة تمامًا" value={masteredCount} />
           </div>

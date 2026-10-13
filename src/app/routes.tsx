@@ -1,4 +1,4 @@
-import { Routes, Route } from 'react-router-dom'
+import { Routes, Route, Navigate } from 'react-router-dom'
 
 // Hub
 import { HubPage } from '../pages/Hub/HubPage'
@@ -13,12 +13,6 @@ import { LettersWorld } from '../pages/Worlds/LettersWorld'
 import { LetterDetail } from '../pages/Worlds/LetterDetail'
 import { LetterWordsPage } from '../pages/Worlds/LetterWordsPage'
 import { LetterGamePage } from '../pages/LessonPage/LetterGamePage'
-import { HarakatWorld } from '../pages/Worlds/HarakatWorld'
-import { HarakaDetail } from '../pages/Worlds/HarakaDetail'
-import { HarakaGamePage } from '../pages/LessonPage/HarakaGamePage'
-import { SyllablesWorld } from '../pages/Worlds/SyllablesWorld'
-import { SyllableDetail } from '../pages/Worlds/SyllableDetail'
-import { SyllableGamePage } from '../pages/LessonPage/SyllableGamePage'
 import { WordsWorld } from '../pages/Worlds/WordsWorld'
 import { WordLetterDetail } from '../pages/Worlds/WordLetterDetail'
 import { WordGamePage } from '../pages/LessonPage/WordGamePage'
@@ -32,7 +26,6 @@ import { STUDIO_ENABLED } from '../config/features'
 import { SentencesWorld } from '../pages/Worlds/SentencesWorld'
 import { VoiceStudio } from '../pages/VoiceStudio/VoiceStudio'
 import { LetterWorldBackground } from '../components/ui/LetterWorldBackground'
-import { SyllablesWorldBackground } from '../components/ui/SyllablesWorldBackground'
 import { HarakatWorldBackground } from '../components/ui/HarakatWorldBackground'
 import { SentencesWorldBackground } from '../components/ui/SentencesWorldBackground'
 import { StoriesWorldBackground } from '../components/ui/StoriesWorldBackground'
@@ -79,6 +72,11 @@ import SkillsLevelPage from '../skills/pages/SkillsLevelPage'
 // Islamic module (أخلاقي الجميلة)
 import { islamicRouteElements } from '../islamic'
 
+
+import { HarakatSyllablesWorld }  from '../pages/Worlds/HarakatSyllablesWorld'
+import { HarakatSyllablesDetail } from '../pages/Worlds/HarakatSyllablesDetail'
+import { HarakaWorldGamePage }    from '../pages/LessonPage/HarakaWorldGamePage'
+
 export function AppRoutes() {
   return (
     <Routes>
@@ -99,12 +97,10 @@ export function AppRoutes() {
       <Route path="/arabic/world/letters/:letterId" element={<LetterWorldBackground><WorldGuard worldId="letters"><LetterDetail /></WorldGuard></LetterWorldBackground>} />
       <Route path="/arabic/world/letters/:letterId/words/:position" element={<LetterWorldBackground><WorldGuard worldId="letters"><LetterWordsPage /></WorldGuard></LetterWorldBackground>} />
       <Route path="/arabic/world/letters/:letterId/play" element={<LetterWorldBackground><WorldGuard worldId="letters"><LetterGamePage /></WorldGuard></LetterWorldBackground>} />
-      <Route path="/arabic/world/harakat" element={<HarakatWorldBackground><WorldGuard worldId="harakat"><HarakatWorld /></WorldGuard></HarakatWorldBackground>} />
-      <Route path="/arabic/world/harakat/:harakaType" element={<HarakatWorldBackground><WorldGuard worldId="harakat"><HarakaDetail /></WorldGuard></HarakatWorldBackground>} />
-      <Route path="/arabic/world/harakat/:harakaType/play" element={<HarakatWorldBackground><WorldGuard worldId="harakat"><HarakaGamePage /></WorldGuard></HarakatWorldBackground>} />
-      <Route path="/arabic/world/syllables" element={<SyllablesWorldBackground><WorldGuard worldId="syllables"><SyllablesWorld /></WorldGuard></SyllablesWorldBackground>} />
-      <Route path="/arabic/world/syllables/:letterId" element={<SyllablesWorldBackground><WorldGuard worldId="syllables"><SyllableDetail /></WorldGuard></SyllablesWorldBackground>} />
-      <Route path="/arabic/world/syllables/:letterId/:type/play" element={<SyllablesWorldBackground><WorldGuard worldId="syllables"><SyllableGamePage /></WorldGuard></SyllablesWorldBackground>} />
+      <Route path="/arabic/world/harakat" element={<HarakatWorldBackground><WorldGuard worldId="harakat"><HarakatSyllablesWorld /></WorldGuard></HarakatWorldBackground>} />
+      <Route path="/arabic/world/harakat/:harakaId" element={<HarakatWorldBackground><WorldGuard worldId="harakat"><HarakatSyllablesDetail /></WorldGuard></HarakatWorldBackground>} />
+      <Route path="/arabic/world/harakat/:harakaId/play" element={<HarakatWorldBackground><WorldGuard worldId="harakat"><HarakaWorldGamePage /></WorldGuard></HarakatWorldBackground>} />
+      <Route path="/arabic/world/syllables/*" element={<Navigate to="/arabic/world/harakat" replace />} />
       <Route path="/arabic/world/words" element={<WordsWorldBackground><WorldGuard worldId="words"><WordsWorld /></WorldGuard></WordsWorldBackground>} />
       <Route path="/arabic/world/words/letter/:letterId/:position/play" element={<WordsWorldBackground><WorldGuard worldId="words"><WordPositionGamePage /></WorldGuard></WordsWorldBackground>} />
       <Route path="/arabic/world/words/letter/:letterId/location-game" element={<WordsWorldBackground><WorldGuard worldId="words"><LetterLocationGamePage /></WorldGuard></WordsWorldBackground>} />
@@ -120,12 +116,10 @@ export function AppRoutes() {
       <Route path="/world/letters/:letterId" element={<LetterWorldBackground><WorldGuard worldId="letters"><LetterDetail /></WorldGuard></LetterWorldBackground>} />
       <Route path="/world/letters/:letterId/words/:position" element={<LetterWorldBackground><WorldGuard worldId="letters"><LetterWordsPage /></WorldGuard></LetterWorldBackground>} />
       <Route path="/world/letters/:letterId/play" element={<LetterWorldBackground><WorldGuard worldId="letters"><LetterGamePage /></WorldGuard></LetterWorldBackground>} />
-      <Route path="/world/harakat" element={<HarakatWorldBackground><WorldGuard worldId="harakat"><HarakatWorld /></WorldGuard></HarakatWorldBackground>} />
-      <Route path="/world/harakat/:harakaType" element={<HarakatWorldBackground><WorldGuard worldId="harakat"><HarakaDetail /></WorldGuard></HarakatWorldBackground>} />
-      <Route path="/world/harakat/:harakaType/play" element={<HarakatWorldBackground><WorldGuard worldId="harakat"><HarakaGamePage /></WorldGuard></HarakatWorldBackground>} />
-      <Route path="/world/syllables" element={<SyllablesWorldBackground><WorldGuard worldId="syllables"><SyllablesWorld /></WorldGuard></SyllablesWorldBackground>} />
-      <Route path="/world/syllables/:letterId" element={<SyllablesWorldBackground><WorldGuard worldId="syllables"><SyllableDetail /></WorldGuard></SyllablesWorldBackground>} />
-      <Route path="/world/syllables/:letterId/:type/play" element={<SyllablesWorldBackground><WorldGuard worldId="syllables"><SyllableGamePage /></WorldGuard></SyllablesWorldBackground>} />
+      <Route path="/world/harakat" element={<Navigate to="/arabic/world/harakat" replace />} />
+      <Route path="/world/harakat/:harakaId" element={<Navigate to="/arabic/world/harakat" replace />} />
+      <Route path="/world/harakat/:harakaId/play" element={<Navigate to="/arabic/world/harakat" replace />} />
+      <Route path="/world/syllables/*" element={<Navigate to="/arabic/world/harakat" replace />} />
       <Route path="/world/words" element={<WordsWorldBackground><WorldGuard worldId="words"><WordsWorld /></WorldGuard></WordsWorldBackground>} />
       <Route path="/world/words/letter/:letterId/:position/play" element={<WordsWorldBackground><WorldGuard worldId="words"><WordPositionGamePage /></WorldGuard></WordsWorldBackground>} />
       <Route path="/world/words/letter/:letterId/location-game" element={<WordsWorldBackground><WorldGuard worldId="words"><LetterLocationGamePage /></WorldGuard></WordsWorldBackground>} />
@@ -175,6 +169,7 @@ export function AppRoutes() {
       {/* ==================== ISLAMIC MODULE (/islamic) — أخلاقي الجميلة ==================== */}
       {islamicRouteElements}
       {STUDIO_ENABLED && <Route path="/islamic/voice-studio" element={<ProtectedParentRoute><VoiceStudio section="islamic" /></ProtectedParentRoute>} />}
+
     </Routes>
   )
 }

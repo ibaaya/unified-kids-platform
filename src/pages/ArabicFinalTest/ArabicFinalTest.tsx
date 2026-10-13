@@ -4,6 +4,9 @@ import { HomeButton } from '../../components/ui/HomeButton'
 import { SpeakButton } from '../../components/ui/SpeakButton'
 import { useChildProfile } from '../../hooks/useChildProfile'
 import { getArabicFinalTestProgress, saveArabicFinalTestLevel, type ArabicFinalTestProgress } from '../../services/progressService'
+import { useSound } from '../../hooks/useSound'
+import { stripEmojiForSpeech } from '../../utils/arabicSpeech'
+import { pickSuccessMessage, pickTryAgainMessage } from '../../utils/feedbackPrompts'
 import { ARABIC_FINAL_TEST_LEVELS, type ArabicFinalTestQuestion } from './arabicFinalTestData'
 
 const LABELS = ['سهل', 'متوسط', 'صعب']
@@ -19,6 +22,9 @@ export function ArabicFinalTest() {
   const [answers, setAnswers] = useState<string[]>([])
   const [savedScore, setSavedScore] = useState<number | null>(null)
   const [saving, setSaving] = useState(false)
+  const { speak } = useSound()
+  const questionSet = level == null ? undefined : ARABIC_FINAL_TEST_LEVELS[level]
+  const question: ArabicFinalTestQuestion | undefined = questionSet?.[questionIndex]
 
   useEffect(() => {
     if (!child?.id) return
@@ -27,18 +33,27 @@ export function ArabicFinalTest() {
     return () => { alive = false }
   }, [child?.id])
 
+  useEffect(() => {
+    if (!question || level == null) return
+    const prompt = question.prompt.replace('{{target}}', question.highlightText ?? '')
+    const speech = stripEmojiForSpeech([prompt, question.say, question.stimulus, question.context]
+      .filter(Boolean)
+      .join('. '))
+    const timer = window.setTimeout(() => speak(speech, question.audioId), 350)
+    return () => window.clearTimeout(timer)
+  }, [level, question, speak])
+
   if (loading) return <div className="min-h-screen grid place-items-center font-bold text-xl">جارٍ تجهيز الاختبار…</div>
   if (!child) return <Navigate to={hasAnyChildren ? '/login' : '/onboarding'} replace />
   if (!loaded) return <div className="min-h-screen grid place-items-center font-bold text-xl">جارٍ تجهيز الاختبار…</div>
-
-  const questionSet = level == null ? undefined : ARABIC_FINAL_TEST_LEVELS[level]
-  const question: ArabicFinalTestQuestion | undefined = questionSet?.[questionIndex]
   const startLevel = (index: number) => {
     setLevel(index); setQuestionIndex(0); setAnswers([]); setSavedScore(null)
   }
   const submitLevel = async (selected: string) => {
     if (!question || answers[questionIndex] != null) return
     setAnswers((previous) => [...previous, selected])
+    if (selected === question.answer) speak(pickSuccessMessage(questionIndex))
+    else speak(pickTryAgainMessage(questionIndex))
   }
   const finishLevel = async () => {
     if (level == null || !child.id || saving) return
@@ -71,12 +86,13 @@ export function ArabicFinalTest() {
     const selected = answers[questionIndex]
     const last = questionIndex === 9
     return <main dir="rtl" className="min-h-screen bg-gradient-to-br from-sky-50 via-amber-50 to-violet-50 px-4 py-8"><HomeButton to="/arabic" /><section className="mx-auto max-w-2xl rounded-3xl border-2 bg-white/95 p-5 shadow-xl sm:p-8" style={{ borderColor: ACCENTS[level] }}>
-      <div className="flex items-center justify-between gap-2"><span className="font-extrabold" style={{ color: ACCENTS[level] }}>المستوى {LABELS[level]}</span><span className="text-sm font-bold text-slate-500">السؤال {questionIndex + 1} من 10</span><SpeakButton text={`${question.prompt} ${question.say ?? ''} ${question.stimulus ?? ''} ${question.context ?? ''}`} label="استمع إلى السؤال" /></div>
+      <div className="flex items-center justify-between gap-2"><span className="font-extrabold" style={{ color: ACCENTS[level] }}>المستوى {LABELS[level]}</span><span className="text-sm font-bold text-slate-500">السؤال {questionIndex + 1} من 10</span><SpeakButton text={`${question.prompt.replace('{{target}}', question.highlightText ?? '')} ${question.say ?? ''} ${question.stimulus ?? ''} ${question.context ?? ''}`} label="استمع إلى السؤال" /></div>
       <div className="mt-3 h-2 rounded-full bg-slate-100"><div className="h-2 rounded-full transition-all" style={{ width: `${((questionIndex + 1) / 10) * 100}%`, background: ACCENTS[level] }} /></div>
-      <h1 className="mt-6 text-center text-2xl font-extrabold leading-relaxed text-slate-800">{question.prompt}</h1>
+      <h1 className="mt-6 text-center text-2xl font-extrabold leading-relaxed text-slate-800">{question.highlightText && question.prompt.includes('{{target}}') ? (() => { const [before, after] = question.prompt.split('{{target}}'); return <>{before}<span className="mx-1 inline-block scale-110 rounded-lg bg-amber-100 px-1 text-3xl font-black text-rose-700 underline decoration-4 decoration-amber-400">{question.highlightText}</span>{after}</> })() : question.prompt}</h1>
       {question.context && <div className="mt-4 max-h-48 overflow-y-auto whitespace-pre-line rounded-2xl bg-amber-50 p-4 text-lg font-bold leading-loose text-slate-700">{question.context}</div>}
       {question.stimulus && <div className="mt-4 text-center text-3xl font-extrabold text-violet-700">{question.stimulus}</div>}
       {question.say && <div className="mt-3 flex justify-center"><SpeakButton text={question.say} label="استمع إلى المثال" /></div>}
+      {selected != null && <p role="status" className={`mt-4 rounded-2xl p-3 text-center text-lg font-extrabold ${selected === question.answer ? 'bg-emerald-50 text-emerald-800' : 'bg-amber-50 text-amber-800'}`}>{selected === question.answer ? 'أَحْسَنْتَ! مُمْتَازٌ! إِجَابَةٌ صَحِيحَةٌ، اِسْتَمِرَّ!' : 'مُحَاوَلَةٌ جَمِيلَةٌ، تابِعِ التَّعَلُّمَ!'}</p>}
       <div className="mt-6 grid grid-cols-1 gap-3 sm:grid-cols-2">{question.options.map((option) => <button key={option} disabled={selected != null} onClick={() => void submitLevel(option)} className={`min-h-14 rounded-2xl border-2 px-4 py-3 text-lg font-extrabold transition ${selected === option ? (option === question.answer ? 'bg-emerald-100 text-emerald-800' : 'bg-rose-100 text-rose-800') : 'border-slate-200 bg-white text-slate-700 hover:border-sky-400'}`} style={selected !== option ? { borderColor: 'rgba(148,163,184,.35)' } : undefined}>{option}</button>)}</div>
       {selected != null && <div className="mt-5 text-center">{last ? <button disabled={saving} onClick={() => void finishLevel()} className="rounded-xl px-6 py-3 font-extrabold text-white" style={{ background: ACCENTS[level] }}>{saving ? 'جارٍ حفظ النتيجة…' : 'إنهاء المستوى وعرض النتيجة'}</button> : <button onClick={() => { setQuestionIndex((index) => index + 1) }} className="rounded-xl bg-sky-700 px-6 py-3 font-extrabold text-white">السؤال التالي ←</button>}</div>}
     </section></main>

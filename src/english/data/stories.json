@@ -76,5 +76,341 @@
       {"question":"What was the giraffe eating?","options":["Fish","Leaves","Fruit"],"correctIndex":1}
     ],
     "newWordIds":[]
+  },
+  {
+    "id":"en_story_7","title":"The Lost Teddy Bear","theme":"responsibility",
+    "pages":[
+      {"text":"Lina had a soft teddy bear named Coco.","imageEmoji":"🧸","soundId":""},
+      {"text":"One day, she left Coco in the park.","imageEmoji":"🌳","soundId":""},
+      {"text":"At night, Lina was sad and could not sleep.","imageEmoji":"😢","soundId":""},
+      {"text":"The next morning, she went back and found Coco on a bench.","imageEmoji":"🪑","soundId":""},
+      {"text":"Lina promised to take care of her toys.","imageEmoji":"🤝","soundId":""}
+    ],
+    "comprehensionQuestions":[
+      {"question":"Where did Lina leave Coco?","options":["At school","In the park","At home"],"correctIndex":1}
+    ],
+    "newWordIds":[]
+  },
+  {
+    "id":"en_story_8","title":"The Kind Elephant","theme":"kindness",
+    "pages":[
+      {"text":"Ellie the elephant saw a small bird fall from a tree.","imageEmoji":"🐘","soundId":""},
+      {"text":"The bird hurt its wing and could not fly.","imageEmoji":"🐦","soundId":""},
+      {"text":"Ellie gently picked up the bird with her trunk.","imageEmoji":"🌿","soundId":""},
+      {"text":"She kept it warm until the wing got better.","imageEmoji":"☀️","soundId":""},
+      {"text":"The bird flew away, chirping a happy thank you.","imageEmoji":"🎶","soundId":""}
+    ],
+    "comprehensionQuestions":[
+      {"question":"How did Ellie help the bird?","options":["She gave it food","She kept it warm","She sang to it"],"correctIndex":1}
+    ],
+    "newWordIds":[]
+  },
+  {
+    "id":"en_story_9","title":"The Boy Who Shared His Lunch","theme":"sharing",
+    "pages":[
+      {"text":"Omar had a yummy lunch: a sandwich and a banana.","imageEmoji":"🥪","soundId":""},
+      {"text":"He saw a new boy sitting alone with no food.","imageEmoji":"😔","soundId":""},
+      {"text":"Omar sat with him and shared his sandwich.","imageEmoji":"🍌","soundId":""},
+      {"text":"The new boy smiled and said, Thank you!","imageEmoji":"😊","soundId":""},
+      {"text":"They became good friends and ate together every day.","imageEmoji":"👦","soundId":""}
+    ],
+    "comprehensionQuestions":[
+      {"question":"What did Omar share?","options":["His sandwich","His toy","His book"],"correctIndex":0}
+    ],
+    "newWordIds":[]
+  },
+  {
+    "id":"en_story_10","title":"The Turtle and the Rabbit","theme":"patience",
+    "pages":[
+      {"text":"A rabbit laughed at a slow turtle.","imageEmoji":"🐢","soundId":""},
+      {"text":"The turtle said, I may be slow, but I never give up.","imageEmoji":"🐇","soundId":""},
+      {"text":"They had a race. The rabbit ran fast and took a nap.","imageEmoji":"🏁","soundId":""},
+      {"text":"The turtle kept walking and reached the finish line first.","imageEmoji":"🏆","soundId":""},
+      {"text":"The rabbit learned that slow and steady wins the race.","imageEmoji":"🌟","soundId":""}
+    ],
+    "comprehensionQuestions":[
+      {"question":"Who won the race?","options":["The rabbit","The turtle","No one"],"correctIndex":1}
+    ],
+    "newWordIds":[]
+  },
+  {
+    "id":"en_story_11","title":"The Little Cloud","theme":"nature",
+    "pages":[
+      {"text":"A little cloud floated in the blue sky.","imageEmoji":"☁️","soundId":""},
+      {"text":"It saw a dry field and felt sorry for the plants.","imageEmoji":"🌾","soundId":""},
+      {"text":"The cloud grew big and dark, then dropped rain.","imageEmoji":"🌧️","soundId":""},
+      {"text":"The plants drank the water and turned green.","imageEmoji":"🌿","soundId":""},
+      {"text":"The little cloud was happy to help.","imageEmoji":"💙","soundId":""}
+    ],
+    "comprehensionQuestions":[
+      {"question":"What did the cloud do?","options":["It made snow","It dropped rain","It flew away"],"correctIndex":1}
+    ],
+    "newWordIds":[]
+  },
+  {
+    "id":"en_story_12","title":"The Boy Who Loved Stars","theme":"dreams",
+    "pages":[
+      {"text":"Adam loved looking at the stars every night.","imageEmoji":"🌟","soundId":""},
+      {"text":"He wished he could touch one.","imageEmoji":"🌠","soundId":""},
+      {"text":"His mother said, Dreams can take you anywhere.","imageEmoji":"🌙","soundId":""},
+      {"text":"Adam drew a rocket and imagined flying to the stars.","imageEmoji":"🚀","soundId":""},
+      {"text":"He fell asleep with a smile on his face.","imageEmoji":"😴","soundId":""}
+    ],
+    "comprehensionQuestions":[
+      {"question":"What did Adam love?","options":["The moon","The stars","The sun"],"correctIndex":1}
+    ],
+    "newWordIds":[]
+  },
+  {
+    "id":"en_story_13","title":"The Puppy and the Ball","theme":"play",
+    "pages":[
+      {"text":"A puppy found a red ball in the garden.","imageEmoji":"🐶","soundId":""},
+      {"text":"He pushed it with his nose and it rolled away.","imageEmoji":"⚽","soundId":""},
+      {"text":"The ball fell into a small hole.","imageEmoji":"🕳️","soundId":""},
+      {"text":"The puppy barked until his owner came to help.","imageEmoji":"🗣️","soundId":""},
+      {"text":"They got the ball out and played together.","imageEmoji":"🎉","soundId":""}
+    ],
+    "comprehensionQuestions":[
+      {"question":"What did the puppy find?","options":["A bone","A red ball","A stick"],"correctIndex":1}
+    ],
+    "newWordIds":[]
+  },
+  {
+    "id":"en_story_14","title":"The Brave Little Mouse","theme":"courage",
+    "pages":[
+      {"text":"A little mouse lived in a big house.","imageEmoji":"🐭","soundId":""},
+      {"text":"He was scared of the big cat.","imageEmoji":"🐱","soundId":""},
+      {"text":"One day, the cat got stuck in a box.","imageEmoji":"📦","soundId":""},
+      {"text":"The mouse was brave and opened the box.","imageEmoji":"🔓","soundId":""},
+      {"text":"The cat said thank you, and they became friends.","imageEmoji":"🤝","soundId":""}
+    ],
+    "comprehensionQuestions":[
+      {"question":"Who did the mouse help?","options":["A dog","The cat","A bird"],"correctIndex":1}
+    ],
+    "newWordIds":[]
+  },
+  {
+    "id":"en_story_15","title":"The Girl Who Planted Trees","theme":"nature",
+    "pages":[
+      {"text":"Sara loved trees and flowers.","imageEmoji":"🌳","soundId":""},
+      {"text":"She planted a small tree in her yard.","imageEmoji":"🌱","soundId":""},
+      {"text":"She gave it water and sunlight every day.","imageEmoji":"💧","soundId":""},
+      {"text":"Years later, the tree was big and gave shade.","imageEmoji":"🌳","soundId":""},
+      {"text":"Birds built nests in it and sang beautiful songs.","imageEmoji":"🐦","soundId":""}
+    ],
+    "comprehensionQuestions":[
+      {"question":"What did Sara plant?","options":["A flower","A tree","A seed"],"correctIndex":1}
+    ],
+    "newWordIds":[]
+  },
+  {
+    "id":"en_story_16","title":"The Magic Paintbrush","theme":"imagination",
+    "pages":[
+      {"text":"Leo found a paintbrush in the attic.","imageEmoji":"🖌️","soundId":""},
+      {"text":"When he painted a sun, the room got warm.","imageEmoji":"☀️","soundId":""},
+      {"text":"He painted a bird, and it flew out the window.","imageEmoji":"🐦","soundId":""},
+      {"text":"Leo painted a big cake and shared it with his friends.","imageEmoji":"🎂","soundId":""},
+      {"text":"He learned that imagination is a wonderful gift.","imageEmoji":"✨","soundId":""}
+    ],
+    "comprehensionQuestions":[
+      {"question":"What did Leo find?","options":["A book","A paintbrush","A toy"],"correctIndex":1}
+    ],
+    "newWordIds":[]
+  },
+  {
+    "id":"en_story_17","title":"The Bear and the Honey","theme":"patience",
+    "pages":[
+      {"text":"A big bear smelled honey in a tree.","imageEmoji":"🐻","soundId":""},
+      {"text":"He tried to climb but fell down.","imageEmoji":"🌳","soundId":""},
+      {"text":"He waited and watched the bees fly away.","imageEmoji":"🐝","soundId":""},
+      {"text":"Then he climbed slowly and got the honey.","imageEmoji":"🍯","soundId":""},
+      {"text":"Patience made the bear happy.","imageEmoji":"😊","soundId":""}
+    ],
+    "comprehensionQuestions":[
+      {"question":"What did the bear want?","options":["Fish","Honey","Berries"],"correctIndex":1}
+    ],
+    "newWordIds":[]
+  },
+  {
+    "id":"en_story_18","title":"The Little Star","theme":"hope",
+    "pages":[
+      {"text":"A little star was sad because it was small.","imageEmoji":"⭐","soundId":""},
+      {"text":"It saw a child crying in the dark.","imageEmoji":"😢","soundId":""},
+      {"text":"The star shone as bright as it could.","imageEmoji":"✨","soundId":""},
+      {"text":"The child looked up and smiled.","imageEmoji":"😊","soundId":""},
+      {"text":"The star learned that even small lights matter.","imageEmoji":"🌟","soundId":""}
+    ],
+    "comprehensionQuestions":[
+      {"question":"Why was the star sad?","options":["It was small","It was lost","It was cold"],"correctIndex":0}
+    ],
+    "newWordIds":[]
+  },
+  {
+    "id":"en_story_19","title":"The Dog and His Bone","theme":"honesty",
+    "pages":[
+      {"text":"A dog found a big bone.","imageEmoji":"🐕","soundId":""},
+      {"text":"He saw his reflection in the water.","imageEmoji":"💧","soundId":""},
+      {"text":"He thought it was another dog with a bigger bone.","imageEmoji":"🦴","soundId":""},
+      {"text":"He dropped his bone to grab the other one.","imageEmoji":"😮","soundId":""},
+      {"text":"He lost his bone and learned to be happy with what he had.","imageEmoji":"😔","soundId":""}
+    ],
+    "comprehensionQuestions":[
+      {"question":"What did the dog see in the water?","options":["A fish","His reflection","A cat"],"correctIndex":1}
+    ],
+    "newWordIds":[]
+  },
+  {
+    "id":"en_story_20","title":"The Butterfly's Journey","theme":"growth",
+    "pages":[
+      {"text":"A caterpillar crawled on a green leaf.","imageEmoji":"🐛","soundId":""},
+      {"text":"It ate and grew bigger every day.","imageEmoji":"🍃","soundId":""},
+      {"text":"One day, it made a cocoon.","imageEmoji":"🪺","soundId":""},
+      {"text":"Later, it came out as a beautiful butterfly.","imageEmoji":"🦋","soundId":""},
+      {"text":"It flew high and saw the world from above.","imageEmoji":"🌍","soundId":""}
+    ],
+    "comprehensionQuestions":[
+      {"question":"What did the caterpillar become?","options":["A bee","A butterfly","A bird"],"correctIndex":1}
+    ],
+    "newWordIds":[]
+  },
+  {
+    "id":"en_story_21","title":"The Boy Who Said Sorry","theme":"forgiveness",
+    "pages":[
+      {"text":"Jack broke his sister's toy by accident.","imageEmoji":"🧸","soundId":""},
+      {"text":"His sister was very sad.","imageEmoji":"😢","soundId":""},
+      {"text":"Jack said, I am sorry. I will fix it.","imageEmoji":"🛠️","soundId":""},
+      {"text":"He fixed the toy and gave it back.","imageEmoji":"🎁","soundId":""},
+      {"text":"His sister hugged him and said, I forgive you.","imageEmoji":"🤗","soundId":""}
+    ],
+    "comprehensionQuestions":[
+      {"question":"What did Jack break?","options":["A window","His sister's toy","A cup"],"correctIndex":1}
+    ],
+    "newWordIds":[]
+  },
+  {
+    "id":"en_story_22","title":"The Duckling's Swim","theme":"courage",
+    "pages":[
+      {"text":"A little duckling was afraid of water.","imageEmoji":"🦆","soundId":""},
+      {"text":"His mother said, You can do it.","imageEmoji":"🦢","soundId":""},
+      {"text":"He took a deep breath and jumped in.","imageEmoji":"💦","soundId":""},
+      {"text":"He paddled his feet and stayed on top.","imageEmoji":"🌊","soundId":""},
+      {"text":"He laughed and said, I can swim!","imageEmoji":"😄","soundId":""}
+    ],
+    "comprehensionQuestions":[
+      {"question":"What was the duckling afraid of?","options":["Water","Fire","Wind"],"correctIndex":0}
+    ],
+    "newWordIds":[]
+  },
+  {
+    "id":"en_story_23","title":"The Kind Baker","theme":"kindness",
+    "pages":[
+      {"text":"A baker made fresh bread every morning.","imageEmoji":"🍞","soundId":""},
+      {"text":"He saw a poor old man outside.","imageEmoji":"👴","soundId":""},
+      {"text":"The baker gave him a warm loaf of bread.","imageEmoji":"🥖","soundId":""},
+      {"text":"The old man smiled and said, God bless you.","imageEmoji":"🙏","soundId":""},
+      {"text":"The baker felt happy all day.","imageEmoji":"😊","soundId":""}
+    ],
+    "comprehensionQuestions":[
+      {"question":"What did the baker give?","options":["Cake","Bread","Milk"],"correctIndex":1}
+    ],
+    "newWordIds":[]
+  },
+  {
+    "id":"en_story_24","title":"The Two Friends and the Boat","theme":"teamwork",
+    "pages":[
+      {"text":"Two friends wanted to cross a river.","imageEmoji":"🌊","soundId":""},
+      {"text":"They built a small boat together.","imageEmoji":"🛶","soundId":""},
+      {"text":"One rowed and the other steered.","imageEmoji":"🚣","soundId":""},
+      {"text":"They reached the other side safely.","imageEmoji":"🏝️","soundId":""},
+      {"text":"They learned that teamwork makes hard things easy.","imageEmoji":"🤝","soundId":""}
+    ],
+    "comprehensionQuestions":[
+      {"question":"What did the friends build?","options":["A house","A boat","A bridge"],"correctIndex":1}
+    ],
+    "newWordIds":[]
+  },
+  {
+    "id":"en_story_25","title":"The Little Gardener","theme":"responsibility",
+    "pages":[
+      {"text":"Nora had a small garden with carrots.","imageEmoji":"🥕","soundId":""},
+      {"text":"She watered them and pulled out weeds.","imageEmoji":"💧","soundId":""},
+      {"text":"She waited patiently for them to grow.","imageEmoji":"⏳","soundId":""},
+      {"text":"One day, she picked a big carrot.","imageEmoji":"🥕","soundId":""},
+      {"text":"She shared it with her family.","imageEmoji":"👨‍👩‍👧","soundId":""}
+    ],
+    "comprehensionQuestions":[
+      {"question":"What did Nora grow?","options":["Tomatoes","Carrots","Flowers"],"correctIndex":1}
+    ],
+    "newWordIds":[]
+  },
+  {
+    "id":"en_story_26","title":"The Lost Kitten","theme":"compassion",
+    "pages":[
+      {"text":"A kitten was lost in the rain.","imageEmoji":"🐱","soundId":""},
+      {"text":"A boy named Adam heard it crying.","imageEmoji":"👂","soundId":""},
+      {"text":"He took the kitten home and dried it.","imageEmoji":"🏠","soundId":""},
+      {"text":"He gave it warm milk.","imageEmoji":"🥛","soundId":""},
+      {"text":"The kitten purred and became his best friend.","imageEmoji":"❤️","soundId":""}
+    ],
+    "comprehensionQuestions":[
+      {"question":"Where did Adam find the kitten?","options":["In a tree","In the rain","In a box"],"correctIndex":1}
+    ],
+    "newWordIds":[]
+  },
+  {
+    "id":"en_story_27","title":"The Sun and the Wind","theme":"gentleness",
+    "pages":[
+      {"text":"The sun and the wind argued about who was stronger.","imageEmoji":"☀️","soundId":""},
+      {"text":"They saw a man wearing a coat.","imageEmoji":"🧥","soundId":""},
+      {"text":"The wind blew hard, but the man held his coat tight.","imageEmoji":"💨","soundId":""},
+      {"text":"The sun shone warmly, and the man took off his coat.","imageEmoji":"🌞","soundId":""},
+      {"text":"Gentleness is stronger than force.","imageEmoji":"🌟","soundId":""}
+    ],
+    "comprehensionQuestions":[
+      {"question":"What did the man wear?","options":["A hat","A coat","A scarf"],"correctIndex":1}
+    ],
+    "newWordIds":[]
+  },
+  {
+    "id":"en_story_28","title":"The Boy Who Helped His Mom","theme":"family",
+    "pages":[
+      {"text":"Ali saw his mom cleaning the house.","imageEmoji":"🧹","soundId":""},
+      {"text":"She looked tired.","imageEmoji":"😓","soundId":""},
+      {"text":"Ali said, I will help you, Mom.","imageEmoji":"🤝","soundId":""},
+      {"text":"He put away his toys and swept the floor.","imageEmoji":"🧸","soundId":""},
+      {"text":"His mom hugged him and said, You are a great helper!","imageEmoji":"❤️","soundId":""}
+    ],
+    "comprehensionQuestions":[
+      {"question":"What did Ali do to help?","options":["He cooked","He swept the floor","He washed dishes"],"correctIndex":1}
+    ],
+    "newWordIds":[]
+  },
+  {
+    "id":"en_story_29","title":"The Fish Who Wanted to Fly","theme":"dreams",
+    "pages":[
+      {"text":"A little fish wanted to fly like a bird.","imageEmoji":"🐟","soundId":""},
+      {"text":"He jumped out of the water again and again.","imageEmoji":"💦","soundId":""},
+      {"text":"He could not fly, but he could jump very high.","imageEmoji":"🌈","soundId":""},
+      {"text":"His friends cheered for him.","imageEmoji":"👏","soundId":""},
+      {"text":"He learned to be happy with his own special skill.","imageEmoji":"😊","soundId":""}
+    ],
+    "comprehensionQuestions":[
+      {"question":"What did the fish want to do?","options":["Swim","Fly","Sing"],"correctIndex":1}
+    ],
+    "newWordIds":[]
+  },
+  {
+    "id":"en_story_30","title":"The Happy Little Train","theme":"optimism",
+    "pages":[
+      {"text":"A little train carried children to school.","imageEmoji":"🚂","soundId":""},
+      {"text":"One day, it had a flat tire.","imageEmoji":"🛞","soundId":""},
+      {"text":"The children were worried they would be late.","imageEmoji":"😟","soundId":""},
+      {"text":"The train said, Do not worry. We will fix it together.","imageEmoji":"🔧","soundId":""},
+      {"text":"They fixed the tire and arrived on time, singing happily.","imageEmoji":"🎶","soundId":""}
+    ],
+    "comprehensionQuestions":[
+      {"question":"What happened to the train?","options":["It had a flat tire","It ran out of fuel","It got lost"],"correctIndex":0}
+    ],
+    "newWordIds":[]
   }
 ]

@@ -17,26 +17,6 @@ export interface Letter extends LetterSeed {
   forms: Record<LetterForm, string>
 }
 
-export type HarakaType =
-  | 'fatha'
-  | 'damma'
-  | 'kasra'
-  | 'sukun'
-  | 'shadda'
-  | 'tanween_fath'
-  | 'tanween_damm'
-  | 'tanween_kasr'
-  | 'madd_alif'
-  | 'madd_waw'
-  | 'madd_yaa'
-
-export interface HarakaVariant {
-  letterId: string
-  haraka: HarakaType
-  form: string
-  soundId: string
-}
-
 export interface Word {
   id: string
   text: string
@@ -47,16 +27,6 @@ export interface Word {
   soundId: string
   difficulty: 1 | 2 | 3
   relatedLetterIds: string[]
-}
-
-export type SyllableType = 'short' | 'madd'
-
-export interface Syllable {
-  id: string
-  letterId: string
-  haraka: string
-  text: string
-  type: SyllableType
 }
 
 export interface Sentence {

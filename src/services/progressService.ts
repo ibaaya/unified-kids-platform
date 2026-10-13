@@ -36,7 +36,7 @@ export async function saveArabicFinalTestLevel(childId: number, levelIndex: numb
 
 /** الإعدادات الافتراضية لأي طفل جديد، ولأي ملف طفل قديم لا يملك settings محفوظة. */
 export const DEFAULT_CHILD_SETTINGS: ChildSettings = {
-  unlockMode: 'sequential',
+  unlockMode: 'free',
   sequentialThresholdPercent: 20,
   autoReadQuestions: true,
   textSize: 'normal',

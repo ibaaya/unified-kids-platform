@@ -1,6 +1,7 @@
 import react from '@vitejs/plugin-react'
 import tailwindcss from '@tailwindcss/vite'
-import { defineConfig, type Plugin } from 'vite'
+// [AZURE-0] أضفنا loadEnv لقراءة مفاتيح Azure من ملف .env داخل الخادم فقط (لا تصل للمتصفح أبدًا).
+import { defineConfig, loadEnv, type Plugin } from 'vite'
 import { VitePWA } from 'vite-plugin-pwa'
 import fs from 'node:fs'
 import path from 'node:path'
@@ -13,6 +14,9 @@ import { DISCOVER_QUIZ_QUESTIONS } from './src/discover/data/discoverQuizData.ts
 import { ENGLISH_ENCOURAGEMENTS, ENGLISH_FIXED_GAME_SPEECH, ENGLISH_FINAL_QUESTION_VOICE, ENGLISH_LETTER_QUESTION_VOICE } from './src/english/data/voicePrompts.ts'
 import { SUCCESS_FEEDBACK, RETRY_FEEDBACK } from './src/utils/feedbackPrompts.ts'
 import { getDefiniteLetterName } from './src/utils/arabicLetterNames.ts'
+// [SPEECH-0] قواعد توليد «نص النطق» للحركات والمقاطع (الملف الجديد src/utils/arabicSpeech.ts).
+
+import { buildHarakatWorldItems } from './src/data/harakatWorldVoiceItems.ts'
 
 const ARABIC_DIACRITICS = /[\u064B-\u065F\u0670\u06D6-\u06ED]/g
 const ARABIC_LETTER_MAP: Record<string, string> = {
@@ -61,6 +65,83 @@ function readJson<T>(file: string): T {
 
 function contentHash(parts: unknown[]): string {
   return crypto.createHash('sha256').update(JSON.stringify(parts)).digest('hex')
+}
+
+// ════════════════════════════════════════════════════════════════════
+// [AZURE-1] مزوّد Azure Speech — دالة جديدة مستقلة تمامًا عن edge-tts.
+//   - تستدعي واجهة Azure الرسمية (REST) وتُرجع ملف MP3 جاهزًا.
+//   - الصيغة audio-24khz-48kbitrate-mono-mp3 هي نفس صيغة edge-tts تقريبًا.
+//   - تُعيد المحاولة تلقائيًا عند 429 (كثرة الطلبات) أو أخطاء الخادم 5xx.
+//   - عند 401/403 (مفتاح أو منطقة خاطئة) تفشل فورًا برسالة واضحة.
+// لإضافة مزوّد ثالث لاحقًا (مثل ElevenLabs) انسخ هذا النمط: دالة تأخذ النص والصوت وتُرجع Buffer.
+// ════════════════════════════════════════════════════════════════════
+type TtsProvider = 'edge-tts' | 'azure'
+
+function escapeXml(value: string): string {
+  return value
+    .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;').replace(/'/g, '&apos;')
+}
+
+// [SPEECH-7] خياران جديدان: ipa (نطق دقيق عبر <phoneme>) و rate (سرعة مخصصة مثل '-20%').
+async function synthesizeAzure(opts: { text: string; voice: string; key: string; region: string; ipa?: string; rate?: string }): Promise<Buffer> {
+  const { text, voice, key, region, ipa, rate } = opts
+  if (!/^[a-z0-9-]+$/i.test(region)) throw new Error('قيمة AZURE_SPEECH_REGION غير صالحة (مثال صحيح: westeurope).')
+  const lang = voice.split('-').slice(0, 2).join('-') // ar-SA-ZariyahNeural → ar-SA
+  // IPA لا يقبل مسافات داخل <phoneme>. النص الداخلي يبقى احتياطيًا ولا يُنطق عند نجاح الـ phoneme.
+  const cleanIpa = ipa ? ipa.replace(/\s+/g, '') : ''
+  const inner = cleanIpa
+    ? `<phoneme alphabet="ipa" ph="${escapeXml(cleanIpa)}">${escapeXml(text)}</phoneme>`
+    : escapeXml(text)
+  // نفس ضبط edge-tts للعربية (--rate=-10% --pitch=+5Hz) حتى تتسق الأصوات القديمة والجديدة.
+  const effectiveRate = rate ?? (voice.startsWith('ar-') ? '-10%' : undefined)
+  const prosodyAttrs = `${effectiveRate ? ` rate="${effectiveRate}"` : ''}${voice.startsWith('ar-') ? ' pitch="+5Hz"' : ''}`
+  const body = prosodyAttrs ? `<prosody${prosodyAttrs}>${inner}</prosody>` : inner
+  const ssml = `<speak version="1.0" xmlns="http://www.w3.org/2001/10/synthesis" xml:lang="${lang}"><voice name="${voice}">${body}</voice></speak>`
+  const url = `https://${region}.tts.speech.microsoft.com/cognitiveservices/v1`
+
+  let lastError: Error = new Error('فشل Azure Speech.')
+  for (let attempt = 0; attempt < 4; attempt += 1) {
+    try {
+      const response = await fetch(url, {
+        method: 'POST',
+        headers: {
+          'Ocp-Apim-Subscription-Key': key,
+          'Content-Type': 'application/ssml+xml',
+          'X-Microsoft-OutputFormat': 'audio-24khz-48kbitrate-mono-mp3',
+          'User-Agent': 'arabic-kids-voice-studio',
+        },
+        body: ssml,
+        signal: AbortSignal.timeout(30000),
+      })
+      if (response.ok) return Buffer.from(await response.arrayBuffer())
+      const detail = (await response.text().catch(() => '')).slice(0, 300)
+      if (response.status === 401 || response.status === 403) {
+        throw Object.assign(new Error(`Azure رفض المفتاح (${response.status}). تحقق من AZURE_SPEECH_KEY ومن أن AZURE_SPEECH_REGION هي منطقة المورد نفسه. ${detail}`), { fatal: true })
+      }
+      if (response.status === 400) {
+        throw Object.assign(new Error(`Azure رفض الطلب (400): ${detail}`), { fatal: true })
+      }
+      lastError = new Error(`Azure Speech أعاد ${response.status}. ${detail}`)
+      if (response.status === 429) {
+        const retryAfter = Number(response.headers.get('retry-after'))
+        const wait = Number.isFinite(retryAfter) && retryAfter > 0 ? retryAfter * 1000 : 3000 * (attempt + 1)
+        await new Promise((resolve) => setTimeout(resolve, wait))
+        continue
+      }
+    } catch (error) {
+      if ((error as { fatal?: boolean }).fatal) throw error
+      lastError = error instanceof Error ? error : new Error(String(error))
+    }
+    await new Promise((resolve) => setTimeout(resolve, 1500 * (attempt + 1)))
+  }
+  throw lastError
+}
+
+// [SPEECH-1] بصمة نص النطق: تُحفظ في المانيفست وقت التوليد، وتُقارَن لاحقًا لمعرفة هل تغيّر النطق.
+function speechKey(item: { speechText?: string; speechIpa?: string }): string | undefined {
+  if (!item.speechText && !item.speechIpa) return undefined
+  return crypto.createHash('sha256').update(`${item.speechText ?? ''}\u0000${item.speechIpa ?? ''}`, 'utf8').digest('hex')
 }
 
 function voiceStudioPlugin(): Plugin {
@@ -135,12 +216,13 @@ function voiceStudioPlugin(): Plugin {
           sourceId: string
           order: number
           contentHash: string
+          // [SPEECH-2] حقلان اختياريان: نص النطق (للمحرك) و IPA (لـ Azure). النص المعروض text لا يتغير.
+          speechText?: string
+          speechIpa?: string
           meta?: Record<string, string | number | undefined>
         }
 
         const letters = readJson<Array<Record<string, any>>>(path.join(dataDir, 'letters.json'))
-        const harakat = readJson<Array<Record<string, any>>>(path.join(dataDir, 'harakat.json'))
-        const syllables = readJson<Array<Record<string, any>>>(path.join(dataDir, 'syllables.json'))
         const words = readJson<Array<Record<string, any>>>(path.join(dataDir, 'words.json'))
         const sentences = readJson<Array<Record<string, any>>>(path.join(dataDir, 'sentences.json'))
         const stories = readJson<Array<Record<string, any>>>(path.join(dataDir, 'stories.json'))
@@ -173,49 +255,6 @@ function voiceStudioPlugin(): Plugin {
               meta: { letter: item.id },
             })
           })
-
-        const harakaOrder = ['fatha', 'damma', 'kasra', 'sukun', 'shadda', 'tanween_fath', 'tanween_damm', 'tanween_kasr', 'madd_alif', 'madd_waw', 'madd_yaa']
-        harakat
-          .sort((a, b) => harakaOrder.indexOf(a.haraka) - harakaOrder.indexOf(b.haraka))
-          .forEach((item, index) => {
-            const filename = uniqueFilename(
-              `haraka_${safeName(item.haraka)}_${slugArabic(item.letterId)}.mp3`,
-              usedNames,
-            )
-            items.push({
-              id: `haraka:${item.soundId}`,
-              type: 'haraka',
-              group: 'harakat',
-              groupLabel: 'الحركات',
-              text: item.form,
-              filename,
-              relativePath: `/audio/harakat/${filename}`,
-              sourceId: item.soundId,
-              order: index + 1,
-              contentHash: contentHash([`haraka:${item.soundId}`, item.soundId, item.letterId, item.haraka, item.form]),
-              meta: { letter: item.letterId, haraka: item.haraka },
-            })
-          })
-
-        syllables.forEach((item, index) => {
-          const filename = uniqueFilename(
-            `syllable_${slugArabic(item.text)}_${safeName(item.type)}.mp3`,
-            usedNames,
-          )
-          items.push({
-            id: `syllable:${item.id}`,
-            type: 'syllable',
-            group: 'syllables',
-            groupLabel: 'المقاطع',
-            text: item.text,
-            filename,
-            relativePath: `/audio/syllables/${filename}`,
-            sourceId: item.id,
-            order: index + 1,
-            contentHash: contentHash([`syllable:${item.id}`, item.id, item.text, item.letterId, item.haraka, item.type]),
-            meta: { letter: item.letterId, haraka: item.haraka, syllableType: item.type },
-          })
-        })
 
         words.forEach((item, index) => {
           const position = POSITION_MAP[item.position] ?? item.position
@@ -301,7 +340,6 @@ function voiceStudioPlugin(): Plugin {
         const worldGroups: Record<string, string> = {
           letters: 'letters-prompts',
           harakat: 'harakat-prompts',
-          syllables: 'syllables-prompts',
           words: 'words-prompts',
           sentences: 'sentences-prompts',
         }
@@ -369,6 +407,7 @@ function voiceStudioPlugin(): Plugin {
           item.meta = { ...item.meta, section: 'arabic' }
           item.relativePath = item.relativePath.replace(/^\/audio\//, '/audio/arabic/')
         })
+        items.push(...buildHarakatWorldItems())
 
         const englishLetters = readJson<Array<Record<string, any>>>(path.join(projectRoot, 'src', 'english', 'data', 'letters.json'))
         const englishWords = readJson<Array<Record<string, any>>>(path.join(projectRoot, 'src', 'english', 'data', 'words.json'))
@@ -531,6 +570,17 @@ function voiceStudioPlugin(): Plugin {
                 addLearningText(relative, group, text)
               }
 
+              // Complete, reusable speech phrase for every اخلاق/أسرة example.
+              // The child hears the same sentence that the Voice Studio can record.
+              if (section === 'islamic' && relative.endsWith('/data/values.ts')) {
+                const valueBlocks = source.split(/\n\s*\},/).filter((block) => /\bid:\s*'/.test(block) && /\bexample:\s*'/.test(block))
+                for (const block of valueBlocks) {
+                  const title = block.match(/\btitle:\s*'([^']+)'/)?.[1]
+                  const example = block.match(/\bexample:\s*'([^']+)'/)?.[1]
+                  if (title && example) addLearningText(relative, 'value_examples', `مِثالٌ على ${title}: ${example}`)
+                }
+              }
+
               // Resolve Arabic template prompts used by randomized skill questions
               // into the finite set of phrases users can actually hear in a game.
               if (section === 'skills' && relative.endsWith('/generators/colors.ts') && source.includes('COLORS[col].name')) {
@@ -564,6 +614,13 @@ function voiceStudioPlugin(): Plugin {
         const manifest = readManifest()
         return baseItems.map((item) => {
           const saved = manifest[item.id]
+          // [SPEECH-3] إذا تغيّر نص النطق (أو لم يكن موجودًا عند التوليد القديم) يصبح الملف «قديمًا» ليُعاد توليده.
+          //   يُطبَّق فقط على الأصوات الآلية؛ التسجيلات اليدوية (source: 'manual') لا تُمسّ أبدًا.
+          if (item.speechText || item.speechIpa) {
+            if (saved?.source && saved.source !== 'manual' && saved.speechHash !== speechKey(item)) {
+              return { ...item, status: 'stale' as const }
+            }
+          }
           const expectedFile = path.resolve(projectRoot, 'public', item.relativePath.replace(/^\//, ''))
           if (saved?.contentHash && saved.contentHash !== item.contentHash) {
             return { ...item, status: 'stale' as const }
@@ -623,7 +680,8 @@ function voiceStudioPlugin(): Plugin {
         req.on('end', async () => {
           const lockedItemIds: string[] = []
           try {
-            const payload = JSON.parse(body) as { section?: string; voice?: string; itemId?: string; itemIds?: string[] }
+            // [AZURE-2] أضفنا provider إلى الحمولة القادمة من الواجهة: 'edge-tts' (الافتراضي) أو 'azure'.
+            const payload = JSON.parse(body) as { section?: string; voice?: string; itemId?: string; itemIds?: string[]; provider?: string }
             const supportedSections = ['arabic', 'english', 'numbers', 'discover', 'islamic', 'skills']
             if (!payload.section || !supportedSections.includes(payload.section)) throw new Error('القسم المحدد غير مدعوم للتوليد الآلي.')
 
@@ -639,6 +697,17 @@ function voiceStudioPlugin(): Plugin {
               'en-US-AnaNeural', 'en-US-AriaNeural', 'en-GB-SoniaNeural', 'en-GB-RyanNeural',
             ])
             if (!ALLOWED_VOICES.has(voice)) throw new Error('اسم صوت Edge-TTS غير مسموح.')
+
+            // [AZURE-3] اختيار المزوّد + قراءة مفاتيح Azure من .env (الخادم فقط).
+            //   نفس قائمة ALLOWED_VOICES تصلح لـ Azure لأن أسماء الأصوات (ar-SA-ZariyahNeural ...) متطابقة.
+            //   أي قيمة غير 'azure' ترجع إلى edge-tts، فلا يتأثر السلوك القديم.
+            const provider: TtsProvider = payload.provider === 'azure' ? 'azure' : 'edge-tts'
+            const azureEnv = loadEnv(server.config.mode, projectRoot, '')
+            const azureKey = (azureEnv.AZURE_SPEECH_KEY || process.env.AZURE_SPEECH_KEY || '').trim()
+            const azureRegion = (azureEnv.AZURE_SPEECH_REGION || process.env.AZURE_SPEECH_REGION || '').trim()
+            if (provider === 'azure' && (!azureKey || !azureRegion)) {
+              throw new Error('مفاتيح Azure غير مضبوطة. أضف AZURE_SPEECH_KEY و AZURE_SPEECH_REGION في ملف .env ثم أعد تشغيل npm run dev.')
+            }
 
             const uniqueIds = [...new Set(requestedIds)]
             const lockable = uniqueIds.filter((id) => !activeGenerationItems.has(id))
@@ -658,6 +727,9 @@ function voiceStudioPlugin(): Plugin {
             type Job = {
               item: typeof candidates[number]
               textHash: string
+              spoken: string // [SPEECH-4] النص الذي يُرسَل فعليًا للمحرك (نص النطق أو النص المعروض)
+              speechIpa?: string
+              speechHash?: string
               relativeAudio: string
               target: string
               textFile: string
@@ -666,7 +738,10 @@ function voiceStudioPlugin(): Plugin {
             const jobs: Job[] = []
             const publicRoot = path.resolve(projectRoot, 'public')
             for (const item of candidates) {
-              const textHash = crypto.createHash('sha256').update(item.text, 'utf8').digest('hex')
+              // [SPEECH-4] اسم الملف يُشتق من نص النطق، فتتغير الأسماء عند تغيير النطق ولا يبقى الكاش القديم في المتصفح.
+              //   للعناصر التي ليس لها نص نطق لا يتغير شيء (spoken = text فيبقى الاسم كما كان).
+              const spoken = item.speechText || item.text
+              const textHash = crypto.createHash('sha256').update(spoken, 'utf8').digest('hex')
               const itemDir = path.posix.dirname(item.relativePath.replace(/^\/+/, ''))
               const field = safeName(item.type || 'content')
               const contentId = safeName(String(item.meta?.contentId || item.sourceId || item.id))
@@ -682,14 +757,22 @@ function voiceStudioPlugin(): Plugin {
                 continue
               }
               const tempBase = path.join(os.tmpdir(), `voice-studio-${crypto.randomUUID()}`)
-              jobs.push({ item, textHash, relativeAudio, target, textFile: `${tempBase}.txt`, outputFile: `${tempBase}.mp3` })
+              jobs.push({ item, textHash, spoken, speechIpa: item.speechIpa, speechHash: speechKey(item), relativeAudio, target, textFile: `${tempBase}.txt`, outputFile: `${tempBase}.mp3` })
             }
 
             const generateOne = async (job: Job): Promise<{ ok: boolean; error?: string; entry?: Record<string, any> }> => {
-              const { item, textHash, relativeAudio, target, textFile, outputFile } = job
+              const { item, textHash, spoken, speechIpa, speechHash, relativeAudio, target, textFile, outputFile } = job
               try {
                  await new Promise((resolve) => setTimeout(resolve, 150 + Math.random() * 350))
-                fs.writeFileSync(textFile, item.text, 'utf8')
+                // [AZURE-4] فرع Azure: يُنتج الصوت مباشرة في الذاكرة (بدون Python وبدون ملفات مؤقتة).
+                //   فرع edge-tts القديم بقي كما هو داخل else، ويُنتج المتغير audio في نهايته.
+                let audio: Buffer
+                if (provider === 'azure') {
+                  // [SPEECH-5] Azure يستلم نص النطق + IPA إن وُجد، وبسرعة أبطأ قليلًا للحروف والمقاطع (وضوح أكبر للأطفال).
+                  const slow = item.type === 'haraka' || item.type === 'syllable'
+                  audio = await synthesizeAzure({ text: spoken, ipa: speechIpa, rate: slow ? '-20%' : undefined, voice, key: azureKey, region: azureRegion })
+                } else {
+                fs.writeFileSync(textFile, spoken, 'utf8') // [SPEECH-5] edge-tts أيضًا يستلم نص النطق
                 let lastGenerationError: unknown
                 for (let attempt = 0; attempt < 2; attempt += 1) {
                   try {
@@ -721,7 +804,9 @@ function voiceStudioPlugin(): Plugin {
                   }
                 }
                 if (lastGenerationError) throw lastGenerationError
-                const audio = fs.readFileSync(outputFile)
+                audio = fs.readFileSync(outputFile)
+                } // [AZURE-4] نهاية else الخاص بـ edge-tts
+                // التحقق من صحة MP3 أدناه يعمل لكلا المزوّدين.
                 if (audio.length < 128 || audio.toString('ascii', 0, 3) !== 'ID3' && !(audio[0] === 0xff && (audio[1] & 0xe0) === 0xe0)) throw new Error('الناتج ليس ملف MP3 صالحاً.')
                 fs.mkdirSync(path.dirname(target), { recursive: true })
                 const staged = `${target}.tmp-${crypto.randomUUID()}`
@@ -730,7 +815,7 @@ function voiceStudioPlugin(): Plugin {
                 const entry = {
                   itemId: item.id, sourceId: item.sourceId, type: item.type, text: item.text,
                   filename: path.basename(relativeAudio), relativePath: `/${relativeAudio}`, status: 'approved', updatedAt: new Date().toISOString(),
-                  contentHash: item.contentHash, textHash, source: 'edge-tts', voice,
+                  contentHash: item.contentHash, textHash, source: provider /* [AZURE-5] كان 'edge-tts' ثابتًا؛ الآن يحفظ المزوّد الفعلي في المانيفست */, voice, speechHash /* [SPEECH-6] */,
                 }
                 return { ok: true, entry }
               } catch (error) {
@@ -740,15 +825,19 @@ function voiceStudioPlugin(): Plugin {
               }
             }
 
-            //const concurrency = Math.min(4, jobs.length)
-            const concurrency = Math.min(4, jobs.length)
+            // [AZURE-6] التوازي: edge-tts يبقى 4. Azure افتراضيًا 2 (تقدر تغيّره بـ AZURE_TTS_CONCURRENCY في .env).
+            //   الطبقة المجانية F0 لها حد منخفض للطلبات في الدقيقة؛ عند تجاوزه تتولى synthesizeAzure إعادة المحاولة.
+            const azureConcurrency = Math.min(8, Math.max(1, Number(azureEnv.AZURE_TTS_CONCURRENCY) || 2))
+            const concurrency = Math.min(provider === 'azure' ? azureConcurrency : 4, jobs.length)
             const queue = [...jobs]
-            const settled: Array<{ ok: boolean; error?: string; entry?: Record<string, any> }> = []
+            // [AZURE-7] إصلاح خلل موجود سابقًا: النتائج كانت تُخزَّن بترتيب انتهاء التوليد ثم تُقرأ بترتيب المهام،
+            //   فمع التوازي قد يُنسب نجاح/فشل عنصر إلى عنصر آخر في الواجهة. الآن تُربط كل نتيجة بمهمتها.
+            const settled = new Map<Job, { ok: boolean; error?: string; entry?: Record<string, any> }>()
             const runWorker = async () => {
               while (queue.length) {
                 const job = queue.shift()
                 if (!job) return
-                settled.push(await generateOne(job))
+                settled.set(job, await generateOne(job))
               }
             }
             await Promise.all(Array.from({ length: concurrency }, () => runWorker()))
@@ -756,7 +845,7 @@ function voiceStudioPlugin(): Plugin {
             const okEntries: Record<string, any>[] = []
             for (let i = 0; i < jobs.length; i += 1) {
               const job = jobs[i]
-              const outcome = settled[i]
+              const outcome = settled.get(job)
               if (outcome?.ok && outcome.entry) {
                 results.push({ itemId: job.item.id, ok: true, entry: outcome.entry })
                 okEntries.push(outcome.entry)
