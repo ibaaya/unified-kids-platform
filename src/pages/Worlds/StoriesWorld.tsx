@@ -2,15 +2,16 @@ import React, { useState } from 'react';
 import { Card } from '../../components/ui/Card';
 import { Button } from '../../components/ui/Button';
 import { SpeakButton } from '../../components/ui/SpeakButton';
+import { FeedbackMessage } from '../../components/feedback/FeedbackMessage';
 import storiesData from '../../data/stories.json';
 import type { Story } from '../../types/content';
 import { EmojiIllustration } from '../../components/ui/EmojiIllustration';
-import { useSound } from '../../hooks/useSound';
 import { useChildProfile } from '../../hooks/useChildProfile';
 import { useAutoReadQuestion } from '../../hooks/useAutoReadQuestion';
+import { useAnswerFeedback } from '../../hooks/useAnswerFeedback';
 
 export const StoriesWorld: React.FC = () => {
-  const { speak } = useSound();
+  const { feedback, showSuccess, showRetry, reset } = useAnswerFeedback();
   const { child } = useChildProfile();
   const [selectedStory, setSelectedStory] = useState<Story | null>(null);
   const [currentPageIndex, setCurrentPageIndex] = useState<number>(0);
@@ -40,6 +41,7 @@ export const StoriesWorld: React.FC = () => {
     setShowQuestion(false);
     setSelectedOption(null);
     setIsCorrect(null);
+    reset();
     setFontSize('large'); // إعادة تعيين الحجم الافتراضي عند فتح قصة جديدة
   };
 
@@ -47,17 +49,20 @@ export const StoriesWorld: React.FC = () => {
     if (selectedStory && currentPageIndex < selectedStory.pages.length - 1) {
       setCurrentPageIndex((prev: number) => prev + 1);
     } else if (selectedStory && selectedStory.comprehensionQuestions && selectedStory.comprehensionQuestions.length > 0) {
+      reset();
       setShowQuestion(true);
     }
   };
 
   const handleAnswerSelect = (index: number) => {
     if (!selectedStory || !selectedStory.comprehensionQuestions || selectedStory.comprehensionQuestions.length === 0) return;
+    if (isCorrect === true) return;
     setSelectedOption(index);
     const currentQ = selectedStory.comprehensionQuestions[0];
     const correct = index === currentQ.correctIndex;
     setIsCorrect(correct);
-    if (correct && isCorrect !== true) speak('أَحْسَنْتَ! إِجَابَةٌ صَحِيحَةٌ.');
+    if (correct) showSuccess();
+    else showRetry();
   };
 
   // تبديل حجم الخط
@@ -159,14 +164,10 @@ export const StoriesWorld: React.FC = () => {
               </div>
 
               {isCorrect === true && (
-                <div className="text-green-600 font-bold text-lg mb-4 animate-pulse">
-                  أَحْسَنْتَ يا بطل! إجابة صحيحة ⭐🎉
-                </div>
+                feedback?.status === 'success' && <div className="mb-4"><FeedbackMessage status="success" message={feedback.message} /></div>
               )}
               {isCorrect === false && (
-                <div className="text-amber-600 font-medium mb-4 text-base">
-                  اقتربت! فكّر قليلًا وحاول مرة أخرى 🌟
-                </div>
+                feedback?.status === 'retry' && <div className="mb-4"><FeedbackMessage status="retry" message={feedback.message} /></div>
               )}
 
               <div className="flex justify-between mt-4">

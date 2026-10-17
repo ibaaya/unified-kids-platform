@@ -1,4 +1,5 @@
 /*
+src\styles\tokens.csstokens.css
   نظام التصميم — منصة تعلم العربية للأطفال
   ------------------------------------------------
   الفكرة: "نسيم الصباح" — لوحة ألوان هادئة ومنعشة (سماء فاتحة + شمس دافئة)
@@ -94,4 +95,24 @@ body {
 /* عندما يجتمع content-scale مع text-* من Tailwind، نحترم حجم Tailwind ونضاعفه بـ content-scale */
 .content-scale[class*="text-"] {
   font-size: calc(1em * var(--content-scale));
+}
+
+/* أحجام مكبّرة للمحتوى التعليمي — تعتمد على rem فقط، لا تتراكم،
+   وتستجيب تلقائيًا لإعداد حجم النص عبر --base-font-size على html */
+.content-scale-lg {
+  font-size: 1.5rem;
+  line-height: 1.4;
+  transition: font-size var(--duration-med) var(--ease-bounce);
+}
+
+.content-scale-xl {
+  font-size: 2rem;
+  line-height: 1.2;
+  transition: font-size var(--duration-med) var(--ease-bounce);
+}
+
+/* على الشاشات الأكبر نكبّر أكثر قليلًا */
+@media (min-width: 640px) {
+  .content-scale-lg { font-size: 1.75rem; }
+  .content-scale-xl { font-size: 2.5rem; }
 }

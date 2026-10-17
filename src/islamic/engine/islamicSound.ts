@@ -26,11 +26,13 @@ const supported = (): boolean =>
 /** إزالة الإيموجي والرموز والأسهم قبل النطق */
 export const stripForSpeech = (text: string): string =>
   text
-    .replace(/[\u{1F000}-\u{1FAFF}\u{2190}-\u{21FF}\u{2300}-\u{23FF}\u{2600}-\u{27BF}\u{2B00}-\u{2BFF}\uFE0F\u200D]/gu, '')
-    .replace(/[«»"“”]/g, '')
+    // ✅ احذف أي رمز ليس حرفاً عربياً أو لاتينياً أو رقماً أو ترقيماً عربياً
+    .replace(/[^\u0600-\u06FF\u0750-\u077F\u08A0-\u08FF\uFB50-\uFDFF\uFE70-\uFEFFa-zA-Z0-9\s.,،؛:؟!()\-]/gu, '')
+    // حذف variation selectors و ZWJ
+    .replace(/[\uFE0F\uFE0E\u200D\u200C\u200B]/g, '')
+    // تنظيف المسافات
     .replace(/\s+/g, ' ')
     .trim();
-
 export const isSoundEnabled = (): boolean => soundEnabled;
 
 export const setSoundEnabled = (value: boolean): void => {

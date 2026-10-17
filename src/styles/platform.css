@@ -19,9 +19,9 @@
 
 /* لا تفرض ارتفاع الشاشة على عناصر التنقل الثابتة التي يعرضها التطبيق بجوار الصفحة. */
 .app-shell-nav { top: calc(var(--safe-top) + 0.75rem); }
-.app-shell-nav-start { left: calc(var(--safe-left) + 0.75rem); }
+.app-shell-nav-start { top: calc(var(--safe-top) + 5.75rem); left: calc(var(--safe-left) + 0.75rem); }
 .app-shell-nav-end { right: calc(var(--safe-right) + 0.75rem); }
-.home-button-safe { top: calc(var(--safe-top) + 0.75rem); left: calc(var(--safe-left) + 0.75rem); }
+.home-button-safe { top: calc(var(--safe-top) + 5.75rem); left: calc(var(--safe-left) + 0.75rem); }
 
 /* داخل التطبيق / PWA: لا تحديد نص ولا قائمة نسخ عند الضغط المطوّل، ولا وميض عند اللمس */
 html.is-native,

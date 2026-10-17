@@ -20,6 +20,14 @@ export interface IslamicManner {
   color: string;
   steps?: string[];
   badgeId: string;
+  /** إيموجي كبير يظهر كصورة رئيسية في الكارت (بديل أوضح للأطفال) */
+  emojiBig?: string;
+  /** إيموجي صغيرة تمثّل خطوات الأدب كدليل بصري سريع */
+  emojis?: string[];
+  /** مسار صورة محلية اختيارية (SVG/PNG) — تُستخدم بدل الإيموجي إن وُجدت */
+  image?: string;
+  /** لون خلفية فاتح مشتق (اختياري) لتحسين التباين */
+  colorSoft?: string;
 }
 
 export interface WorshipStep {

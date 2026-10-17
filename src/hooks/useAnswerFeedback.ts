@@ -1,6 +1,8 @@
+/*src\hooks\useAnswerFeedback.ts */
 import { useRef, useState } from 'react'
 import { useSound } from './useSound'
 import { pickSuccessMessage, pickTryAgainMessage } from '../components/feedback/FeedbackMessage'
+import { RETRY_FEEDBACK, SUCCESS_FEEDBACK } from '../utils/feedbackPrompts'
 
 export type AnswerFeedbackState = { status: 'success' | 'retry'; message: string } | null
 
@@ -16,17 +18,19 @@ export function useAnswerFeedback() {
   const { speak } = useSound()
 
   function showSuccess() {
+    const messageIndex = successCount.current % SUCCESS_FEEDBACK.length
     const message = pickSuccessMessage(successCount.current)
     successCount.current += 1
+    speak(message, `feedback:success:${messageIndex + 1}`)
     setFeedback({ status: 'success', message })
-    speak(message)
   }
 
   function showRetry() {
+    const messageIndex = retryCount.current % RETRY_FEEDBACK.length
     const message = pickTryAgainMessage(retryCount.current)
     retryCount.current += 1
+    speak(message, `feedback:retry:${messageIndex + 1}`)
     setFeedback({ status: 'retry', message })
-    speak(message)
   }
 
   function reset() {

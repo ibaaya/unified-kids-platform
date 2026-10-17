@@ -6,8 +6,8 @@ import type { ChildSettings } from '../types/progress'
 import { Mascot } from '../components/character/Mascot'
 import { Link, useLocation } from 'react-router-dom'
 import { HomeButton } from '../components/ui/HomeButton'
-import { primeEnglishVoices } from '../english/engine/soundManager'
 import { lockParentSession } from './parentSession'
+// ✅ حذف primeEnglishVoices من هنا — انتقل إلى AudioUnlockProvider
 
 const ARABIC_WORLD_NAV: Array<{ prefix: string; path: string; label: string; icon: string }> = [
   { prefix: '/arabic/world/letters', path: '/arabic/world/letters', label: 'عالم الحروف', icon: '🔤' },
@@ -15,7 +15,6 @@ const ARABIC_WORLD_NAV: Array<{ prefix: string; path: string; label: string; ico
   { prefix: '/arabic/world/words', path: '/arabic/world/words', label: 'عالم الكلمات', icon: '✨' },
   { prefix: '/arabic/world/sentences', path: '/arabic/world/sentences', label: 'عالم الجمل', icon: '💬' },
   { prefix: '/arabic/world/stories', path: '/arabic/world/stories', label: 'عالم القصص', icon: '📚' },
-  // backward compat
   { prefix: '/world/letters', path: '/world/letters', label: 'عالم الحروف', icon: '🔤' },
   { prefix: '/world/harakat', path: '/world/harakat', label: 'عالم الحركات', icon: '🎵' },
   { prefix: '/world/words', path: '/world/words', label: 'عالم الكلمات', icon: '✨' },
@@ -38,9 +37,6 @@ export function AppShell() {
   const currentArabicWorld = ARABIC_WORLD_NAV.find(
     (w) => pathname.startsWith(`${w.prefix}/`) || pathname === w.prefix
   )
-
-  // Prime English TTS on mount
-  useEffect(() => { primeEnglishVoices() }, [])
 
   useEffect(() => {
     const isParentArea = pathname.startsWith('/parent')
@@ -77,42 +73,39 @@ export function AppShell() {
           aria-label="العودة إلى الصفحة الرئيسية لمنصة رحلتي"
           className="group relative inline-flex rounded-full transition-transform hover:scale-105 focus-visible:outline focus-visible:outline-4 focus-visible:outline-offset-2 focus-visible:outline-amber-400"
         >
-              {/* هالة الإضاءة المتحركة */}
-              <span
-                aria-hidden="true"
-                className="pointer-events-none absolute inset-0 rounded-full opacity-70 blur-md transition-opacity duration-500 group-hover:opacity-100"
-                style={{
-                  background:
-                    'conic-gradient(from 0deg, rgba(255,214,133,0), rgba(255,214,133,.85), rgba(58,160,217,.75), rgba(139,95,191,.7), rgba(255,214,133,0))',
-                  animation: 'logo-glow-spin 6s linear infinite',
-                }}
-              />
-              {/* لمعة عابرة على الصورة */}
-              <span
-                aria-hidden="true"
-                className="pointer-events-none absolute inset-0 overflow-hidden rounded-full"
-              >
-                <span
-                  className="absolute inset-y-0 -left-1/2 w-1/2 bg-gradient-to-r from-transparent via-white/70 to-transparent"
-                  style={{ animation: 'logo-shine-sweep 3.5s ease-in-out infinite' }}
-                />
-              </span>
+          <span
+            aria-hidden="true"
+            className="pointer-events-none absolute inset-0 rounded-full opacity-70 blur-md transition-opacity duration-500 group-hover:opacity-100"
+            style={{
+              background:
+                'conic-gradient(from 0deg, rgba(255,214,133,0), rgba(255,214,133,.85), rgba(58,160,217,.75), rgba(139,95,191,.7), rgba(255,214,133,0))',
+              animation: 'logo-glow-spin 6s linear infinite',
+            }}
+          />
+          <span
+            aria-hidden="true"
+            className="pointer-events-none absolute inset-0 overflow-hidden rounded-full"
+          >
+            <span
+              className="absolute inset-y-0 -left-1/2 w-1/2 bg-gradient-to-r from-transparent via-white/70 to-transparent"
+              style={{ animation: 'logo-shine-sweep 3.5s ease-in-out infinite' }}
+            />
+          </span>
           <img
             src="/images/Rehlati_Logo_Clean.webp"
             alt="رحلتي — تعلّم، نكتشف، نلعب"
-            className="relative h-12 w-12 rounded-full object-contain drop-shadow-md sm:h-14 sm:w-14"
+            className="relative h-16 w-16 rounded-full object-contain drop-shadow-lg sm:h-20 sm:w-20"
           />
         </Link>
       </div>
       <AppRoutes />
 
-      {/* Arabic world — Home button + world breadcrumb */}
       {isArabicWorldPage && <HomeButton to="/arabic" />}
       {currentArabicWorld && (
         <Link
           to={currentArabicWorld.path}
           aria-label={`العودة إلى ${currentArabicWorld.label}`}
-          className="fixed app-shell-nav app-shell-nav-end z-[60] inline-flex min-h-11 items-center gap-2 rounded-2xl border-2 border-white/90 bg-sky-800/90 px-3 py-2 font-display text-sm font-extrabold text-white shadow-xl backdrop-blur-md transition hover:-translate-y-0.5 hover:bg-sky-900 focus-visible:outline focus-visible:outline-4 focus-visible:outline-offset-2 focus-visible:outline-amber-300 "
+          className="fixed app-shell-nav app-shell-nav-end z-[60] inline-flex min-h-11 items-center gap-2 rounded-2xl border-2 border-white/90 bg-sky-800/90 px-3 py-2 font-display text-sm font-extrabold text-white shadow-xl backdrop-blur-md transition hover:-translate-y-0.5 hover:bg-sky-900 focus-visible:outline focus-visible:outline-4 focus-visible:outline-offset-2 focus-visible:outline-amber-300"
           dir="rtl"
         >
           <span aria-hidden="true">{currentArabicWorld.icon}</span>
@@ -120,17 +113,15 @@ export function AppShell() {
         </Link>
       )}
 
-      {/* English module — hub nav */}
       {isEnglishPage && (
         <Link
           to="/english"
-          className="fixed app-shell-nav app-shell-nav-end z-[60] inline-flex min-h-11 items-center gap-2 rounded-2xl border-2 border-white/90 bg-blue-800/90 px-3 py-2 text-sm font-extrabold text-white shadow-xl backdrop-blur-md transition hover:-translate-y-0.5 "
+          className="fixed app-shell-nav app-shell-nav-end z-[60] inline-flex min-h-11 items-center gap-2 rounded-2xl border-2 border-white/90 bg-blue-800/90 px-3 py-2 text-sm font-extrabold text-white shadow-xl backdrop-blur-md transition hover:-translate-y-0.5"
         >
           🔤 English Menu
         </Link>
       )}
 
-      {/* Numbers module — hub nav */}
       {isNumbersPage && (
         <Link
           to="/numbers"
@@ -144,20 +135,14 @@ export function AppShell() {
             textShadow: '0 1px 3px rgba(0,0,0,.30)',
           }}
         >
-          {/* لمعة عابرة عند التحويم */}
           <span className="pointer-events-none absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/25 to-transparent transition-transform duration-700 group-hover:translate-x-full" />
-
-          {/* أيقونة الأرقام في دائرة شفافة */}
           <span className="relative z-10 flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-white/25 text-base shadow-inner transition-transform duration-300 group-hover:rotate-12">
             🔢
           </span>
-
-          {/* النص */}
           <span className="relative z-10">الأرقام</span>
         </Link>
       )}
 
-      {/* Mascot + text-size button (Arabic only) */}
       {child && isArabicWorldPage && (
         <>
           <div className="fixed bottom-20 left-2 sm:left-4 z-30 pointer-events-none select-none" aria-hidden="true">

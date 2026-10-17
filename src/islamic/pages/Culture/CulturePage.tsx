@@ -1,15 +1,23 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import PageShell from '../../components/PageShell';
 import Modal from '../../components/Modal';
 import SpeakButton from '../../components/SpeakButton';
 import { cultureItems } from '../../data/culture';
 import type { CultureItem } from '../../data/types';
-import { useAutoSpeak } from '../../engine/useAutoSpeak';
+import { speakArabic } from '../../engine/islamicSound';
 
 const CultureDetail: React.FC<{ item: CultureItem; onClose: () => void }> = ({ item, onClose }) => {
-  const speech = `${item.title}. ${item.description}`;
-  useAutoSpeak(speech, item.id);
+  useEffect(() => {
+    // نطق العنوان ثم الوصف، كلاً بنصه الأصلي المسجَّل — لا دمج
+    const t1 = window.setTimeout(() => speakArabic(item.title), 300);
+    const t2 = window.setTimeout(() => speakArabic(item.description), 1500);
+    return () => {
+      window.clearTimeout(t1);
+      window.clearTimeout(t2);
+    };
+  }, [item.id, item.title, item.description]);
+
   return (
     <Modal onClose={onClose} maxWidth={420}>
       <div style={{ textAlign: 'center', marginBottom: 18 }}>
@@ -32,7 +40,8 @@ const CultureDetail: React.FC<{ item: CultureItem; onClose: () => void }> = ({ i
         </div>
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 10, flexWrap: 'wrap' }}>
           <h2 style={{ margin: 0, color: item.color, fontSize: '1.6rem', fontWeight: 900 }}>{item.title}</h2>
-          <SpeakButton text={speech} />
+          {/* زر الاستماع: نطق الوصف (المسجَّل في الاستوديو) */}
+          <SpeakButton text={item.description} />
         </div>
       </div>
       <div

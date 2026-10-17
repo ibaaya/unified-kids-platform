@@ -4,7 +4,7 @@ import {
   primeVoices,
   speakArabic,
   speakArabicSequence,
-  stopSpeaking,
+  //stopSpeaking,
   type SpeechSequenceItem,
 } from '../engine/soundManager'
 
@@ -21,7 +21,7 @@ export function useSound(): UseSoundResult {
 
   useEffect(() => {
     primeVoices()
-    return () => stopSpeaking()
+    //return () => stopSpeaking()
   }, [])
 
   const speak = useCallback((text: string, audioId?: string) => {

@@ -73,7 +73,16 @@ export function speakArabic(text: string, options: SpeakOptions = {}, audioId?: 
   if (!speechText.trim()) return false
 
   // التسجيلات التي اعتمدها Voice Studio لها الأولوية على صوت المتصفح.
-  if (playRecordedAudio(audioId ?? speechText, options.onEnd, options.onError)) {
+  const ttsFallbackId = '\u0000tts-fallback'
+  const fallbackToSpeechSynthesis = () => {
+    // لا نمرر النص كمعرّف مرة أخرى، كي لا يعثر البحث على التسجيل نفسه ويدخل في حلقة.
+    if (typeof window === 'undefined' || !('speechSynthesis' in window)) {
+      options.onError?.()
+      return
+    }
+    if (!speakArabic(speechText, options, ttsFallbackId)) options.onError?.()
+  }
+  if (audioId !== ttsFallbackId && playRecordedAudio(audioId ?? speechText, options.onEnd, fallbackToSpeechSynthesis)) {
     speakRequestId += 1
     if (pendingSpeakTimer !== null && typeof window !== 'undefined') {
       window.clearTimeout(pendingSpeakTimer)

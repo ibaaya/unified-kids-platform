@@ -82,6 +82,17 @@ function escapeXml(value: string): string {
     .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
     .replace(/"/g, '&quot;').replace(/'/g, '&apos;')
 }
+// ✅ تنظيف النص من الإيموجي والرموز قبل إرساله لأي محرك TTS
+function stripForTts(text: string): string {
+  return text
+    // احذف كل Unicode خارج نطاق العربية واللاتيني والأرقام والترقيم الأساسي
+    .replace(/[^\u0600-\u06FF\u0750-\u077F\u08A0-\u08FF\uFB50-\uFDFF\uFE70-\uFEFFa-zA-Z0-9\s.,،؛:؟!()\-]/gu, '')
+    // احذف variation selectors و ZWJ
+    .replace(/[\uFE0F\uFE0E\u200D\u200C\u200B]/g, '')
+    // نظّف المسافات الزائدة
+    .replace(/\s+/g, ' ')
+    .trim()
+}
 
 // [SPEECH-7] خياران جديدان: ipa (نطق دقيق عبر <phoneme>) و rate (سرعة مخصصة مثل '-20%').
 async function synthesizeAzure(opts: { text: string; voice: string; key: string; region: string; ipa?: string; rate?: string }): Promise<Buffer> {
@@ -740,7 +751,7 @@ function voiceStudioPlugin(): Plugin {
             for (const item of candidates) {
               // [SPEECH-4] اسم الملف يُشتق من نص النطق، فتتغير الأسماء عند تغيير النطق ولا يبقى الكاش القديم في المتصفح.
               //   للعناصر التي ليس لها نص نطق لا يتغير شيء (spoken = text فيبقى الاسم كما كان).
-              const spoken = item.speechText || item.text
+              const spoken = stripForTts(item.speechText || item.text)
               const textHash = crypto.createHash('sha256').update(spoken, 'utf8').digest('hex')
               const itemDir = path.posix.dirname(item.relativePath.replace(/^\/+/, ''))
               const field = safeName(item.type || 'content')

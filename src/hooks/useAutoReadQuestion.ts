@@ -1,10 +1,6 @@
-import { useEffect } from 'react'
+import { useEffect, useRef } from 'react'
 import { useSound } from './useSound'
 
-/**
- * يقرأ سؤال/تعليمة اللعبة تلقائيًا عند ظهور سؤال جديد، وإذا وُجد followUpText
- * ينطقه مباشرة بعد انتهاء السؤال (مثل: تعليمات بناء الكلمة ثم الكلمة نفسها).
- */
 export function useAutoReadQuestion(
   text: string,
   enabled: boolean,
@@ -16,20 +12,27 @@ export function useAutoReadQuestion(
 ): void {
   const { speak, speakSequence } = useSound()
 
+  // ✅ احتفظ بآخر نسخة من speak/speakSequence بدون إعادة تشغيل الـ effect
+  const speakRef = useRef(speak)
+  const speakSequenceRef = useRef(speakSequence)
+  useEffect(() => { speakRef.current = speak }, [speak])
+  useEffect(() => { speakSequenceRef.current = speakSequence }, [speakSequence])
+
   useEffect(() => {
     if (!enabled || !text.trim()) return
 
     const timer = window.setTimeout(() => {
       if (followUpText?.trim()) {
-        speakSequence([
+        speakSequenceRef.current([
           { text, audioId },
           { text: followUpText, audioId: followUpAudioId },
         ])
       } else {
-        speak(text, audioId)
+        speakRef.current(text, audioId)
       }
     }, delayMs)
 
     return () => window.clearTimeout(timer)
-  }, [text, enabled, questionKey, delayMs, followUpText, audioId, followUpAudioId, speak, speakSequence])
+  // ✅ speak/speakSequence خرجا من هنا — لن يُعيد تشغيل الـ effect عند re-render
+  }, [text, enabled, questionKey, delayMs, followUpText, audioId, followUpAudioId])
 }

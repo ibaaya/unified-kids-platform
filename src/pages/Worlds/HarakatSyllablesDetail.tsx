@@ -44,13 +44,39 @@ function HighlightedWord({
   color: string
   size?: string
 }) {
-  const idx = word.indexOf(highlight)
-  if (idx === -1) {
+  // Compare letters without harakat so canonically reordered combining marks
+  // (for example shadda + fatha) do not prevent the target from being colored.
+  const letterPositions: number[] = []
+  let plainWord = ''
+  for (let i = 0; i < word.length;) {
+    const point = word.codePointAt(i)!
+    const char = String.fromCodePoint(point)
+    const width = char.length
+    if (!/[\u064B-\u065F\u0670\u06D6-\u06ED]/u.test(char)) {
+      plainWord += char
+      letterPositions.push(i)
+    }
+    i += width
+  }
+  const plainHighlight = [...highlight].filter((char) => !/[\u064B-\u065F\u0670\u06D6-\u06ED]/u.test(char)).join('')
+  const plainIndex = plainWord.indexOf(plainHighlight)
+  if (plainIndex === -1 || !plainHighlight) {
     return (
       <span className="font-display font-black" style={{ fontSize: size }}>
         {word}
       </span>
     )
+  }
+  const idx = letterPositions[plainIndex]
+  const lastLetterPosition = letterPositions[plainIndex + plainHighlight.length - 1]
+  const lastLetter = String.fromCodePoint(word.codePointAt(lastLetterPosition)!)
+  const end = lastLetterPosition + lastLetter.length
+  let endWithMarks = end
+  while (endWithMarks < word.length) {
+    const point = word.codePointAt(endWithMarks)!
+    const char = String.fromCodePoint(point)
+    if (!/[\u064B-\u065F\u0670\u06D6-\u06ED]/u.test(char)) break
+    endWithMarks += char.length
   }
   return (
     <span className="font-display font-black" style={{ fontSize: size }}>
@@ -64,9 +90,9 @@ function HighlightedWord({
           textUnderlineOffset: '5px',
         }}
       >
-        {word.slice(idx, idx + highlight.length)}
+        {word.slice(idx, endWithMarks)}
       </span>
-      {word.slice(idx + highlight.length)}
+      {word.slice(endWithMarks)}
     </span>
   )
 }
@@ -122,8 +148,8 @@ export function HarakatSyllablesDetail() {
 
         {/* رمز الحركة الكبير */}
         <div
-          className="font-display font-black drop-shadow-lg select-none"
-          style={{ fontSize: 'clamp(4.5rem, 16vw, 6.5rem)', color: entry.color, lineHeight: 1.1 }}
+          className="font-display font-black drop-shadow-lg select-none mb-5"
+          style={{ fontSize: 'clamp(4.5rem, 16vw, 6.5rem)', color: entry.color, lineHeight: 1.25 }}
           aria-hidden="true"
         >
           {entry.symbol}
@@ -131,7 +157,7 @@ export function HarakatSyllablesDetail() {
 
         {/* الاسم */}
         <h1
-          className="font-display font-extrabold text-3xl sm:text-4xl mt-2 mb-4"
+          className="font-display font-extrabold text-3xl sm:text-4xl mt-4 mb-4"
           style={{ color: entry.color }}
         >
           {entry.label}

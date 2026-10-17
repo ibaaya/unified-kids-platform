@@ -85,7 +85,7 @@
   },
   {
     "id": "خ",
-    "name": "خاء",
+    "name": "خَاءٌ",
     "soundId": "letter_خ",
     "forms": {
       "isolated": "خ",
@@ -99,7 +99,7 @@
   },
   {
     "id": "د",
-    "name": "دال",
+    "name": "دَالٌ",
     "soundId": "letter_د",
     "forms": {
       "isolated": "د",
@@ -113,7 +113,7 @@
   },
   {
     "id": "ذ",
-    "name": "ذال",
+    "name": "ذَاْلٌ",
     "soundId": "letter_ذ",
     "forms": {
       "isolated": "ذ",
@@ -155,7 +155,7 @@
   },
   {
     "id": "س",
-    "name": "سين",
+    "name": "سِيْنٌ",
     "soundId": "letter_س",
     "forms": {
       "isolated": "س",
@@ -169,7 +169,7 @@
   },
   {
     "id": "ش",
-    "name": "شين",
+    "name": "شِيْنٌ",
     "soundId": "letter_ش",
     "forms": {
       "isolated": "ش",
@@ -309,7 +309,7 @@
   },
   {
     "id": "ل",
-    "name": "لام",
+    "name": "لَامٌ",
     "soundId": "letter_ل",
     "forms": {
       "isolated": "ل",
@@ -337,7 +337,7 @@
   },
   {
     "id": "ن",
-    "name": "نون",
+    "name": "نُوْنٌ",
     "soundId": "letter_ن",
     "forms": {
       "isolated": "ن",
@@ -351,7 +351,7 @@
   },
   {
     "id": "ه",
-    "name": "هاء",
+    "name": "هَاْءْ",
     "soundId": "letter_ه",
     "forms": {
       "isolated": "ه",
