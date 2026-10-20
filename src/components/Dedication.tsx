@@ -1,7 +1,7 @@
 import { useState } from 'react'
 
-const DEDICATION_SEEN_KEY = 'rehlati-dedication-seen'
-const PARENT_NOTICE_SEEN_KEY = 'rehlati-parent-settings-notice-seen'
+const DEDICATION_SEEN_KEY = 'rehlaty-dedication-seen'
+const PARENT_NOTICE_SEEN_KEY = 'rehlaty-parent-settings-notice-seen'
 
 function dedicationWasSeen(): boolean {
   try { return window.localStorage.getItem(DEDICATION_SEEN_KEY) === '1' } catch { return false }

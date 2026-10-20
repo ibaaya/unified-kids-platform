@@ -33,3 +33,8 @@ coverage/
 .env
 .env.local
 .env.*.local
+
+# Android release signing material must stay out of source control.
+/android/keystore.properties
+/android/*.jks
+/android/*.keystore

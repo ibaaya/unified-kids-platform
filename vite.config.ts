@@ -1275,9 +1275,9 @@ export default defineConfig(({ mode }) => {
           ],
         },
         workbox: {
-          globPatterns: ['**/*.{js,css,html,svg,woff2}', 'pwa-*.png', 'apple-touch-icon.png'],
-          globIgnores: ['audio/**', 'images/**', 'video/**'],
-          maximumFileSizeToCacheInBytes: 5 * 1024 * 1024, //5MB
+          // تضمين كامل الوسائط المحلية في تثبيت PWA كي يتاح المحتوى دون اتصال من البداية.
+          globPatterns: ['**/*.{js,css,html,svg,woff,woff2,json,mp3,mp4,webp,jpg,jpeg,png}', 'pwa-*.png', 'apple-touch-icon.png'],
+          maximumFileSizeToCacheInBytes: 120 * 1024 * 1024,
           navigateFallback: '/index.html',
           navigateFallbackDenylist: [/^\/__voice-studio/],
           cleanupOutdatedCaches: true,
@@ -1288,7 +1288,7 @@ export default defineConfig(({ mode }) => {
               options: {
                 cacheName: 'kids-audio-v1',
                 rangeRequests: true,
-                expiration: { maxEntries: 800, maxAgeSeconds: 60 * 60 * 24 * 90 },
+                expiration: { maxEntries: 6500, maxAgeSeconds: 60 * 60 * 24 * 365 },
                 cacheableResponse: { statuses: [0, 200] },
               },
             },
@@ -1297,7 +1297,7 @@ export default defineConfig(({ mode }) => {
               handler: 'CacheFirst',
               options: {
                 cacheName: 'kids-images-v1',
-                expiration: { maxEntries: 300, maxAgeSeconds: 60 * 60 * 24 * 90 },
+                expiration: { maxEntries: 300, maxAgeSeconds: 60 * 60 * 24 * 365 },
                 cacheableResponse: { statuses: [0, 200] },
               },
             },

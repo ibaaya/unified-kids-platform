@@ -2,11 +2,10 @@ import type { CapacitorConfig } from '@capacitor/cli'
 
 /**
  * إعداد Capacitor.
- * غيّر appId إلى معرّفك النهائي قبل أول "npx cap add" (لا يمكن تغييره بسهولة بعد النشر).
- * مثال: com.mycompany.kidslearning
+ * معرّف التطبيق النهائي المستخدم في Android وiOS والمتاجر.
  */
 const config: CapacitorConfig = {
-  appId: 'com.example.kidslearning',
+  appId: 'com.ayasrah.rehlaty',
   appName: 'رحلتي',
   webDir: 'dist',
   backgroundColor: '#edf8f5',

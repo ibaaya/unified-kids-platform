@@ -70,6 +70,23 @@ npm install
 
 > بعد **أي تعديل كود** يخص التطبيق: `npm run cap:sync` ثم شغّل من Android Studio / Xcode. التطبيق يحمل نسخة من `dist` داخله، فلا يرى التعديل تلقائياً.
 
+## توقيع إصدار Android
+
+معرّف Android وiOS النهائي هو `com.ayasrah.rehlaty`. لا تحفظ ملف keystore أو كلمات مروره في Git. أنشئ keystore خاصًا بالمالك واحفظ نسخة احتياطية آمنة، ثم عيّن المتغيرات التالية في بيئة البناء:
+
+```powershell
+$env:ANDROID_KEYSTORE_PATH = 'C:\secure\rehlaty-release.jks'
+$env:ANDROID_KEYSTORE_PASSWORD = '...'
+$env:ANDROID_KEY_ALIAS = '...'
+$env:ANDROID_KEY_PASSWORD = '...'
+```
+
+بعد `npm run cap:sync`، أنشئ Android App Bundle من مجلد `android` باستخدام `gradlew.bat bundleRelease`. يوقّع إعداد Gradle الإصدار تلقائيًا عند وجود المتغيرات الأربعة؛ لا تُدرج القيم الحقيقية في الأوامر المسجلة أو ملفات المشروع.
+
+## توقيع إصدار iOS
+
+يتطلب الإصدار Mac مع Xcode وحساب Apple Developer. افتح `ios/App/App.xcodeproj`، واختر فريق المالك في **Signing & Capabilities**، ثم أنشئ Archive وارفعه عبر Xcode Organizer. لا يمكن إتمام توقيع iOS أو إصدار المتجر على Windows.
+
 ---
 
 ## 4) الاختبار — خطوة بخطوة
@@ -121,7 +138,7 @@ npm run preview
 
 **المتطلبات:** Android Studio (يحمل JDK معه).
 
-1. **قبل أول مرة فقط:** غيّر `appId` في `capacitor.config.ts` إلى معرّفك النهائي (مثل `com.yourcompany.kidslearning`). تغييره بعد النشر مؤلم.
+1. **قبل أول مرة فقط:** `appId` النهائي في `capacitor.config.ts` هو `com.ayasrah.rehlaty`. لا تغيّره بعد النشر لأن ذلك ينشئ تطبيقًا مختلفًا لدى المتاجر.
 2. أول مرة:
    ```powershell
    npm run build:native
