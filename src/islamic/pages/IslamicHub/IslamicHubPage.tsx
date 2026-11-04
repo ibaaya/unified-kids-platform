@@ -22,8 +22,8 @@ interface World {
 const WORLDS: World[] = [
   { id: 'values', path: '/islamic/values', icon: '❤️', title: 'أَخلاقي', desc: 'الصِّدقُ وَالأَمانَةُ وَالرَّحمَة', color: '#E91E63' },
   { id: 'family', path: '/islamic/family', icon: '👨‍👩‍👧', title: 'أُسرَتي', desc: 'بِرُّ الوالِدَينِ وَالأُسرَة', color: '#FF9800' },
-  { id: 'manners', path: '/islamic/manners', icon: '🕌', title: 'آدَابِي', desc: 'السَّلامُ وَالطَّعامُ وَالنَّوم', color: '#009688' },
-  { id: 'worship', path: '/islamic/worship', icon: '💧', title: 'عِباداتي', desc: 'الوُضوءُ وَالصَّلاةُ وَالدُّعاء', color: '#2196F3' },
+  { id: 'manners', path: '/islamic/manners', icon: '🕌', title: 'آدَابِي', desc: 'السَّلامُ وَالطَّعامُ وَالنَّوم', color: '#02201d' },
+  { id: 'worship', path: '/islamic/worship', icon: '💧', title: 'عِباداتي', desc: 'الوُضوءُ وَالصَّلاةُ وَالدُّعاء', color: '#034c88' },
   { id: 'faith', path: '/islamic/faith', icon: '☪️', title: 'دِينِي الجَميل', desc: 'أَركانُ الإِسلامِ وَالإِيمان', color: '#4CAF50' },
   { id: 'stories', path: '/islamic/stories', icon: '📖', title: 'قِصَصٌ وَقِيَم', desc: 'قِصَصٌ تُعَلِّمُنا الخَير', color: '#9C27B0' },
   { id: 'culture', path: '/islamic/culture', icon: '🏜️', title: 'ثَقافَتُنا العَرَبِيَّة', desc: 'الكَرَمُ وَالضِّيافَةُ وَالتُّراث', color: '#795548' },

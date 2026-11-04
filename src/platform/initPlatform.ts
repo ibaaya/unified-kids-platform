@@ -1,6 +1,16 @@
 import { Capacitor } from '@capacitor/core'
 import { registerSW } from 'virtual:pwa-register'
 
+let applyPendingSwUpdate: (() => void) | null = null
+
+export function hasPendingSwUpdate(): boolean {
+  return applyPendingSwUpdate !== null
+}
+
+export function installPendingSwUpdate(): void {
+  applyPendingSwUpdate?.()
+}
+
 /** true عندما يعمل الكود داخل تطبيق Android / iOS (Capacitor) */
 export const isNativeApp: boolean = Capacitor.isNativePlatform()
 
@@ -15,6 +25,7 @@ export function isInstalledPwa(): boolean {
 
 /** يُستدعى مرة واحدة من main.tsx */
 export function initPlatform(): void {
+  void import('./countUser').then(({ countUser }) => countUser()).catch(() => undefined)
   const root = document.documentElement
   root.classList.add(isNativeApp ? 'is-native' : 'is-web')
   if (!isNativeApp && isInstalledPwa()) root.classList.add('is-pwa')
@@ -28,11 +39,10 @@ export function initPlatform(): void {
   if (import.meta.env.PROD) {
     const updateSW = registerSW({
       immediate: true,
-      // اترك القرار لولي الأمر، ثم أعد تحميل الصفحة بعد تثبيت النسخة الجديدة.
+      // أبلغ لوحة ولي الأمر بالتحديث؛ لا نعرض نافذة أمام الطفل.
       onNeedRefresh() {
-        if (window.confirm('يتوفر تحديث جديد للمنصة. هل تريد تثبيته الآن؟')) {
-          void updateSW(true)
-        }
+        applyPendingSwUpdate = () => { void updateSW(true) }
+        window.dispatchEvent(new Event('pwa-update-ready'))
       },
     })
   }

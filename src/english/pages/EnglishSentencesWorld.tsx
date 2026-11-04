@@ -3,7 +3,6 @@ import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import sentencesData from '../data/sentences.json'
 import { speakSentence, speakEnglish } from '../engine/soundManager'
-import { HomeButton } from '../../components/ui/HomeButton'
 
 type EnglishSentence = {
   id: string; letterId: string; text: string; words: string[]
@@ -28,7 +27,7 @@ export function EnglishSentencesWorld() {
 
   return (
     <div className="relative min-h-screen" style={{ background: 'linear-gradient(135deg, #e8f4fe 0%, #fef0f8 100%)' }} dir="ltr">
-      <HomeButton />
+      
       <div className="mx-auto max-w-3xl px-4 py-6">
         <header className="mb-6 rounded-3xl bg-white/85 p-4 text-center shadow-xl border-2" style={{ borderColor: 'rgba(58,160,217,0.3)' }}>
           <h1 className="text-3xl font-extrabold" style={{ color: '#0c4a6e' }}>💬 Sentences World</h1>

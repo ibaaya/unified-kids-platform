@@ -148,7 +148,8 @@ function finalLevelQuestion(level: FinalLevel, index: number): Q {
   switch (index % 5) {
     case 0: return { prompt: `أَكْمِلِ الْعَمَلِيَّةَ: ${n - 4} + 6 − 2 = ؟`, say: `${NAMES[n - 4]} زَائِدُ سِتَّةٍ، ثُمَّ نَاقِصُ اثْنَيْنِ. كَمْ يُسَاوِي؟`, options: options(n, 20), answer: n, skill: "add", num: n };
     case 1: return { prompt: `مَا الْعَدَدُ النَّاقِصُ؟ ${n - 2}، ${n - 1}، ؟، ${n + 1}`, say: "مَا الْعَدَدُ النَّاقِصُ فِي التَّرْتِيبِ؟", options: options(n, 20), answer: n, skill: "missing", num: n };
-    case 2: return { prompt: "مَا الْعَلَامَةُ الصَّحِيحَةُ الَّتِي يَجِبُ وَضْعُهَا؟", say: `قَارِنْ بَيْنَ ${NAMES[n]} وَ ${NAMES[n + 1]}`, groups: [n, n + 1], options: comparisonOptions(), answer: "<", skill: "compare", num: n };    case 3: return { prompt: `كَانَ مَعَ سَارَةَ ${NAMES[n + 3]} نَجْمَةً، أَعْطَتْ صَدِيقَتَهَا ${NAMES[3]}. كَمْ بَقِيَ؟`, say: `${NAMES[n + 3]} نَاقِصُ ثَلَاثَةٍ، كَمْ يُسَاوِي؟`, groups: [n + 3, 3], emoji: "⭐", options: options(n, 20), answer: n, skill: "subtract", num: n };
+    case 2: return { prompt: "مَا الْعَلَامَةُ الصَّحِيحَةُ الَّتِي يَجِبُ وَضْعُهَا؟", say: `قَارِنْ بَيْنَ ${NAMES[n]} وَ ${NAMES[n + 1]}`, groups: [n, n + 1], options: comparisonOptions(), answer: "<", skill: "compare", num: n };
+    case 3: return { prompt: `كَانَ مَعَ سَارَةَ ${NAMES[n - 3]} نَجْمَاتٍ، وَأَضَافَتْ إِلَيْهَا ${NAMES[3]}. كَمْ أَصْبَحَ الْعَدَدُ؟`, say: `${NAMES[n - 3]} زَائِدُ ثَلَاثَةٍ، كَمْ يُسَاوِي؟`, groups: [n - 3, 3], emoji: "⭐", options: options(n, 20), answer: n, skill: "add", num: n };
     default: return { prompt: `قَفَزَ الْأَرْنَبُ مِنَ ${n - 3} ثَلَاثَ قَفَزَاتٍ. إِلَى أَيِّ رَقْمٍ وَصَلَ؟`, say: `بَدَأَ مِنْ ${NAMES[n - 3]}، وَقَفَزَ ثَلَاثَ قَفَزَاتٍ. أَيْنَ وَصَلَ؟`, options: options(n, 20), answer: n, skill: "numberline", num: n };
   }
 }

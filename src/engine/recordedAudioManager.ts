@@ -111,30 +111,81 @@ function normalizedAudioText(text: string): string {
   return text.trim().replace(/[.!?؟،؛:]+$/u, '').replace(/\s+/g, ' ')
 }
 
-/** Plays exact recordings, including simple phrases composed from separately recorded pieces. */
+/** Plays exact recordings or composes an utterance from approved phrase clips and caller-provided speech. */
 export function playRecordedAudioText(
   text: string,
   onEnd?: () => void,
   onError?: () => void,
+  onMissing?: (text: string, done: () => void) => void,
+  options: { composeNumbers?: boolean } = {},
 ): boolean {
-  if (playRecordedAudio(text, onEnd, onError)) return true
+  if (!options.composeNumbers && playRecordedAudio(text, onEnd, onError)) return true
 
   const parts = text
     .split(/\s*(?:،\s*أَو\s*|[.!?؟]+\s*)\s*/u)
     .map(normalizedAudioText)
     .filter(Boolean)
-  if (parts.length < 2) return false
+  if (parts.length < 2) {
+    // احفظ التوافق مع الاستدعاءات القديمة، واسمح للمستدعي بتركيب التسجيلات القصيرة.
+    if (!onMissing) return false
+  }
 
-  const entries = parts.map((part) => Object.values(audioManifest).find((entry) =>
+  const isComposableNumberEntry = (entry: AudioManifestEntry) => entry.itemId.startsWith('numbers:fragment_')
+    || /^numbers:q_/u.test(entry.itemId)
+    || ['numbers:cheer_correct', 'numbers:cheer_try', 'numbers:welcome'].includes(entry.itemId)
+  const availableEntries = Object.values(audioManifest).filter((entry) =>
+    (!onMissing || entry.itemId.startsWith('numbers:')) && (!options.composeNumbers || isComposableNumberEntry(entry)),
+  )
+  const entries = parts.map((part) => availableEntries.find((entry) =>
     entry.status === 'approved' && entry.relativePath && normalizedAudioText(entry.text) === part,
   ))
-  if (entries.some((entry) => !entry)) return false
+  if (!entries.some(Boolean) && !onMissing) return false
+
+  const segments: Array<{ entry?: AudioManifestEntry; text?: string }> = []
+  if (parts.length >= 2 && entries.every(Boolean)) {
+    entries.forEach((entry) => { if (entry) segments.push({ entry }) })
+  } else {
+    const approved = Object.values(audioManifest)
+      .filter((entry) => entry.status === 'approved' && entry.relativePath && (!onMissing || entry.itemId.startsWith('numbers:')) && (!options.composeNumbers || isComposableNumberEntry(entry)))
+      .map((entry) => ({ entry, text: normalizedAudioText(entry.text) }))
+      .filter((item) => item.text)
+      .sort((a, b) => b.text.length - a.text.length)
+    let cursor = 0
+    let plainStart = 0
+    const flushPlain = (end: number) => {
+      if (end <= plainStart) return
+      const fragment = text.slice(plainStart, end).trim()
+      if (/[\p{L}\p{N}]/u.test(fragment)) segments.push({ text: fragment })
+    }
+    while (cursor < text.length) {
+      const remaining = text.slice(cursor)
+      const match = approved.find(({ text: phrase }) => {
+        if (!remaining.startsWith(phrase)) return false
+        const next = remaining[phrase.length]
+        return !next || /[\s،؛:,.!?؟]/u.test(next)
+      })
+      if (match) {
+        flushPlain(cursor)
+        segments.push({ entry: match.entry })
+        cursor += match.text.length
+        while (/\s/u.test(text[cursor] ?? '')) cursor += 1
+        plainStart = cursor
+      } else {
+        cursor += 1
+      }
+    }
+    flushPlain(text.length)
+    if (!segments.some((segment) => segment.entry)) return false
+    if (segments.some((segment) => segment.text) && !onMissing) return false
+  }
 
   const playNext = (index: number): void => {
-    const entry = entries[index]
-    if (!entry) { onEnd?.(); return }
-    const ended = index + 1 === entries.length ? onEnd : () => playNext(index + 1)
-    playRecordedAudio(entry.itemId, ended, onError)
+    if (index >= segments.length) { onEnd?.(); return }
+    const segment = segments[index]
+    const next = () => playNext(index + 1)
+    if (segment.entry) playRecordedAudio(segment.entry.itemId, next, onError)
+    else if (segment.text) onMissing?.(segment.text, next)
+    else next()
   }
   playNext(0)
   return true

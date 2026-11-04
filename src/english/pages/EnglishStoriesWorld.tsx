@@ -3,7 +3,6 @@ import { useState, useEffect, useMemo } from 'react'
 import { Link } from 'react-router-dom'
 import storiesData from '../data/stories.json'
 import { speakSentence, speakEnglish } from '../engine/soundManager'
-import { HomeButton } from '../../components/ui/HomeButton'
 import { loadEnglishSettings } from './EnglishParentDashboard'
 
 type StoryPage = { text: string; imageEmoji: string; soundId: string }
@@ -33,7 +32,7 @@ export function EnglishStoriesWorld() {
 
   return (
     <div className="relative min-h-screen" style={{ background: 'linear-gradient(135deg, #fef0f8 0%, #e8f0fe 100%)' }} dir="ltr">
-      <HomeButton />
+      
       <div className="mx-auto max-w-3xl px-4 py-6">
         <header className="mb-6 rounded-3xl bg-white/85 p-4 text-center shadow-xl border-2" style={{ borderColor: 'rgba(232,93,117,0.3)' }}>
           <h1 className="text-3xl font-extrabold" style={{ color: '#881337' }}>📚 Stories World</h1>
@@ -214,7 +213,7 @@ function StoryReader({ story, onBack, onComplete }: { story: EnglishStory; onBac
 
   return (
     <div className="relative min-h-screen" style={{ background: 'linear-gradient(135deg, #fef0f8 0%, #e8f0fe 100%)' }} dir="ltr">
-      <HomeButton />
+      
       <div className="mx-auto max-w-2xl px-4 py-6">
         <div className="mb-4 flex items-center justify-between">
           <button onClick={onBack}

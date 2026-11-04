@@ -12,7 +12,6 @@ import { Link } from 'react-router-dom'
 import lettersData from '../data/letters.json'
 import wordsData from '../data/words.json'
 import { speakWord, speakEnglish } from '../engine/soundManager'
-import { HomeButton } from '../../components/ui/HomeButton'
 import { QuizRunner } from '../components/QuizRunner'
 import { buildLetterQuiz } from '../engine/quizEngine'
 import type { EnglishLetter as EnglishLetterFull } from '../engine/quizEngine'
@@ -55,7 +54,7 @@ export function EnglishWordsWorld() {
 
     return (
       <div className="relative min-h-screen" style={{ background: 'linear-gradient(135deg, #e8fef0 0%, #e8f0fe 100%)' }} dir="ltr">
-        <HomeButton />
+        
         <div className="mx-auto max-w-2xl px-4 py-6">
 
           {/* العنوان */}
@@ -148,7 +147,7 @@ export function EnglishWordsWorld() {
   // ——— شبكة اختيار الحرف ———
   return (
     <div className="relative min-h-screen" style={{ background: 'linear-gradient(135deg, #e8fef0 0%, #e8f0fe 100%)' }} dir="ltr">
-      <HomeButton />
+      
       <div className="mx-auto max-w-3xl px-4 py-6">
         <header className="mb-6 rounded-3xl border-2 bg-white/85 p-4 text-center shadow-xl" style={{ borderColor: 'rgba(47,182,140,0.3)' }}>
           <h1 className="text-3xl font-extrabold" style={{ color: '#065f46' }}>📝 Words World</h1>

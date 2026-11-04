@@ -20,6 +20,8 @@ import worldsData from '../../data/worlds.json'
 import type { Letter, Word } from '../../types/content'
 import { STUDIO_ENABLED } from '../../config/features'
 import { DedicationCard } from '../../components/Dedication'
+import audioManifest from '../../data/audio-manifest.json'
+import { isNativeApp } from '../../platform/initPlatform'
 
 const letters = lettersData as Letter[]
 const words = wordsData as Word[]
@@ -54,6 +56,7 @@ export function ParentDashboard() {
   const [masteredCount, setMasteredCount] = useState(0)
   const [needsReviewSkills, setNeedsReviewSkills] = useState<SkillMastery[]>([])
   const [allChildren, setAllChildren] = useState<ChildProfile[]>([])
+  const [offlineProgress, setOfflineProgress] = useState<{ done: number; total: number } | null>(null)
 
   useEffect(() => {
     if (!child?.id) return
@@ -127,6 +130,22 @@ export function ParentDashboard() {
   const unlockMode = child?.settings?.unlockMode ?? 'free'
   const threshold = child?.settings?.sequentialThresholdPercent ?? 20
 
+  async function downloadOfflineAudio() {
+    const urls = [...new Set(Object.values(audioManifest)
+      .map((entry) => entry.relativePath)
+      .filter((url): url is string => typeof url === 'string' && url.startsWith('/audio/')))]
+    setOfflineProgress({ done: 0, total: urls.length })
+    let done = 0
+    // طلبات متوازية محدودة حتى لا تثقل الذاكرة أو الشبكة على الهاتف.
+    for (let i = 0; i < urls.length; i += 8) {
+      await Promise.all(urls.slice(i, i + 8).map(async (url) => {
+        try { await fetch(url, { cache: 'no-cache' }) } catch { /* يمكن إعادة المحاولة لاحقًا */ }
+        done += 1
+        setOfflineProgress({ done, total: urls.length })
+      }))
+    }
+  }
+
   return (
     <div className="min-h-screen max-w-lg mx-auto px-4 py-8">
       <div className="flex items-center justify-between gap-3 mb-6">
@@ -147,6 +166,16 @@ export function ParentDashboard() {
             <StatCard label="الدروس المكتملة" value={child.completedLessonIds.length} />
             <StatCard label="مهارات متقنة تمامًا" value={masteredCount} />
           </div>
+
+          {!isNativeApp && <Card className="p-5 mb-6 text-right">
+            <h2 className="font-display font-bold mb-2">📥 تنزيل للاستخدام دون إنترنت</h2>
+            <p className="text-sm text-[var(--color-ink-soft)] mb-3">ينزّل التسجيلات الصوتية المتاحة في المنصة ويحفظها على هذا الجهاز. قد يحتاج التنزيل وقتًا ومساحة بحسب الاتصال.</p>
+            <Button onClick={() => void downloadOfflineAudio()} disabled={offlineProgress !== null && offlineProgress.done < offlineProgress.total}>
+              {offlineProgress && offlineProgress.done < offlineProgress.total
+                ? `جارٍ التنزيل ${offlineProgress.done} / ${offlineProgress.total}`
+                : offlineProgress ? 'اكتمل تنزيل الصوتيات' : 'تنزيل المحتوى الصوتي'}
+            </Button>
+          </Card>}
 
           <Card className="p-5 mb-6">
             <AvatarPicker value={child.avatar ?? 'moon'} onChange={(avatar) => void handleAvatarChange(avatar)} />
@@ -209,11 +238,11 @@ export function ParentDashboard() {
             <div className="flex flex-col gap-3">
               <label className="flex items-center gap-2 cursor-pointer justify-end">
                 <span>مسار الرحلة التعليمية</span>
-                <input type="radio" name="homeDisplay" checked={(child.settings?.homeDisplayMode ?? 'journey') === 'journey'} onChange={() => handleHomeDisplayChange('journey')} />
+                <input type="radio" name="homeDisplay" checked={(child.settings?.homeDisplayMode ?? 'simple') === 'journey'} onChange={() => handleHomeDisplayChange('journey')} />
               </label>
               <label className="flex items-center gap-2 cursor-pointer justify-end">
                 <span>عرض العوالم ببساطة</span>
-                <input type="radio" name="homeDisplay" checked={child.settings?.homeDisplayMode === 'simple'} onChange={() => handleHomeDisplayChange('simple')} />
+                <input type="radio" name="homeDisplay" checked={(child.settings?.homeDisplayMode ?? 'simple') === 'simple'} onChange={() => handleHomeDisplayChange('simple')} />
               </label>
             </div>
           </Card>

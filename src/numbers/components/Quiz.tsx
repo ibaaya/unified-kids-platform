@@ -23,6 +23,7 @@ type Props = {
 };
 
 function speechTextFor(q: Q): string {
+  if (q.say) return q.say;
   if (q.skill === "compare" && q.groups && q.groups.length >= 2) {
     // اقرأ العددين بنفس ترتيب ظهورهما في المعادلة ذات الاتجاه LTR.
     return `قَارِنْ بَيْنَ ${NAMES[q.groups[0]] ?? q.groups[0]} وَ ${NAMES[q.groups[1]] ?? q.groups[1]}`;
@@ -31,7 +32,6 @@ function speechTextFor(q: Q): string {
     const [minuend, subtrahend] = q.groups;
     return `${NAMES[minuend] ?? minuend} نَاقِصُ ${NAMES[subtrahend] ?? subtrahend} يُسَاوِي كَمْ؟`;
   }
-  if (q.say) return q.say;
   return q.prompt;
 }
 

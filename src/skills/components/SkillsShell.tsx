@@ -19,7 +19,7 @@ export function SoundToggle() {
 
 export default function SkillsShell({ children, title, back }: { children: ReactNode; title?: string; back?: { to: string; label: string } }) {
   return (
-    <div dir="rtl" className="skills-root min-h-screen bg-gradient-to-br from-sky-100 via-pink-50 to-indigo-100 font-arabic text-slate-800">
+    <div dir="rtl" className="skills-root min-h-screen bg-gradient-to-br from-sky-100 via-pink-50 to-indigo-100 pt-16 font-arabic text-slate-800" style={{ backgroundImage: 'linear-gradient(135deg, rgba(224,242,254,.70), rgba(253,242,248,.72), rgba(224,231,255,.74)), url("/images/skills_bg.webp")', backgroundPosition: 'center', backgroundSize: 'cover', backgroundAttachment: 'fixed' }}>
       <header className="mx-auto flex max-w-5xl items-center justify-between gap-2 p-4">
        <Link
             to={back?.to ?? '/'}

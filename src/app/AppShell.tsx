@@ -5,7 +5,6 @@ import { updateChildSettings } from '../services/progressService'
 import type { ChildSettings } from '../types/progress'
 import { Mascot } from '../components/character/Mascot'
 import { Link, useLocation } from 'react-router-dom'
-import { HomeButton } from '../components/ui/HomeButton'
 import { lockParentSession } from './parentSession'
 // ✅ حذف primeEnglishVoices من هنا — انتقل إلى AudioUnlockProvider
 
@@ -31,12 +30,35 @@ export function AppShell() {
   const textSize = child?.settings?.textSize ?? 'normal'
 
   const isArabicWorldPage = pathname.startsWith('/world/') || pathname.startsWith('/arabic/world/')
-  const isEnglishPage = pathname.startsWith('/english/')
-  const isNumbersPage = pathname.startsWith('/numbers/')
 
   const currentArabicWorld = ARABIC_WORLD_NAV.find(
     (w) => pathname.startsWith(`${w.prefix}/`) || pathname === w.prefix
   )
+  const isNestedArabicWorld = Boolean(currentArabicWorld && pathname !== currentArabicWorld.path)
+  const sectionNavigation: Array<{ to: string; label: string; icon: string; variant?: string }> = (() => {
+    if (pathname === '/arabic') return []
+    if (pathname.startsWith('/arabic/') || pathname.startsWith('/world/')) {
+      return [
+        { to: '/arabic', label: 'العربية', icon: '🔤' },
+        ...(isNestedArabicWorld && currentArabicWorld ? [{ to: currentArabicWorld.path, label: currentArabicWorld.label, icon: currentArabicWorld.icon }] : []),
+      ]
+    }
+    const sections = [
+      { prefix: '/english', home: '/english', label: 'الإنجليزية', icon: '🔤' },
+      { prefix: '/numbers', home: '/numbers', label: 'مغامرة الأرقام', icon: '🔢' },
+      { prefix: '/discover', home: '/discover', label: 'عالم الاكتشاف', icon: '🌍' },
+      { prefix: '/skills', home: '/skills', label: 'مدينة المهارات', icon: '🎯' },
+      { prefix: '/islamic', home: '/islamic', label: 'أخلاقي الجميلة', icon: '🌙' },
+    ]
+    const section = sections.find(({ prefix }) => pathname === prefix || pathname.startsWith(`${prefix}/`))
+    if (!section) return []
+    if (pathname === section.home) {
+      return section.prefix === '/islamic'
+        ? [{ to: '/', label: 'العودة إلى المنصة الرئيسية', icon: '⬅️', variant: 'islamic-home' }]
+        : []
+    }
+    return [{ to: section.home, label: section.label, icon: section.icon }]
+  })()
 
   useEffect(() => {
     const isParentArea = pathname.startsWith('/parent')
@@ -65,8 +87,8 @@ export function AppShell() {
   return (
     <>
       <div
-        className="fixed left-3 z-[70] flex items-center sm:left-5"
-        style={{ top: 'calc(var(--safe-top, 0px) + .25rem)' }}
+        className="fixed right-3 z-[70] flex items-center sm:right-5"
+        style={{ top: 'calc(var(--safe-top, 0px) + .25rem)', right: 'max(1rem, env(safe-area-inset-right))', left: 'auto' }}
       >
         <Link
           to="/"
@@ -94,53 +116,22 @@ export function AppShell() {
           <img
             src="/images/Rehlati_Logo_Clean.webp"
             alt="رحلتي — تعلّم، نكتشف، نلعب"
-            className="relative h-16 w-16 rounded-full object-contain drop-shadow-lg sm:h-20 sm:w-20"
+            className="relative h-20 w-20 rounded-full object-contain drop-shadow-lg sm:h-24 sm:w-24"
           />
         </Link>
       </div>
       <AppRoutes />
 
-      {isArabicWorldPage && <HomeButton to="/arabic" />}
-      {currentArabicWorld && (
-        <Link
-          to={currentArabicWorld.path}
-          aria-label={`العودة إلى ${currentArabicWorld.label}`}
-          className="fixed app-shell-nav app-shell-nav-end z-[60] inline-flex min-h-11 items-center gap-2 rounded-2xl border-2 border-white/90 bg-sky-800/90 px-3 py-2 font-display text-sm font-extrabold text-white shadow-xl backdrop-blur-md transition hover:-translate-y-0.5 hover:bg-sky-900 focus-visible:outline focus-visible:outline-4 focus-visible:outline-offset-2 focus-visible:outline-amber-300"
-          dir="rtl"
-        >
-          <span aria-hidden="true">{currentArabicWorld.icon}</span>
-          <span>{currentArabicWorld.label}</span>
-        </Link>
-      )}
-
-      {isEnglishPage && (
-        <Link
-          to="/english"
-          className="fixed app-shell-nav app-shell-nav-end z-[60] inline-flex min-h-11 items-center gap-2 rounded-2xl border-2 border-white/90 bg-blue-800/90 px-3 py-2 text-sm font-extrabold text-white shadow-xl backdrop-blur-md transition hover:-translate-y-0.5"
-        >
-          🔤 English Menu
-        </Link>
-      )}
-
-      {isNumbersPage && (
-        <Link
-          to="/numbers"
-          dir="rtl"
-          className="group fixed app-shell-nav app-shell-nav-start z-[60] inline-flex items-center gap-2.5 overflow-hidden rounded-full px-4 py-2.5 font-extrabold text-white shadow-lg transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl active:scale-95"
-          style={{
-            background: 'linear-gradient(135deg, #7c3aed, #a855f7)',
-            boxShadow: '0 10px 28px rgba(124,58,237,.55), inset 0 1px 0 rgba(255,255,255,.30)',
-            fontSize: '.95rem',
-            letterSpacing: '.02em',
-            textShadow: '0 1px 3px rgba(0,0,0,.30)',
-          }}
-        >
-          <span className="pointer-events-none absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/25 to-transparent transition-transform duration-700 group-hover:translate-x-full" />
-          <span className="relative z-10 flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-white/25 text-base shadow-inner transition-transform duration-300 group-hover:rotate-12">
-            🔢
-          </span>
-          <span className="relative z-10">الأرقام</span>
-        </Link>
+      {sectionNavigation.length > 0 && (
+        <nav aria-label="التنقل بين المنصة والأقسام" className="app-shell-nav-center fixed z-[65] flex max-w-[calc(100vw-7rem)] items-center justify-center gap-2">
+          {sectionNavigation.map((item) => (
+            <Link key={item.to} to={item.to} dir="rtl" className={item.variant === 'islamic-home'
+              ? 'inline-flex min-h-12 min-w-60 items-center justify-center gap-3 whitespace-nowrap rounded-full border-2 border-white/90 bg-gradient-to-r from-emerald-700 via-teal-700 to-emerald-800 px-7 py-2.5 text-sm font-extrabold text-white shadow-[0_8px_24px_rgba(16,100,75,.3)] backdrop-blur-md transition hover:-translate-y-0.5 hover:shadow-lg focus-visible:outline focus-visible:outline-4 focus-visible:outline-offset-2 focus-visible:outline-amber-300 sm:min-w-72 sm:text-base'
+              : 'inline-flex min-h-11 items-center gap-1.5 whitespace-nowrap rounded-2xl border-2 border-white/90 bg-slate-900/85 px-3 py-2 text-xs font-extrabold text-white shadow-xl backdrop-blur-md transition hover:-translate-y-0.5 hover:bg-slate-800 focus-visible:outline focus-visible:outline-4 focus-visible:outline-offset-2 focus-visible:outline-amber-300 sm:gap-2 sm:px-4 sm:text-sm'}>
+              <span aria-hidden="true">{item.icon}</span><span>{item.label}</span>
+            </Link>
+          ))}
+        </nav>
       )}
 
       {child && isArabicWorldPage && (

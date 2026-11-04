@@ -7,7 +7,7 @@ REM   Unified Kids Platform - Auto Version & Push Script
 REM   Source of truth: version.json
 REM ============================================================
 
-cd /d "D:\kids-learning-platform\unified-kids-platform"
+cd /d "D:\unified-kids-platform"
 
 echo.
 echo ============================================================

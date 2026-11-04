@@ -4,7 +4,6 @@ import { Link } from 'react-router-dom'
 import lettersData from '../data/letters.json'
 import wordsData from '../data/words.json'
 import { speakEnglish, speakWord } from '../engine/soundManager'
-import { HomeButton } from '../../components/ui/HomeButton'
 import { QuizRunner } from '../components/QuizRunner'
 import { buildLetterQuiz } from '../engine/quizEngine'
 
@@ -44,7 +43,7 @@ export function EnglishPhonicsWorld() {
     const letterWords = words.filter((w) => w.letterId === selectedLetter.id).slice(0, 6)
     return (
       <div className="relative min-h-screen" style={{ background: 'linear-gradient(135deg, #f3e8ff 0%, #e8f0fe 100%)' }} dir="ltr">
-        <HomeButton />
+        
         <div className="mx-auto max-w-2xl px-4 py-6">
           <div className="mb-6 rounded-3xl bg-white/85 p-6 text-center shadow-xl border-2"
             style={{ borderColor: 'rgba(139,95,191,0.3)' }}>
@@ -98,7 +97,7 @@ export function EnglishPhonicsWorld() {
   if (selectedGroup && currentGroup) {
     return (
       <div className="relative min-h-screen" style={{ background: 'linear-gradient(135deg, #f3e8ff 0%, #e8f0fe 100%)' }} dir="ltr">
-        <HomeButton />
+        
         <div className="mx-auto max-w-2xl px-4 py-6">
           <h1 className="mb-2 text-center text-2xl font-extrabold" style={{ color: '#1e3a8a' }}>
             {currentGroup.emoji} {currentGroup.label}
@@ -130,7 +129,7 @@ export function EnglishPhonicsWorld() {
 
   return (
     <div className="relative min-h-screen" style={{ background: 'linear-gradient(135deg, #f3e8ff 0%, #e8f0fe 100%)' }} dir="ltr">
-      <HomeButton />
+      
       <div className="mx-auto max-w-2xl px-4 py-6">
         <header className="mb-6 rounded-3xl bg-white/85 p-4 text-center shadow-xl border-2" style={{ borderColor: 'rgba(139,95,191,0.3)' }}>
           <h1 className="text-3xl font-extrabold" style={{ color: '#1e3a8a' }}>🎵 Sounds World</h1>

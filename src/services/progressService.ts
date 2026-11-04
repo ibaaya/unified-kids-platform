@@ -40,7 +40,7 @@ export const DEFAULT_CHILD_SETTINGS: ChildSettings = {
   sequentialThresholdPercent: 20,
   autoReadQuestions: true,
   textSize: 'normal',
-  homeDisplayMode: 'journey',
+  homeDisplayMode: 'simple',
 }
 
 function withDefaultSettings(child: ChildProfile): ChildProfile {

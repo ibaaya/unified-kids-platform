@@ -72,10 +72,12 @@ export function NumbersMapPage() {
           const isOpen = open[idx];
           const isCurrent = idx === current;
           const isDone = done[idx];
+          const needsAllNumbers = s.topic === "final" && Array.from({ length: 20 }, (_, i) => i + 1).some((n) => !p.learned.includes(n));
+          const tileIsOpen = isOpen && !needsAllNumbers;
           const href = s.range ? `/numbers/stage/${s.id}` : `/numbers${s.href}`;
 
           const tileStyle: React.CSSProperties = {
-            background: isOpen ? style.bg : "rgba(241,245,249,0.86)",
+            background: tileIsOpen ? style.bg : "rgba(241,245,249,0.86)",
             borderColor: isCurrent
               ? `${style.accent}55`
               : "rgba(255,255,255,0.92)",
@@ -84,9 +86,9 @@ export function NumbersMapPage() {
             backdropFilter: "blur(12px)",
             WebkitBackdropFilter: "blur(12px)",
             boxShadow:
-              isOpen && isCurrent
+              tileIsOpen && isCurrent
                 ? `0 0 0 3px ${style.accent}30, 0 12px 30px ${style.glow}`
-                : isOpen
+                : tileIsOpen
                 ? `0 7px 22px ${style.glow}`
                 : "0 4px 14px rgba(51,65,85,0.07)",
           };
@@ -99,13 +101,13 @@ export function NumbersMapPage() {
                 className={`relative flex h-14 w-14 flex-shrink-0 items-center justify-center rounded-[1.15rem] border-2 border-white/85 text-3xl shadow-[0_7px_16px_rgba(15,23,42,0.12)] transition-transform duration-300 sm:h-16 sm:w-16 ${
                   isCurrent ? "scale-105 animate-pulse" : ""
                 } ${
-                  isOpen
+                  tileIsOpen
                     ? `bg-gradient-to-br ${style.icon}`
                     : "bg-slate-300/80 grayscale"
                 }`}
               >
                 <span className="drop-shadow-sm">
-                  {isOpen ? s.icon : "🔒"}
+                  {tileIsOpen ? s.icon : "🔒"}
                 </span>
 
                 {isCurrent && (
@@ -122,7 +124,7 @@ export function NumbersMapPage() {
               <div className="flex min-h-9 items-center justify-center">
                 <span
                   className={`px-1 text-center text-sm font-black leading-snug sm:text-base ${
-                    isOpen ? "text-slate-800" : "text-slate-400"
+                    tileIsOpen ? "text-slate-800" : "text-slate-400"
                   }`}
                 >
                   {loc(s.title)}
@@ -136,7 +138,7 @@ export function NumbersMapPage() {
               </div>
 
               {/* التقدم */}
-              {s.range && isOpen && !isDone && total > 0 && (
+              {s.range && tileIsOpen && !isDone && total > 0 && (
                 <div className="mt-1 w-full px-0.5">
                   <div className="mb-1.5 flex items-center justify-between px-0.5 text-[10px] font-black text-slate-500 sm:text-[11px]">
                     <span>الإنجاز</span>
@@ -165,7 +167,7 @@ export function NumbersMapPage() {
               )}
 
               {/* مقفلة */}
-              {!isOpen && (
+              {!tileIsOpen && (
                 <div className="rounded-full border border-slate-200/80 bg-white/70 px-2.5 py-1 text-[9px] font-bold text-slate-400 shadow-sm sm:text-[10px]">
                   🔒 أكمل السابقة أولًا
                 </div>
@@ -175,7 +177,7 @@ export function NumbersMapPage() {
 
           const tileClass =
             "relative block min-h-[148px] w-full overflow-hidden rounded-[1.6rem] text-center transition-all duration-300 sm:min-h-[178px] " +
-            (isOpen
+            (tileIsOpen
               ? "cursor-pointer hover:-translate-y-1.5 hover:scale-[1.015] hover:shadow-2xl active:scale-[0.99]"
               : "cursor-not-allowed opacity-75");
 
@@ -183,7 +185,7 @@ export function NumbersMapPage() {
             <div
               className="absolute inset-x-0 top-0 h-1.5 rounded-t-[1.6rem]"
               style={{
-                background: isOpen
+                background: tileIsOpen
                   ? style.accent
                   : "rgba(148,163,184,0.35)",
               }}
@@ -192,7 +194,7 @@ export function NumbersMapPage() {
 
           return (
             <li key={s.id} className="list-none">
-              {isOpen ? (
+              {tileIsOpen ? (
                 <Link
                   to={href}
                   className={tileClass}
