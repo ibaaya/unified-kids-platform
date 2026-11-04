@@ -2,7 +2,6 @@ import { ParentButton } from '../../components/ui/ParentButton'
 import { Link } from 'react-router-dom'
 import lettersData from '../data/letters.json'
 import { speakLetter } from '../engine/soundManager'
-import { HomeButton } from '../../components/ui/HomeButton'
 
 type EnglishLetter = {
   id: string; name: string; uppercase: string; lowercase: string
@@ -22,7 +21,7 @@ const LETTER_COLORS = [
 export function EnglishLettersWorld() {
   return (
     <div className="relative min-h-screen" style={{ background: 'linear-gradient(135deg, #e8f0fe 0%, #fef9e7 100%)' }} dir="ltr">
-      <HomeButton />
+      
       <div className="relative mx-auto max-w-3xl px-4 py-6">
         {/* Header */}
         <header className="mb-6 rounded-3xl border-2 p-4 text-center"

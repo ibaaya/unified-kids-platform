@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react'
 import { Link, Navigate } from 'react-router-dom'
-import { HomeButton } from '../../components/ui/HomeButton'
 import { SpeakButton } from '../../components/ui/SpeakButton'
 import { useChildProfile } from '../../hooks/useChildProfile'
 import { getArabicFinalTestProgress, saveArabicFinalTestLevel, type ArabicFinalTestProgress } from '../../services/progressService'
@@ -70,7 +69,7 @@ export function ArabicFinalTest() {
     const total = progress.scores.reduce((sum, score) => sum + score, 0)
     const percent = Math.round((total / 30) * 100)
     const assessment = percent >= 90 ? 'ممتاز! أتقنت معظم ما تعلمته.' : percent >= 70 ? 'رائع! لديك أساس قوي.' : percent >= 50 ? 'جيد، واصل المراجعة والتدريب.' : 'بداية جميلة، عُد إلى الدروس ثم حاول مجددًا.'
-    return <main dir="rtl" className="min-h-screen bg-gradient-to-br from-sky-50 via-amber-50 to-violet-50 px-4 py-8"><HomeButton to="/arabic" /><section className="mx-auto max-w-xl rounded-3xl border-2 bg-white/90 p-7 text-center shadow-xl" style={{ borderColor: ACCENTS[level] }}>
+    return <main dir="rtl" className="min-h-screen bg-gradient-to-br from-sky-50 via-amber-50 to-violet-50 px-4 py-8"><section className="mx-auto max-w-xl rounded-3xl border-2 bg-white/90 p-7 text-center shadow-xl" style={{ borderColor: ACCENTS[level] }}>
       <div className="text-6xl">{final ? '🏆' : BADGES[level].split(' ')[0]}</div>
       <h1 className="mt-3 text-3xl font-extrabold text-slate-800">{final ? 'النتيجة النهائية' : `نتيجة المستوى ${LABELS[level]}`}</h1>
       {!final ? <><p className="mt-3 text-2xl font-extrabold" style={{ color: ACCENTS[level] }}>{savedScore} / 10</p><p className="mt-2 rounded-full bg-amber-50 px-4 py-2 font-bold text-amber-800">{BADGES[level]}</p></> : <>
@@ -85,7 +84,7 @@ export function ArabicFinalTest() {
   if (level != null && question) {
     const selected = answers[questionIndex]
     const last = questionIndex === 9
-    return <main dir="rtl" className="min-h-screen bg-gradient-to-br from-sky-50 via-amber-50 to-violet-50 px-4 py-8"><HomeButton to="/arabic" /><section className="mx-auto max-w-2xl rounded-3xl border-2 bg-white/95 p-5 shadow-xl sm:p-8" style={{ borderColor: ACCENTS[level] }}>
+    return <main dir="rtl" className="min-h-screen bg-gradient-to-br from-sky-50 via-amber-50 to-violet-50 px-4 py-8"><section className="mx-auto max-w-2xl rounded-3xl border-2 bg-white/95 p-5 shadow-xl sm:p-8" style={{ borderColor: ACCENTS[level] }}>
       <div className="flex items-center justify-between gap-2"><span className="font-extrabold" style={{ color: ACCENTS[level] }}>المستوى {LABELS[level]}</span><span className="text-sm font-bold text-slate-500">السؤال {questionIndex + 1} من 10</span><SpeakButton text={`${question.prompt.replace('{{target}}', question.highlightText ?? '')} ${question.say ?? ''} ${question.stimulus ?? ''} ${question.context ?? ''}`} label="استمع إلى السؤال" /></div>
       <div className="mt-3 h-2 rounded-full bg-slate-100"><div className="h-2 rounded-full transition-all" style={{ width: `${((questionIndex + 1) / 10) * 100}%`, background: ACCENTS[level] }} /></div>
       <h1 className="mt-6 text-center text-2xl font-extrabold leading-relaxed text-slate-800">{question.highlightText && question.prompt.includes('{{target}}') ? (() => { const [before, after] = question.prompt.split('{{target}}'); return <>{before}<span className="mx-1 inline-block scale-110 rounded-lg bg-amber-100 px-1 text-3xl font-black text-rose-700 underline decoration-4 decoration-amber-400">{question.highlightText}</span>{after}</> })() : question.prompt}</h1>
@@ -98,7 +97,7 @@ export function ArabicFinalTest() {
     </section></main>
   }
 
-  return <main dir="rtl" className="min-h-screen bg-gradient-to-br from-sky-50 via-amber-50 to-violet-50 px-4 py-8"><HomeButton to="/arabic" /><div className="mx-auto max-w-3xl"><header className="rounded-3xl bg-white/90 p-6 text-center shadow-xl"><div className="text-5xl">🏆</div><h1 className="mt-2 text-3xl font-extrabold text-slate-800">الاختبار الكلي في تعلم العربية</h1><p className="mt-2 font-bold text-slate-600">ثلاثة مستويات متدرجة، ١٠ أسئلة في كل مستوى. اختر إجابتك الأولى بعناية.</p></header>
+  return <main dir="rtl" className="min-h-screen bg-gradient-to-br from-sky-50 via-amber-50 to-violet-50 px-4 py-8"><div className="mx-auto max-w-3xl"><header className="rounded-3xl bg-white/90 p-6 text-center shadow-xl"><div className="text-5xl">🏆</div><h1 className="mt-2 text-3xl font-extrabold text-slate-800">الاختبار الكلي في تعلم العربية</h1><p className="mt-2 font-bold text-slate-600">ثلاثة مستويات متدرجة، ١٠ أسئلة في كل مستوى. اختر إجابتك الأولى بعناية.</p></header>
     {progress.scores.length === 3 ? <button onClick={() => { setLevel(2); setSavedScore(progress.scores[2]) }} className="mt-5 w-full rounded-2xl bg-violet-700 p-4 font-extrabold text-white">عرض النتيجة النهائية 🏆</button> : null}
     <div className="mt-5 grid gap-4 sm:grid-cols-3">{LABELS.map((label, index) => { const done = progress.scores[index] != null; const canEnter = index === progress.scores.length; const locked = !done && !canEnter; return <div key={label} className="rounded-3xl border-2 bg-white/90 p-5 text-center shadow-lg" style={{ borderColor: ACCENTS[index], opacity: locked ? .6 : 1 }}><div className="text-4xl">{done ? BADGES[index].split(' ')[0] : locked ? '🔒' : ['⭐', '🏅', '👑'][index]}</div><h2 className="mt-2 text-xl font-extrabold" style={{ color: ACCENTS[index] }}>{label}</h2><p className="mt-1 text-sm font-bold text-slate-500">١٠ أسئلة</p>{done ? <p className="mt-3 font-extrabold text-slate-700">النتيجة: {progress.scores[index]} / 10</p> : locked ? <p className="mt-3 text-sm font-bold text-slate-500">أكمل المستوى السابق لفتحه</p> : null}{!locked && !done && <button onClick={() => startLevel(index)} className="mt-4 rounded-xl px-4 py-2 font-bold text-white" style={{ background: ACCENTS[index] }}>ابدأ الاختبار</button>}</div> })}</div>
     <div className="mt-6 text-center"><Link to="/arabic" className="inline-flex rounded-xl bg-slate-700 px-5 py-3 font-bold text-white">العودة إلى تعلم العربية</Link></div>

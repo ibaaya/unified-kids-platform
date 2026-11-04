@@ -69,7 +69,7 @@ export function ParentHub() {
         {/* زر العودة لاختيار القسم */}
         <button
           onClick={() => setActiveSection(null)}
-          className="fixed top-4 right-4 z-[70] flex items-center gap-2 rounded-2xl border-2 border-white/80 bg-orange-500/90 px-3 py-2 text-sm font-bold text-white shadow-lg backdrop-blur-sm transition hover:scale-105"
+          className="app-shell-nav-center fixed z-[70] flex items-center gap-2 rounded-2xl border-2 border-white/80 bg-orange-500/90 px-3 py-2 text-sm font-bold text-white shadow-lg backdrop-blur-sm transition hover:scale-105"
         >
           ← اختيار القسم
         </button>
@@ -83,7 +83,7 @@ export function ParentHub() {
       <div className="relative min-h-screen">
         <button
           onClick={() => setActiveSection(null)}
-          className="fixed top-4 left-4 z-[70] flex items-center gap-2 rounded-2xl border-2 border-white/80 bg-blue-600/90 px-3 py-2 text-sm font-bold text-white shadow-lg backdrop-blur-sm transition hover:scale-105"
+          className="app-shell-nav-center fixed z-[70] flex items-center gap-2 rounded-2xl border-2 border-white/80 bg-blue-600/90 px-3 py-2 text-sm font-bold text-white shadow-lg backdrop-blur-sm transition hover:scale-105"
         >
           ← Back to sections
         </button>
@@ -98,7 +98,7 @@ export function ParentHub() {
       <div className="relative min-h-screen">
         <button
           onClick={() => setActiveSection(null)}
-          className="fixed top-4 right-4 z-[70] flex items-center gap-2 rounded-2xl border-2 border-white/80 bg-violet-600/90 px-3 py-2 text-sm font-bold text-white shadow-lg backdrop-blur-sm transition hover:scale-105"
+          className="app-shell-nav-center fixed z-[70] flex items-center gap-2 rounded-2xl border-2 border-white/80 bg-violet-600/90 px-3 py-2 text-sm font-bold text-white shadow-lg backdrop-blur-sm transition hover:scale-105"
         >
           ← اختيار القسم
         </button>
@@ -113,7 +113,7 @@ export function ParentHub() {
       <div className="relative min-h-screen" style={{ background: 'linear-gradient(160deg,#edf8f5,#f4f7ff)' }}>
         <button
           onClick={() => setActiveSection(null)}
-          className="fixed top-4 right-4 z-[70] flex items-center gap-2 rounded-2xl border-2 border-white/80 bg-emerald-600/90 px-3 py-2 text-sm font-bold text-white shadow-lg backdrop-blur-sm transition hover:scale-105"
+          className="app-shell-nav-center fixed z-[70] flex items-center gap-2 rounded-2xl border-2 border-white/80 bg-emerald-600/90 px-3 py-2 text-sm font-bold text-white shadow-lg backdrop-blur-sm transition hover:scale-105"
         >
           ← اختيار القسم
         </button>

@@ -19,9 +19,10 @@
 
 /* لا تفرض ارتفاع الشاشة على عناصر التنقل الثابتة التي يعرضها التطبيق بجوار الصفحة. */
 .app-shell-nav { top: calc(var(--safe-top) + 0.75rem); }
-.app-shell-nav-start { top: calc(var(--safe-top) + 5.75rem); left: calc(var(--safe-left) + 0.75rem); }
-.app-shell-nav-end { right: calc(var(--safe-right) + 0.75rem); }
-.home-button-safe { top: calc(var(--safe-top) + 5.75rem); left: calc(var(--safe-left) + 0.75rem); }
+.app-shell-nav-start { top: calc(var(--safe-top) + 0.75rem); left: 50%; translate: -50% 0; }
+.app-shell-nav-end { left: 50%; right: auto; translate: -50% 0; }
+.app-shell-nav-center { top: calc(var(--safe-top) + 0.75rem); left: 50%; translate: -50% 0; }
+.home-button-safe { top: calc(var(--safe-top) + 0.75rem); left: 50%; translate: -50% 0; max-width: calc(100vw - 7rem); }
 
 /* داخل التطبيق / PWA: لا تحديد نص ولا قائمة نسخ عند الضغط المطوّل، ولا وميض عند اللمس */
 html.is-native,

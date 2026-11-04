@@ -1,5 +1,7 @@
 .english-background {
   min-height: 100vh;
+  padding-top: calc(var(--safe-top, 0px) + 5rem);
+  box-sizing: border-box;
   background-image: linear-gradient(rgba(255,255,255,.08), rgba(255,255,255,.10)), var(--english-background-image);
   background-size: cover;
   background-position: center;

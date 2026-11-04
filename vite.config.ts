@@ -513,20 +513,44 @@ function voiceStudioPlugin(): Plugin {
         const numberPrompts: Array<{ id: string; text: string }> = []
         for (let n = 1; n <= 20; n += 1) numberPrompts.push({ id: `num_${n}`, text: numberNames[n] })
         numberPrompts.push(
+          { id: 'fragment_balloon', text: 'فَرْقِعِ الْبَالُونَ رَقْمَ' },
+          { id: 'fragment_catch', text: 'اِضْغَطْ عَلَى الرَّقْمِ' },
+          { id: 'fragment_find', text: 'أَيْنَ الرَّقْمُ' },
+          { id: 'fragment_choose_group', text: 'اخْتَرِ الْمَجْمُوعَةَ الَّتِي تُمَثِّلُ الرَّقْمَ' },
+          { id: 'fragment_before', text: 'مَا الرَّقْمُ الَّذِي يَأْتِي قَبْلَ' },
+          { id: 'fragment_after', text: 'مَا الرَّقْمُ الَّذِي يَأْتِي بَعْدَ' },
+          { id: 'fragment_compare', text: 'قَارِنْ بَيْنَ' },
+          { id: 'fragment_and', text: 'وَ' },
+          { id: 'fragment_add', text: 'زَائِدُ' },
+          { id: 'fragment_subtract', text: 'نَاقِصُ' },
+          { id: 'fragment_how-much', text: 'كَمْ يُسَاوِي؟' },
+          { id: 'fragment_equals-how-much', text: 'يُسَاوِي كَمْ؟' },
+          { id: 'fragment_subtract-how-much', text: 'نَاقِصُ كَمْ يُسَاوِي' },
+          { id: 'q_missing', text: 'أَيُّ رَقْمٍ نَاقِص؟' },
           { id: 'q_recognize', text: 'مَا هَذَا الرَّقْمُ؟' },
           { id: 'q_count', text: 'كَمْ عَدَدُ الْأَشْيَاءِ؟' },
           { id: 'q_compare', text: 'مَا الْعَلَامَةُ الصَّحِيحَةُ الَّتِي يَجِبُ وَضْعُهَا؟' },
           { id: 'q_bigger', text: 'أَيُّ الْعَدَدَيْنِ أَكْبَرُ؟' },
-          { id: 'q_missing', text: 'أَيُّ رَقْمٍ نَاقِص؟' },
           { id: 'cheer_correct', text: 'أَحْسَنْتَ' },
           { id: 'cheer_try', text: 'حاول مرة أخرى' },
           { id: 'welcome', text: 'مَرْحَبًا بِكَ فِي مُغَامَرَةِ الْأَرْقَامِ! هَلْ أَنْتَ مُسْتَعِدٌّ؟' },
+          { id: 'fragment_game-house', text: 'اِسْحَبِ الرَّقْمَ إِلَى الْبَيْتِ الَّذِي فِيهِ نَفْسُ الْعَدَدِ مِنَ الْأَشْيَاءِ، أَوِ اضْغَطِ الرَّقْمَ ثُمَّ الْبَيْت' },
+          { id: 'fragment_game-catch', text: 'اِضْغَطْ عَلَى الرَّقْمِ الْمَطْلُوبِ وَهُوَ يَسْقُط' },
+          { id: 'fragment_game-memory', text: 'اِقْلِبْ بِطَاقَتَيْنِ وَابْحَثْ عَنِ الرَّقْمِ وَمَا يُنَاسِبُهُ مِنَ الْأَشْيَاءِ' },
+          { id: 'fragment_game-train', text: 'رَتِّبِ الْقِطَارَ مِنَ الْأَصْغَرِ لِلْأَكْبَر' },
+          { id: 'fragment_game-balloons-help', text: 'اِسْمَعِ الرَّقْمَ ثُمَّ اضْغَطْ عَلَى الْبَالُونِ الَّذِي عَلَيْهِ هَذَا الرَّقْم' },
+          { id: 'fragment_game-train-help', text: 'اِضْغَطِ الْعَرَبَاتِ بِالتَّرْتِيبِ مِنَ الْأَصْغَرِ إِلَى الْأَكْبَر' },
+          { id: 'fragment_game-maze', text: 'اِضْغَطِ الْأَرْقَامَ بِالتَّرْتِيبِ: ابدأ بالرقم ٢ ثم اضغط ٣ ثم ٤، وهكذا حتى نهاية المسار' },
+          { id: 'fragment_game-fast', text: 'اِخْتَرِ الرَّقْمَ الَّذِي تَسْمَعُهُ قَبْلَ انْتِهَاءِ الشَّرِيط' },
+          { id: 'fragment_game-missing', text: 'اِخْتَرِ الرَّقْمَ النَّاقِصَ فِي الصَّفّ' },
+          { id: 'fragment_game-compare', text: 'انْظُرْ إِلَى الْعَدَدَيْنِ وَاخْتَرِ الْعَلامَةَ الصَّحِيحَة' },
+          { id: 'fragment_game-bigger', text: 'اِخْتَرِ الْعَدَدَ الْأَكْبَر' },
+          { id: 'fragment_game-oddeven', text: 'الْعَدَدُ الزَّوْجِيُّ يَنْقَسِمُ إِلَى مَجْمُوعَتَيْنِ مُتَسَاوِيَتَيْن' },
+          { id: 'fragment_retry-long', text: 'اقْتَرَبْتَ! حَاوِلْ مَرَّةً أُخْرَى 😊' },
+          { id: 'fragment_excellent', text: 'مُمْتَازٌ' },
+          { id: 'fragment_wonderful', text: 'رَائِعٌ' },
+          { id: 'fragment_welcome', text: 'مَرْحَبًا بِكَ فِي مُغَامَرَةِ الْأَرْقَامِ! هَلْ أَنْتَ مُسْتَعِدٌّ؟' },
         )
-        for (let n = 1; n <= 20; n += 1) numberPrompts.push({ id: `hear_${n}`, text: `أَيْنَ الرَّقْمُ ${numberNames[n]}؟` })
-        for (let n = 2; n <= 19; n += 1) {
-          numberPrompts.push({ id: `before_${n}`, text: `مَا الرَّقْمُ الَّذِي يَأْتِي قَبْلَ ${numberNames[n]}؟` })
-          numberPrompts.push({ id: `after_${n}`, text: `مَا الرَّقْمُ الَّذِي يَأْتِي بَعْدَ ${numberNames[n]}؟` })
-        }
         numberPrompts.forEach((entry, index) => {
           const id = `numbers:${entry.id}`
           const filename = uniqueFilename(`numbers_${safeName(entry.id)}.mp3`, usedNames)

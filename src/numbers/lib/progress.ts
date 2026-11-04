@@ -7,7 +7,7 @@ export type Progress = {
   finalExamAllowRetry: boolean; finalExamScores: number[]; finalExamFirstTryScores: number[]; finalExamErrors: number[];
 };
 const KEY = "adad-progress-v1";
-const EMPTY: Progress = { questionCount: 7, textScale: 1, openAll: true, openTo: 0, stars: 0, learned: [], sound: true, eastern: true, skills: {}, weak: {}, last: "", completed: [], finalExamAllowRetry: true, finalExamScores: [], finalExamFirstTryScores: [], finalExamErrors: [] };
+const EMPTY: Progress = { questionCount: 7, textScale: 1, openAll: true, openTo: 0, stars: 0, learned: [], sound: true, eastern: false, skills: {}, weak: {}, last: "", completed: [], finalExamAllowRetry: true, finalExamScores: [], finalExamFirstTryScores: [], finalExamErrors: [] };
 export const GAME_IDS = ["balloons", "catch", "memory", "train", "house", "maze", "fast", "missing", "bigger", "oddeven", "compare", "numberline"] as const;
 const load = (): Progress => { try { const saved = JSON.parse(localStorage.getItem(KEY) || "{}") as Partial<Progress>; return { ...EMPTY, ...saved, finalExamScores: Array.isArray(saved.finalExamScores) ? saved.finalExamScores.slice(0, 3) : [], finalExamFirstTryScores: Array.isArray(saved.finalExamFirstTryScores) ? saved.finalExamFirstTryScores.slice(0, 3) : [], finalExamErrors: Array.isArray(saved.finalExamErrors) ? saved.finalExamErrors.slice(0, 3) : [], completed: Array.isArray(saved.completed) ? saved.completed.filter((id): id is string => typeof id === "string") : [] }; } catch { return EMPTY; } };
 export const readProgressSnapshot = (): Progress => load();

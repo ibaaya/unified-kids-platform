@@ -187,7 +187,7 @@ export function NumbersParentPage() {
               <div className="flex gap-2">
                 {[
                   [true, "الأرقام الهندية (١٢٣)"],
-                  [false, "الأرقام الانجليزية (123)"],
+                  [false, "التلقائي — الأرقام الإنجليزية (123)"],
                 ] .map(([v, t]) => (
                   <button
                     key={String(v)}

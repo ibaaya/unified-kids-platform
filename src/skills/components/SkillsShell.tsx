@@ -19,7 +19,7 @@ export function SoundToggle() {
 
 export default function SkillsShell({ children, title, back }: { children: ReactNode; title?: string; back?: { to: string; label: string } }) {
   return (
-    <div dir="rtl" className="skills-root min-h-screen bg-gradient-to-br from-sky-100 via-pink-50 to-indigo-100 font-arabic text-slate-800">
+    <div dir="rtl" className="skills-root min-h-screen bg-gradient-to-br from-sky-100 via-pink-50 to-indigo-100 pt-16 font-arabic text-slate-800">
       <header className="mx-auto flex max-w-5xl items-center justify-between gap-2 p-4">
        <Link
             to={back?.to ?? '/'}

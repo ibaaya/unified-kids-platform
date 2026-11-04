@@ -621,6 +621,9 @@ export function NumbersPracticePage() {
 
   /* Final Exam */
   if (topic === "final") {
+    if (Array.from({ length: 20 }, (_, i) => i + 1).some((n) => !p.learned.includes(n))) {
+      return <NumbersPageFrame><div className="numbers-card mx-auto max-w-2xl text-center"><div className="text-5xl">🔒</div><h1 className="my-3 text-2xl font-extrabold">الاختبار الكبير مقفل</h1><p className="mb-5 text-lg font-bold">أكمل تعلّم الأرقام من 1 إلى 20 أولًا، ثم عُد إلى الاختبار.</p><p className="mb-5 font-bold text-violet-700">تعلّمت {fmt(p.learned.length, p.eastern)} من 20 رقمًا</p><button type="button" className="btn bg-violet-600 text-white" onClick={() => window.location.assign("/numbers/map")}>العودة إلى مسار الأرقام</button></div></NumbersPageFrame>;
+    }
     return (
       <NumbersPageFrame>
         <FinalExam

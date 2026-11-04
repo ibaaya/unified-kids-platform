@@ -13,7 +13,6 @@ import { useParams, Link } from 'react-router-dom'
 import lettersData from '../data/letters.json'
 import wordsData from '../data/words.json'
 import { speakEnglish, speakWord, speakLetter } from '../engine/soundManager'
-import { HomeButton } from '../../components/ui/HomeButton'
 import { loadEnglishSettings } from './EnglishParentDashboard'
 import { QuizRunner } from '../components/QuizRunner'
 import { buildLetterQuiz } from '../engine/quizEngine'
@@ -113,7 +112,7 @@ export function EnglishLetterDetail() {
       style={{ background: 'linear-gradient(135deg, #e8f0fe 0%, #fef9e7 100%)' }}
       dir="ltr"
     >
-      <HomeButton />
+      
       <div className="mx-auto max-w-2xl px-4 py-6">
 
         {/* ——— بطاقة الحرف ——— */}

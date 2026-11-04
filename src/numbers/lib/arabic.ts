@@ -1,5 +1,5 @@
 // أسماء الأرقام والأرقام الشرقية والنطق (Web Speech API + Custom Audio)
-import { playRecordedAudio, stopRecordedAudio } from '../../engine/recordedAudioManager'
+import { playRecordedAudioText, stopRecordedAudio } from '../../engine/recordedAudioManager'
 import { normalizeAnswerFeedback } from '../../utils/feedbackPrompts'
 export const NAMES = ["", "وَاحِد", "اثْنَان", "ثَلَاثَة", "أَرْبَعَة", "خَمْسَة", "سِتَّة", "سَبْعَة", "ثَمَانِيَة", "تِسْعَة", "عَشَرَة", "أَحَدَ عَشَر", "اثْنَا عَشَر", "ثَلَاثَةَ عَشَر", "أَرْبَعَةَ عَشَر", "خَمْسَةَ عَشَر", "سِتَّةَ عَشَر", "سَبْعَةَ عَشَر", "ثَمَانِيَةَ عَشَر", "تِسْعَةَ عَشَر", "عِشْرُون"];
 export const toEastern = (n: number) => String(n).replace(/\d/g, (d) => "٠١٢٣٤٥٦٧٨٩"[+d]);
@@ -72,8 +72,15 @@ export function speak(text: string, on = true) {
   stopSpeaking();
   const requestId = speechRequestId;
 
-  // استخدم ملف MP3 المعتمد أولاً، ثم التسجيلات القديمة في المتصفح.
-  if (playRecordedAudio(speechText)) return;
+  // النصوص المركبة تستخدم العبارات الثابتة المسجلة، ويُنطق الجزء المتغير آليًا.
+  const numberOnly = NAMES.some((name) => name && name === speechText);
+  if (playRecordedAudioText(
+    speechText,
+    undefined,
+    () => fallbackSpeak(speechText, undefined, requestId),
+    (missing, done) => fallbackSpeak(missing, done, requestId),
+    { composeNumbers: !numberOnly },
+  )) return;
 
   // 2) جرّب التسجيل المخصص
   const map = loadAudioMap();
@@ -86,20 +93,22 @@ export function speak(text: string, on = true) {
         if (currentAudio === audio) currentAudio = null;
       });
       audio.play().catch(() => {
-        if (requestId === speechRequestId) fallbackSpeak(speechText);
+        if (requestId === speechRequestId) fallbackSpeak(speechText, undefined, requestId);
       });
       return;
     } catch { /* fallback below */ }
   }
 
   // 3) احتياطي: النطق الآلي
-  fallbackSpeak(speechText);
+  fallbackSpeak(speechText, undefined, requestId);
 }
 
-function fallbackSpeak(text: string) {
-  if (!window.speechSynthesis) return;
+function fallbackSpeak(text: string, onEnd?: () => void, requestId = speechRequestId) {
+  if (!window.speechSynthesis) { onEnd?.(); return; }
   window.speechSynthesis.cancel();
   const u = new SpeechSynthesisUtterance(text);
+  u.onend = () => { if (requestId === speechRequestId) onEnd?.(); };
+  u.onerror = () => { if (requestId === speechRequestId) onEnd?.(); };
   u.lang = "ar-SA"; u.rate = 0.8;
   window.speechSynthesis.speak(u);
 }

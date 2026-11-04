@@ -13,7 +13,6 @@
  */
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
-import { HomeButton } from '../../components/ui/HomeButton'
 import { QuizRunner } from '../components/QuizRunner'
 import { buildFinalTest, LEVEL_CONFIG } from '../engine/quizEngine'
 import type { TestLevel } from '../engine/quizEngine'
@@ -41,7 +40,7 @@ export function EnglishFinalTest() {
   if (!level) {
     return (
       <div className="min-h-screen" style={{ background: LEVEL_BG }} dir="ltr">
-        <HomeButton />
+        
         <div className="mx-auto max-w-2xl px-4 py-8">
           <header className="mb-8 rounded-3xl border-2 bg-white/85 p-5 text-center shadow-xl" style={{ borderColor: 'rgba(79,128,226,0.3)' }}>
             <div className="text-5xl">🏆</div>

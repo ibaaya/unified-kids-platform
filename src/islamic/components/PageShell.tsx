@@ -1,7 +1,5 @@
 import React, { useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
 import '../islamic.css';
-import BackButton from './BackButton';
 import SoundToggle from './SoundToggle';
 import { stopSpeech } from '../engine/islamicSound';
 
@@ -15,21 +13,11 @@ interface Props {
 }
 
 /** هيكل موحّد لكل صفحات القسم: خلفية + رجوع + كتم الصوت + ترويسة */
-const PageShell: React.FC<Props> = ({ onBack, icon, title, subtitle, maxWidth = 900, children }) => {
-  const navigate = useNavigate();
+const PageShell: React.FC<Props> = ({ icon, title, subtitle, maxWidth = 900, children }) => {
   useEffect(() => () => stopSpeech(), []);
   return (
     <div className="islamic-page" dir="rtl">
       <div className="islamic-page-bg" />
-      <BackButton onClick={onBack} />
-      <button
-        type="button"
-        className="islamic-home-button"
-        onClick={() => { stopSpeech(); navigate('/islamic'); }}
-        aria-label="العودة إلى الصفحة الرئيسية لأخلاقي الجميلة"
-      >
-        🏠 <span>الرئيسية</span>
-      </button>
       <SoundToggle />
       <div className="islamic-container" style={{ maxWidth }}>
         {title && (
