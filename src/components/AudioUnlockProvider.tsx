@@ -43,7 +43,7 @@ export function AudioUnlockProvider({ children }: { children: React.ReactNode })
       void silent.play().catch(() => {/* مقبول */})
 
       // 2. هيّئ Web Speech API مبكراً
-      if (typeof window !== 'undefined' && 'speechSynthesis' in window) {
+      if (typeof window !== 'undefined' && window.speechSynthesis) {
         // استدعاء getVoices() أثناء حدث المستخدم يُنشّط الأصوات على بعض المتصفحات
         window.speechSynthesis.getVoices()
 

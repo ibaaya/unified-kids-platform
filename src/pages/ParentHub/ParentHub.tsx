@@ -42,7 +42,7 @@ function ParentUpdateNotice() {
 
   if (!pwaUpdate && !storeUpdate) return null
   return (
-    <aside className="fixed bottom-4 left-4 right-4 z-[100] mx-auto max-w-lg rounded-2xl border-2 border-amber-300 bg-white p-4 text-right shadow-2xl" dir="rtl">
+    <aside className="fixed left-4 right-4 z-[100] mx-auto max-w-lg rounded-2xl border-2 border-amber-300 bg-white p-4 text-right shadow-2xl" style={{ bottom: 'calc(var(--safe-bottom, 0px) + 1rem)' }} dir="rtl">
       <p className="mb-3 font-bold">{pwaUpdate ? 'يتوفر تحديث جديد للمنصة.' : 'يتوفر إصدار جديد من التطبيق في المتجر.'}</p>
       {pwaUpdate ? (
         <Button onClick={installPendingSwUpdate}>تحديث المنصة الآن</Button>

@@ -31,6 +31,53 @@ html.is-pwa {
   -webkit-tap-highlight-color: transparent;
   overscroll-behavior: none;
 }
+
+/* النص الأساسي أقل قليلًا في تطبيق الهاتف ليتسع المحتوى التعليمي. */
+html.is-native:not([data-text-size]),
+html.is-native[data-text-size='normal'] {
+  --base-font-size: 15px;
+  --content-scale: .95;
+}
+
+@media (max-width: 420px) {
+  html.is-native .discover-final-test > div > header {
+    padding: 1rem;
+    margin-bottom: 1rem;
+  }
+  html.is-native .discover-final-test h1 {
+    font-size: 1.5rem;
+    line-height: 1.25;
+  }
+  html.is-native .discover-final-test section {
+    padding: 1rem;
+  }
+  html.is-native .discover-final-test .grid button {
+    min-height: 6rem;
+    padding: .75rem;
+  }
+  html.is-native .discover-final-test .grid button > span:first-child {
+    font-size: 2.5rem;
+  }
+  html.is-native .discover-final-test .mt-5.grid button {
+    min-height: 6.5rem;
+  }
+  html.is-native .discover-activity-engine .text-8xl { font-size: 4rem; }
+  html.is-native .discover-activity-engine .text-7xl { font-size: 3.5rem; }
+  html.is-native .discover-activity-engine .text-5xl { font-size: 2.5rem; }
+  html.is-native .discover-item-card { padding: 1rem; }
+  html.is-native .discover-item-card .discover-item-emoji { width: 9rem; height: 9rem; font-size: 6rem; }
+  html.is-native .discover-item-card .discover-item-name-ar { font-size: 2rem; }
+  html.is-native .discover-item-card .discover-item-name-en { font-size: 1.5rem; }
+  html.is-native .arabic-picture-choice { padding: .75rem; padding-top: 2rem; }
+  html.is-native .arabic-picture-choice .grid { gap: .5rem; }
+  html.is-native .arabic-picture-choice .grid > button { padding: .5rem; }
+  html.is-native .arabic-picture-choice .grid > button > span[aria-hidden='true'] {
+    width: 4.5rem;
+    height: 4.5rem;
+    border-radius: 1rem;
+    font-size: 3.5rem;
+  }
+}
 html.is-native body,
 html.is-pwa body {
   -webkit-user-select: none;

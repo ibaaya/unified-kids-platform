@@ -108,6 +108,7 @@ export const DISCOVER_QUIZ_QUESTIONS: DiscoverQuizQuestion[] = [
   // ——— إضافات جديدة للمتوسط ———
   q('medium-26','medium','time','مَا الْوَحْدَةُ الَّتِي تُمَثِّلُ سَبْعَةَ أَيَّامٍ؟','week',['week','day','month','year'],'الْأُسْبُوعُ = ٧ أَيَّامٍ.'),
   q('medium-27','medium','time','مَا الْوَحْدَةُ الَّتِي تُمَثِّلُ اثْنَيْ عَشَرَ شَهْرًا؟','year',['year','month','week','day'],'السَّنَةُ = ١٢ شَهْرًا.'),
+  q('medium-28','medium','plants','إِلَى مَاذَا تَنْبُتُ البَذْرَةُ؟','plant',['plant','root','leaf2','cactus'],'تَنْبُتُ البَذْرَةُ وَتُصْبِحُ نَبَاتًا.'),
   q('medium-29','medium','animals','أَيُّ حَيَوَانٍ لَهُ ثَمَانِيَةُ أَذْرُعٍ؟','octopus',['octopus','whale','shark','crab'],'الْأَخْطَبُوطُ.'),
   q('medium-30','medium','plants','مَا الَّذِي يَحْتَاجُهُ النَّبَاتُ لِيَنْمُوَ؟','rain',['rain','mountain','star','cloud'],'الْمَاءُ مِنَ الْمَطَرِ.'),
 

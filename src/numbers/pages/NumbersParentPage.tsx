@@ -47,7 +47,7 @@ export function NumbersParentPage() {
 
   return (
     <div
-      className="numbers-root relative min-h-screen"
+      className="numbers-root relative min-h-screen pb-28 pt-16"
       dir="rtl"
       style={{
         backgroundImage:
@@ -62,16 +62,16 @@ export function NumbersParentPage() {
       <NumbersControls />
 
       {/* ترويسة */}
-      <header className="sticky top-0 z-20 flex items-center justify-between gap-2 px-4 py-3">
+      <header className="mx-auto flex w-full max-w-2xl flex-wrap items-center justify-center gap-2 px-4 py-3 sm:justify-between">
+        <h1 className="order-first w-full rounded-2xl bg-white/80 px-3 py-2 text-center text-lg font-extrabold text-violet-800 shadow backdrop-blur-sm sm:order-none sm:w-auto">
+          ⚙️ لوحة ولي الأمر
+        </h1>
         <Link
           to="/numbers"
           className="flex items-center gap-1.5 rounded-2xl border-2 border-white/80 bg-white/70 px-3 py-2 text-sm font-bold text-violet-800 shadow-lg backdrop-blur-sm transition hover:scale-105"
         >
           🔢 مغامرة الأرقام
         </Link>
-        <h1 className="rounded-2xl bg-white/70 px-4 py-2 text-center text-lg font-extrabold text-violet-800 shadow backdrop-blur-sm">
-          ⚙️ لوحة ولي الأمر
-        </h1>
         <Link
           to="/"
           className="flex items-center gap-1 rounded-2xl border-2 border-white/80 bg-white/70 px-3 py-2 text-sm font-bold text-violet-800 shadow-lg backdrop-blur-sm transition hover:scale-105"

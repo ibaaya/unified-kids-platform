@@ -6,6 +6,7 @@ import type { ChildSettings } from '../types/progress'
 import { Mascot } from '../components/character/Mascot'
 import { Link, useLocation } from 'react-router-dom'
 import { lockParentSession } from './parentSession'
+import { isNativeApp } from '../platform/initPlatform'
 // ✅ حذف primeEnglishVoices من هنا — انتقل إلى AudioUnlockProvider
 
 const ARABIC_WORLD_NAV: Array<{ prefix: string; path: string; label: string; icon: string }> = [
@@ -116,7 +117,7 @@ export function AppShell() {
           <img
             src="/images/Rehlati_Logo_Clean.webp"
             alt="رحلتي — تعلّم، نكتشف، نلعب"
-            className="relative h-20 w-20 rounded-full object-contain drop-shadow-lg sm:h-24 sm:w-24"
+            className={`relative rounded-full object-contain drop-shadow-lg ${isNativeApp ? 'h-12 w-12 sm:h-14 sm:w-14' : 'h-20 w-20 sm:h-24 sm:w-24'}`}
           />
         </Link>
       </div>
@@ -136,7 +137,7 @@ export function AppShell() {
 
       {child && isArabicWorldPage && (
         <>
-          <div className="fixed bottom-20 left-2 sm:left-4 z-30 pointer-events-none select-none" aria-hidden="true">
+          <div className="fixed left-2 z-30 pointer-events-none select-none sm:left-4" style={{ bottom: 'calc(var(--safe-bottom, 0px) + 5rem)' }} aria-hidden="true">
             <Mascot size={54} />
           </div>
           <button
@@ -144,7 +145,8 @@ export function AppShell() {
             onClick={cycleTextSize}
             aria-label="تكبير حجم النص والصور"
             title="حجم النص"
-            className="fixed bottom-4 right-4 w-11 h-11 flex items-center justify-center rounded-full bg-white text-indigo-900 text-sm font-extrabold shadow-lg border-2 border-indigo-200 hover:bg-indigo-50 transition-all hover:scale-110 z-50"
+            className="fixed right-4 z-50 flex h-11 w-11 items-center justify-center rounded-full border-2 border-indigo-200 bg-white text-sm font-extrabold text-indigo-900 shadow-lg transition-all hover:scale-110 hover:bg-indigo-50"
+            style={{ bottom: 'calc(var(--safe-bottom, 0px) + 1rem)' }}
           >
             {SIZE_BUTTON_LABEL[textSize]}
           </button>

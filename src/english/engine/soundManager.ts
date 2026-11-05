@@ -1,6 +1,7 @@
 /** English Sound Manager — تشغيل التسجيلات المعتمدة أولاً ثم الرجوع إلى Web Speech API. */
 import { playRecordedAudio, stopRecordedAudio } from '../../engine/recordedAudioManager'
 import { ENGLISH_ENCOURAGEMENTS } from '../data/voicePrompts'
+import { hasNativeSpeech, speakNative, stopNativeSpeech } from '../../platform/nativeSpeech'
 
 let cachedVoice: SpeechSynthesisVoice | null = null
 let voicesLoaded = false
@@ -19,7 +20,7 @@ function pickEnglishVoice(): SpeechSynthesisVoice | null {
 export function primeEnglishVoices(): void {
   if (typeof window === 'undefined' || !window.speechSynthesis) return
   cachedVoice = pickEnglishVoice()
-  if (!voicesLoaded) {
+  if (!voicesLoaded && typeof window.speechSynthesis.addEventListener === 'function') {
     window.speechSynthesis.addEventListener('voiceschanged', () => { cachedVoice = pickEnglishVoice() }, { once: true })
   }
 }
@@ -32,6 +33,7 @@ export function speakEnglish(text: string, options: EnglishSpeakOptions = {}): v
   const requestId = ++speakRequestId
   if (window.speechSynthesis) window.speechSynthesis.cancel()
   stopRecordedAudio()
+  stopNativeSpeech()
 
   const speakWithSynthesis = () => {
     if (requestId !== speakRequestId) return
@@ -44,11 +46,17 @@ export function speakEnglish(text: string, options: EnglishSpeakOptions = {}): v
     if (!cachedVoice) cachedVoice = pickEnglishVoice()
     if (cachedVoice) utterance.voice = cachedVoice
     if (onEnd) utterance.onend = onEnd
+    // Android WebView can leave synthesis paused after cancel(), especially
+    // when Arabic audio has just finished and English starts next.
+    window.speechSynthesis.resume()
     window.speechSynthesis.speak(utterance)
   }
 
   if (playRecordedAudio(text, onEnd, speakWithSynthesis)) return
-  if (!window.speechSynthesis) return
+  if (!window.speechSynthesis) {
+    if (hasNativeSpeech()) speakNative(text, { lang: 'en-US', rate, pitch, onEnd })
+    return
+  }
   window.setTimeout(speakWithSynthesis, 60)
 }
 
@@ -64,4 +72,4 @@ export function speakEncouragement(): void {
   lastEncouragementIdx = idx
   speakEnglish(ENGLISH_ENCOURAGEMENTS[idx], { rate: 0.9, pitch: 1.15 })
 }
-export function isEnglishSpeechSupported(): boolean { return typeof window !== 'undefined' && 'speechSynthesis' in window }
+export function isEnglishSpeechSupported(): boolean { return typeof window !== 'undefined' && (Boolean(window.speechSynthesis) || hasNativeSpeech()) }

@@ -20,6 +20,7 @@ import { ChildAvatar } from '../../components/character/AvatarPicker'
 import { Mascot } from '../../components/character/Mascot'
 import { VISUAL_ASSETS } from '../../config/visualAssets'
 import { ParentButton } from '../../components/ui/ParentButton'
+import { isNativeApp } from '../../platform/initPlatform'
 
 // ─────────────────────────────────────────────
 // ثوابت CSS المُدمَجة — تُحدَّد هنا مرة واحدة
@@ -152,7 +153,6 @@ const MODULES = [
     textColor: '#fff',
     dir: 'rtl' as const,
     flag: '',
-    video: '/video/skills_intro.mp4', // إذا وُجد فيديو تعريفي أو يمكن إزالته/تعديله حسب المتوفر
     shadowColor: 'rgba(232,93,117,.40)',
     iconBg: 'linear-gradient(145deg, #ffd1d9, #e85d75)',
   },
@@ -345,7 +345,7 @@ export function HubPage() {
       </div>
 
       {/* ─── المحتوى الرئيسي ─── */}
-      <div className="relative z-10 mx-auto max-w-3xl px-4 py-5">
+      <div className="relative z-10 mx-auto max-w-3xl px-4 pb-28 pt-16 sm:py-5">
 
         {/* ══════════════════════════════════════
             ترويسة الصفحة — عنوان المنصة وبيانات الطفل
@@ -387,79 +387,23 @@ export function HubPage() {
             >
               ✨ منصة التعلم الشاملة ✨
             </h1>
-            <p
-              className="mt-1 text-center text-sm font-bold tracking-wide"
-              style={{ color: 'rgba(255,240,180,.80)' }}
-            >
-              Arabic · English · Numbers
-            </p>
-
-            {/* شريط معلومات الطفل */}
-            <div className="mt-3 flex items-center justify-between gap-2">
-
-              {/* ─ بطاقة التاريخ والوقت ─ */}
-              <div
-                className="w-32 shrink-0 rounded-2xl p-2 text-center"
-                style={{
-                  background: 'rgba(255,255,255,.10)',
-                  border: '1.5px solid rgba(255,255,255,.18)',
-                  backdropFilter: 'blur(8px)',
-                }}
-              >
-                <div className="text-xs font-extrabold" style={{ color: '#fff' }}>{weekday}</div>
-                <div className="mt-0.5 text-[10px] font-bold leading-tight"
-                  style={{ color: 'rgba(120,240,190,.9)' }}>
-                  🌙 {hijri}
-                </div>
-                <div className="mt-1 text-xs font-extrabold" style={{ color: 'rgba(130,195,255,.9)' }}>
-                  🕒 {time}
-                </div>
+            {/* معلومات الطفل والوقت بصفوف منفصلة لتناسب عرض الهاتف */}
+            <div className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-[auto_minmax(0,1fr)_auto] sm:items-center">
+              <div className="flex items-center justify-center gap-3 rounded-2xl border border-amber-300/30 bg-white/[.08] p-2 sm:flex-col sm:gap-1 sm:px-4">
+                <span className="text-sm font-extrabold text-white">{weekday}</span>
+                <span className="text-xs font-bold text-emerald-200">🌙 {hijri}</span>
+                <span className="text-xs font-extrabold text-sky-200">🕒 {time}</span>
               </div>
-
-              {/* ─ رسالة الترحيب والماسكوت ─ */}
-              <div className="flex flex-1 items-center justify-center gap-2">
-                {/* هالة ضوئية حول الماسكوت */}
-                <div
-                  className="shrink-0"
-                  style={{
-                    borderRadius: '50%',
-                    padding: '4px',
-                    background: 'radial-gradient(circle, rgba(255,183,47,.25) 0%, transparent 70%)',
-                    animation: 'pulseRing 2.5s infinite',
-                  }}
-                >
-                  <Mascot size={52} />
-                </div>
-                <p
-                  className="text-center text-sm font-extrabold leading-snug"
-                  style={{ color: '#fff' }}
-                >
+              <div className="flex min-w-0 items-center justify-center gap-2 rounded-2xl bg-white/[.06] p-2 sm:order-2">
+                <Mascot size={48} />
+                <p className="min-w-0 text-center text-sm font-extrabold leading-relaxed text-white">
                   أَهْلًا يَا {child.name}! 🎉
-                  <br />
-                  <span className="text-xs font-bold" style={{ color: 'rgba(130,210,255,.9)' }}>
-                    اختر ما تريد تعلمه اليوم
-                  </span>
+                  <span className="mt-1 block text-xs font-bold text-sky-200">اختر ما تريد تعلمه اليوم</span>
                 </p>
               </div>
-
-              {/* ─ صورة الطفل ─ */}
-              <div
-                className="flex shrink-0 flex-col items-center p-1"
-                style={{
-                  borderRadius: '16px',
-                  background: 'rgba(255,255,255,.10)',
-                  border: '1.5px solid rgba(255,183,47,.35)',
-                  backdropFilter: 'blur(8px)',
-                  boxShadow: '0 0 18px rgba(255,183,47,.20)',
-                }}
-              >
-                <ChildAvatar avatar={child.avatar} name={child.name} size={68} />
-                <span
-                  className="mt-1 max-w-[72px] truncate text-xs font-extrabold"
-                  style={{ color: '#ffe066' }}
-                >
-                  {child.name}
-                </span>
+              <div className="flex items-center justify-center gap-2 rounded-2xl border border-amber-300/30 bg-white/[.08] p-2 sm:order-3 sm:flex-col">
+                <ChildAvatar avatar={child.avatar} name={child.name} size={54} />
+                <span className="max-w-24 truncate text-sm font-extrabold text-amber-200">{child.name}</span>
               </div>
             </div>
           </div>
@@ -737,7 +681,7 @@ export function HubPage() {
       <Link
         to="/login"
         aria-label="تبديل الطالب"
-        className="fixed flex items-center justify-center text-xl"
+        className={`fixed flex items-center justify-center text-xl ${isNativeApp ? 'hidden' : ''}`}
         style={{
           bottom: 16,
           left: 80,
@@ -763,7 +707,7 @@ export function HubPage() {
       </Link>
 
       {/* ─ زر ولي الأمر (يأتي من مكوّن ParentButton) ─ */}
-      <ParentButton />
+      <ParentButton showOnNativeHome />
 
       {/* ══════════════════════════════════════
           نافذة الفيديو المنبثقة

@@ -308,7 +308,10 @@ export function ParentDashboard() {
       </Card>}
 
       <Card className="p-5 mb-6 text-right">
-        <h2 className="font-display font-bold mb-3">👨‍👩‍👧 الطلاب على هذا الجهاز</h2>
+        <h2 className="flex items-center justify-end gap-2 font-display font-bold mb-3">
+          <button type="button" onClick={() => navigate('/onboarding')} aria-label="إضافة طالب جديد" title="إضافة طالب جديد" className="rounded-full bg-indigo-50 p-2 text-lg text-indigo-700">👤➕</button>
+          👨‍👩‍👧 الطلاب على هذا الجهاز
+        </h2>
         <div className="flex flex-col gap-2 mb-4">
           {allChildren.map((c) => (
             <div key={c.id} className="flex items-center justify-between gap-2">
@@ -330,7 +333,7 @@ export function ParentDashboard() {
           ))}
         </div>
         <Button variant="secondary" onClick={() => navigate('/onboarding')}>
-          + إضافة طالب جديد
+          👤➕ إضافة طالب جديد
         </Button>
       </Card>
 

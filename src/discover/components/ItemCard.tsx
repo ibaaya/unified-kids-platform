@@ -29,7 +29,10 @@ export function ItemCard({ item, isPopup = false, onClose, size = 'large', onPre
 
   const handleArabic = (e: React.MouseEvent) => {
     e.stopPropagation()
-    speakArabic(item.nameAr)
+    speakArabic(item.nameAr, {
+      onEnd: () => speakEnglish(item.nameEn, { rate: 0.82 }),
+      onError: () => speakEnglish(item.nameEn, { rate: 0.82 }),
+    })
   }
 
   const handleEnglish = (e: React.MouseEvent) => {
@@ -54,7 +57,7 @@ export function ItemCard({ item, isPopup = false, onClose, size = 'large', onPre
   // وضع البطاقة الكبيرة / popup
   return (
     <div
-      className={`relative flex flex-col items-center rounded-[2rem] border-4 border-white/80 bg-white/95 p-7 text-center shadow-2xl backdrop-blur-md ${
+      className={`discover-item-card relative flex flex-col items-center rounded-[2rem] border-4 border-white/80 bg-white/95 p-7 text-center shadow-2xl backdrop-blur-md ${
         isPopup ? 'w-[min(560px,94vw)] max-h-[90vh] overflow-y-auto' : 'w-full'
       }`}
       style={{ boxShadow: '0 20px 60px rgba(36,49,58,0.18)' }}
@@ -71,7 +74,7 @@ export function ItemCard({ item, isPopup = false, onClose, size = 'large', onPre
 
       {/* الإيموجي الرئيسي */}
       <div
-        className="mb-5 flex h-44 w-44 items-center justify-center rounded-full text-[7.5rem] leading-none shadow-inner sm:h-48 sm:w-48 sm:text-[8rem]"
+        className="discover-item-emoji mb-5 flex h-44 w-44 items-center justify-center rounded-full text-[7.5rem] leading-none shadow-inner sm:h-48 sm:w-48 sm:text-[8rem]"
         style={{
           background: item.color
             ? `${item.color}22`
@@ -82,12 +85,12 @@ export function ItemCard({ item, isPopup = false, onClose, size = 'large', onPre
       </div>
 
       {/* الاسم العربي */}
-      <div className="mb-2 text-4xl font-extrabold sm:text-5xl text-gray-800" style={{ fontFamily: 'var(--font-display)' }}>
+      <div className="discover-item-name-ar mb-2 text-4xl font-extrabold sm:text-5xl text-gray-800" style={{ fontFamily: 'var(--font-display)' }}>
         {item.nameAr}
       </div>
 
       {/* الاسم الإنجليزي */}
-      <div className="mb-5 text-2xl font-bold text-blue-600 sm:text-3xl" dir="ltr">
+      <div className="discover-item-name-en mb-5 text-2xl font-bold text-blue-600 sm:text-3xl" dir="ltr">
         {item.nameEn}
       </div>
 

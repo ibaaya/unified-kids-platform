@@ -117,8 +117,8 @@ export function AppRoutes() {
       <Route path="/world/letters/:letterId/words/:position" element={<LetterWorldBackground><WorldGuard worldId="letters"><LetterWordsPage /></WorldGuard></LetterWorldBackground>} />
       <Route path="/world/letters/:letterId/play" element={<LetterWorldBackground><WorldGuard worldId="letters"><LetterGamePage /></WorldGuard></LetterWorldBackground>} />
       <Route path="/world/harakat" element={<Navigate to="/arabic/world/harakat" replace />} />
-      <Route path="/world/harakat/:harakaId" element={<Navigate to="/arabic/world/harakat" replace />} />
-      <Route path="/world/harakat/:harakaId/play" element={<Navigate to="/arabic/world/harakat" replace />} />
+      <Route path="/world/harakat/:harakaId" element={<HarakatWorldBackground><WorldGuard worldId="harakat"><HarakatSyllablesDetail /></WorldGuard></HarakatWorldBackground>} />
+      <Route path="/world/harakat/:harakaId/play" element={<HarakatWorldBackground><WorldGuard worldId="harakat"><HarakaWorldGamePage /></WorldGuard></HarakatWorldBackground>} />
       <Route path="/world/syllables/*" element={<Navigate to="/arabic/world/harakat" replace />} />
       <Route path="/world/words" element={<WordsWorldBackground><WorldGuard worldId="words"><WordsWorld /></WorldGuard></WordsWorldBackground>} />
       <Route path="/world/words/letter/:letterId/:position/play" element={<WordsWorldBackground><WorldGuard worldId="words"><WordPositionGamePage /></WorldGuard></WordsWorldBackground>} />

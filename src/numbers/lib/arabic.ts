@@ -1,6 +1,7 @@
 // أسماء الأرقام والأرقام الشرقية والنطق (Web Speech API + Custom Audio)
 import { playRecordedAudioText, stopRecordedAudio } from '../../engine/recordedAudioManager'
 import { normalizeAnswerFeedback } from '../../utils/feedbackPrompts'
+import { speakNative, stopNativeSpeech } from '../../platform/nativeSpeech'
 export const NAMES = ["", "وَاحِد", "اثْنَان", "ثَلَاثَة", "أَرْبَعَة", "خَمْسَة", "سِتَّة", "سَبْعَة", "ثَمَانِيَة", "تِسْعَة", "عَشَرَة", "أَحَدَ عَشَر", "اثْنَا عَشَر", "ثَلَاثَةَ عَشَر", "أَرْبَعَةَ عَشَر", "خَمْسَةَ عَشَر", "سِتَّةَ عَشَر", "سَبْعَةَ عَشَر", "ثَمَانِيَةَ عَشَر", "تِسْعَةَ عَشَر", "عِشْرُون"];
 export const toEastern = (n: number) => String(n).replace(/\d/g, (d) => "٠١٢٣٤٥٦٧٨٩"[+d]);
 let EAST = true; export const setDigits = (e: boolean) => { EAST = e; };
@@ -50,6 +51,7 @@ let speechRequestId = 0;
 export function stopSpeaking() {
   speechRequestId += 1;
   stopRecordedAudio();
+  stopNativeSpeech();
   // أوقف الصوت المسجّل إن وُجد
   if (currentAudio) {
     try {
@@ -104,11 +106,21 @@ export function speak(text: string, on = true) {
 }
 
 function fallbackSpeak(text: string, onEnd?: () => void, requestId = speechRequestId) {
-  if (!window.speechSynthesis) { onEnd?.(); return; }
+  if (!window.speechSynthesis) {
+    speakNative(text, {
+      lang: "ar-SA",
+      rate: 0.8,
+      onEnd: () => { if (requestId === speechRequestId) onEnd?.(); },
+      onError: () => { if (requestId === speechRequestId) onEnd?.(); },
+    });
+    return;
+  }
   window.speechSynthesis.cancel();
   const u = new SpeechSynthesisUtterance(text);
   u.onend = () => { if (requestId === speechRequestId) onEnd?.(); };
   u.onerror = () => { if (requestId === speechRequestId) onEnd?.(); };
   u.lang = "ar-SA"; u.rate = 0.8;
+  u.onstart = () => { /* Android WebView may suspend synthesis after a screen transition. */ };
+  window.speechSynthesis.resume();
   window.speechSynthesis.speak(u);
 }

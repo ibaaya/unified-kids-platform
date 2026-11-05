@@ -128,7 +128,7 @@ export function PictureChoiceGame({
   }
 
   return (
-    <Card className="border border-white/80 p-4 pt-10 shadow-xl backdrop-blur-md sm:px-6 sm:pb-6 sm:pt-12" style={{ background: 'rgba(255,255,255,.15)' }}>
+    <Card className="arabic-picture-choice border border-white/80 p-4 pt-10 shadow-xl backdrop-blur-md sm:px-6 sm:pb-6 sm:pt-12" style={{ background: 'rgba(255,255,255,.15)' }}>
       <div className="flex items-center justify-between mb-4 text-sm text-[var(--color-ink-soft)]">
         <span>
           سؤال {questionIndex + 1} من {words.length}

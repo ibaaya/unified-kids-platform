@@ -168,7 +168,7 @@ function getSortGroups(worldId: string): SortGroup[] | null {
     ]
   }
   if (worldId === 'clothes') {
-    const summer = new Set(['tshirt', 'sandals', 'swimsuit', 'hat'])
+    const summer = new Set(['tshirt', 'sandals', 'hat'])
     const winter = new Set(['coat', 'gloves', 'scarf', 'rainboots'])
     return [
       { id: 'summer', label: 'ملابس صيف', emoji: '☀️', matcher: (i) => summer.has(i.id) },
@@ -405,7 +405,7 @@ export function ActivityEngine({
     const pct = TOTAL > 0 ? Math.round((score / TOTAL) * 100) : 0
     const star = pct >= 80 ? '🌟' : pct >= 60 ? '🎉' : '💪'
     return (
-      <div className="flex min-h-screen items-center justify-center p-4"
+      <div className="discover-activity-engine flex min-h-screen items-center justify-center p-4"
         style={{ background: `linear-gradient(135deg, ${world.color}22, ${world.colorEnd}22)` }}>
         <div className="mx-auto w-full max-w-sm rounded-3xl border-4 border-white/80 bg-white/90 p-8 text-center shadow-2xl">
           <div className="mb-2 text-7xl">{star}</div>
@@ -440,7 +440,7 @@ export function ActivityEngine({
 
   if (!q) {
     return (
-      <div className="flex min-h-screen items-center justify-center p-4">
+      <div className="discover-activity-engine flex min-h-screen items-center justify-center p-4">
         <div className="rounded-3xl bg-white/90 p-8 text-center shadow-xl">
           <p className="text-lg text-gray-600">لا توجد أسئلة كافية في هذا النشاط.</p>
           <button onClick={onBack} className="mt-4 rounded-2xl bg-gray-800 px-5 py-2 font-bold text-white">
@@ -466,7 +466,7 @@ export function ActivityEngine({
   const sortGroups = normalizedType === 'sort' ? getSortGroups(world.id) ?? [] : []
 
   return (
-    <div className="flex min-h-screen flex-col items-center justify-center p-4"
+    <div className="discover-activity-engine flex min-h-screen flex-col items-center justify-center p-4"
       style={{ background: `linear-gradient(135deg, ${world.color}15, ${world.colorEnd}15)` }}>
       <div className="mx-auto w-full max-w-lg">
 

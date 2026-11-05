@@ -262,7 +262,6 @@ export const DISCOVER_WORLDS: DiscoverWorld[] = [
       { id: 'uniform', nameAr: 'زِيٌّ مَدْرَسِيٌّ', nameEn: 'Uniform', emoji: '🥋' },
       // ——— إضافات: ملابس الفصول + إكسسوارات ———
       { id: 'rainboots', nameAr: 'حِذَاءُ الْمَطَرِ', nameEn: 'Rain boots', emoji: '🥾', descAr: 'نلبسه في المطر', descEn: 'We wear them in rain' },
-      { id: 'swimsuit', nameAr: 'لِبَاسُ السِّبَاحَةِ', nameEn: 'Swimsuit', emoji: '🩱', descAr: 'نلبسه عند السباحة', descEn: 'We wear it when swimming' },
       { id: 'watch', nameAr: 'سَاعَةُ الْيَدِ', nameEn: 'Watch', emoji: '⌚', descAr: 'نعرف بها الوقت', descEn: 'Tells us the time' },
       { id: 'glasses', nameAr: 'نَظَّارَةٌ', nameEn: 'Glasses', emoji: '👓', descAr: 'نساعد بها العين', descEn: 'Helps our eyes' },
       { id: 'umbrella2', nameAr: 'مِظَلَّةٌ', nameEn: 'Umbrella', emoji: '☂️', descAr: 'تحمينا من المطر', descEn: 'Protects us from rain' },

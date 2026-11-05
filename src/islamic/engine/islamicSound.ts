@@ -6,6 +6,7 @@
 
 import { playRecordedAudioText, stopRecordedAudio } from '../../engine/recordedAudioManager';
 import { normalizeAnswerFeedback, SUCCESS_FEEDBACK, RETRY_FEEDBACK } from '../../utils/feedbackPrompts';
+import { speakNative, stopNativeSpeech } from '../../platform/nativeSpeech';
 
 const SOUND_KEY = 'islamic-sound-enabled';
 
@@ -48,6 +49,7 @@ export const setSoundEnabled = (value: boolean): void => {
 export const stopSpeech = (): void => {
   token += 1;
   stopRecordedAudio();
+  stopNativeSpeech();
   if (supported()) window.speechSynthesis.cancel();
 };
 
@@ -91,7 +93,10 @@ export const speakArabic = (text: string, options: SpeakOptions = {}): void => {
   const speakWithSynthesis = () => {
     if (mine !== token) return;
     stopRecordedAudio();
-    if (!supported()) { onStop?.(); return; }
+    if (!supported()) {
+      if (!speakNative(clean, { lang: 'ar-SA', rate: 0.85, pitch: 1.05, onEnd, onError: onStop })) onStop?.();
+      return;
+    }
     window.speechSynthesis.cancel();
     window.setTimeout(() => {
       if (mine !== token) { onStop?.(); return; }

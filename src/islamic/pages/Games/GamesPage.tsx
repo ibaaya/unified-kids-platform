@@ -120,21 +120,21 @@ const OrderGame: React.FC<FinishProps & { def: OrderGameDef }> = ({ def, onFinis
 };
 
 // ─── 2) المَوَاقِف (مَاذَا أفعل؟ / أكمل القصة / تحدي الأخلاق) ───
-const ScenarioGame: React.FC<FinishProps & { items: ScenarioDef[] }> = ({ items, onFinish }) => {
+const ScenarioGame: React.FC<FinishProps & { items: ScenarioDef[]; completeStory?: boolean }> = ({ items, onFinish, completeStory = false }) => {
   const list = useMemo(() => shuffle(items).slice(0, 8), [items]);
   const [idx, setIdx] = useState(0);
   const [wrong, setWrong] = useState<number[]>([]);
   const [solved, setSolved] = useState(false);
   const [score, setScore] = useState(0);
   const sc = list[idx];
-  useAutoSpeak(`${sc.situation}. ${optionsSpeech(sc.options)}`, idx);
+  useAutoSpeak(completeStory ? sc.situation : `${sc.situation}. ${optionsSpeech(sc.options)}`, idx);
 
   const pick = (i: number) => {
     if (solved || wrong.includes(i)) return;
     if (i === sc.correctIndex) {
       setSolved(true);
       if (wrong.length === 0) setScore((s) => s + 1);
-      speakSequence([getEncouragement(), sc.explanation]);
+      speakSequence([getEncouragement(), sc.options[sc.correctIndex], sc.explanation]);
     } else {
       setWrong((w) => [...w, i]);
       speakArabic(getTryAgain());
@@ -160,7 +160,7 @@ const ScenarioGame: React.FC<FinishProps & { items: ScenarioDef[] }> = ({ items,
       <div className="quiz-question" style={{ background: 'linear-gradient(135deg,#FFF9C4,#FFFDE7)' }}>
         <div style={{ display: 'flex', gap: 10, alignItems: 'center' }}>
           <p className="q-text" style={{ margin: 0, flex: 1 }}>{sc.situation}</p>
-          <SpeakButton text={`${sc.situation}. ${optionsSpeech(sc.options)}`} size="md" />
+          <SpeakButton text={completeStory ? sc.situation : `${sc.situation}. ${optionsSpeech(sc.options)}`} size="md" />
         </div>
       </div>
       {sc.options.map((opt, i) => (
@@ -457,7 +457,7 @@ const renderGame = (meta: GameMeta, onFinish: () => void): React.ReactNode => {
       return def ? <OrderGame def={def} onFinish={onFinish} /> : null;
     }
     case 'scenario':
-      return <ScenarioGame items={scenarioSets[meta.dataId ?? 'what_do_i_do']} onFinish={onFinish} />;
+      return <ScenarioGame items={scenarioSets[meta.dataId ?? 'what_do_i_do']} completeStory={meta.dataId === 'complete_story'} onFinish={onFinish} />;
     case 'picture':
       return <PictureGame onFinish={onFinish} />;
     case 'match':

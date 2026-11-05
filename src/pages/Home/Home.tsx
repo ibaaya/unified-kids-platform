@@ -12,7 +12,6 @@
  * - زر تبديل الطالب موحّد
  */
 
-import { useEffect, useState } from 'react'
 import { Navigate, Link } from 'react-router-dom'
 import { Mascot } from '../../components/character/Mascot'
 import { ChildAvatar } from '../../components/character/AvatarPicker'
@@ -20,6 +19,7 @@ import { Card } from '../../components/ui/Card'
 import { ProgressBar } from '../../components/ui/ProgressBar'
 import { LearningPath } from '../../components/ui/LearningPath'
 import { useChildProfile } from '../../hooks/useChildProfile'
+import { isNativeApp } from '../../platform/initPlatform'
 import { getWorldCompletion } from '../../engine/worldCompletionEngine'
 import worldsData from '../../data/worlds.json'
 import type { WorldDefinition } from '../../types/content'
@@ -88,16 +88,9 @@ const getWorldConfig = (worldId: string) => {
 // ─────────────────────────────────────────────
 export function Home() {
   const { child, loading, hasAnyChildren } = useChildProfile()
-  const [now, setNow] = useState(() => new Date())
   const unlockedWorldIds = child?.settings?.unlockMode === 'free'
     ? worlds.map((world) => world.id)
     : child?.unlockedWorldIds ?? []
-
-  // تحديث الساعة كل دقيقة
-  useEffect(() => {
-    const timer = window.setInterval(() => setNow(new Date()), 60_000)
-    return () => window.clearInterval(timer)
-  }, [])
 
   // ─ حالة التحميل ─
   if (loading || (!child && hasAnyChildren === null)) {
@@ -132,19 +125,6 @@ export function Home() {
   const totalLessons    = measurableWorlds.reduce((sum, c) => sum + c.total, 0)
   const doneLessons     = measurableWorlds.reduce((sum, c) => sum + c.done,  0)
   const overallPercent  = totalLessons ? Math.round((doneLessons / totalLessons) * 100) : 0
-
-  // ─ تنسيقات التاريخ والوقت ─
-  const today         = now
-  const weekday       = new Intl.DateTimeFormat('ar-SA', { weekday: 'long' }).format(today)
-  const gregorianDate = new Intl.DateTimeFormat('ar-SA-u-ca-gregory', {
-    year: 'numeric', month: 'long', day: 'numeric',
-  }).format(today)
-  const hijriDate = new Intl.DateTimeFormat('ar-SA-u-ca-islamic-umalqura', {
-    year: 'numeric', month: 'long', day: 'numeric',
-  }).format(today)
-  const currentTime = new Intl.DateTimeFormat('ar-SA', {
-    hour: '2-digit', minute: '2-digit',
-  }).format(today)
 
   const simpleMode = child.settings?.homeDisplayMode === 'simple'
 
@@ -211,7 +191,7 @@ export function Home() {
       {/* ══════════════════════════════════════
           المحتوى الرئيسي
       ══════════════════════════════════════ */}
-      <div className="relative z-10 mx-auto max-w-3xl px-4 py-4 pb-24">
+      <div className="relative z-10 mx-auto max-w-3xl px-4 pb-28 pt-16 sm:py-4">
 
         {/* ══════════════════════════════════════
             ① زر العودة للمنصة الرئيسية — شريط كامل في الأعلى
@@ -319,76 +299,18 @@ export function Home() {
             — لُغَةُ الضَّادِ —
           </p>
 
-          {/* صف: التاريخ + الماسكوت + صورة الطفل */}
-          <div className="mt-2 flex items-center justify-between gap-2">
-
-            {/* ─ بطاقة التاريخ ─ */}
-            <div
-              className="w-32 shrink-0 rounded-[var(--radius-sm)] border px-2.5 py-2 text-center shadow-md backdrop-blur-md sm:w-48 sm:px-3 sm:py-2.5"
-              style={{
-                borderColor: 'rgba(255,255,255,.20)',
-                background: 'rgba(255,255,255,.10)',
-              }}
-              dir="rtl"
-            >
-              <div className="font-extrabold text-xs sm:text-sm" style={{ color: '#fff' }}>
-                {weekday}
-              </div>
-              <div className="text-[10px] font-bold sm:text-xs"
-                style={{ color: 'rgba(120,240,190,.9)', textShadow: '0 1px 3px rgba(0,0,0,.50)' }}>
-                🌙 {hijriDate}
-              </div>
-              <div className="text-[10px] sm:text-xs"
-                style={{ color: 'rgba(210,210,210,.75)' }}>
-                {gregorianDate}
-              </div>
-              <div className="text-xs font-extrabold sm:text-sm"
-                style={{ color: 'rgba(130,195,255,.9)', textShadow: '0 1px 3px rgba(0,0,0,.50)' }}>
-                🕒 {currentTime}
-              </div>
-            </div>
-
-            {/* ─ الماسكوت ورسالة الترحيب ─ */}
-            <div className="flex min-w-0 flex-1 items-center justify-center gap-1 sm:gap-2">
-              {/* هالة نابضة حول الماسكوت */}
-              <div style={{
-                borderRadius: '50%', padding: '3px',
-                background: 'radial-gradient(circle, rgba(255,183,47,.22) 0%, transparent 70%)',
-                animation: 'pulseRing 2.5s infinite',
-                flexShrink: 0,
-              }}>
-                <Mascot size={64} />
-              </div>
-              <p
-                className="max-w-40 text-center text-xs font-extrabold leading-snug sm:max-w-none sm:text-base"
-                style={{
-                  color: '#fff',
-                  textShadow: '0 1px 4px rgba(0,0,0,.65)',
-                }}
-              >
-                أَهْلًا يَا {child.name}!<br />
-                <span style={{ fontSize: '.88em', color: 'rgba(130,210,255,.9)', fontWeight: 700 }}>
-                  هَلْ أَنْتَ جَاهِزٌ لِلْمُغَامَرَةِ؟
-                </span>
+          {/* ترحيب مختصر وبطاقة الطفل؛ بطاقة التاريخ محذوفة لتوفير مساحة الهاتف */}
+          <div className="mt-4 grid grid-cols-[minmax(0,1fr)_auto] items-center gap-3 rounded-2xl border border-white/15 bg-white/[.06] p-3 sm:p-4">
+            <div className="flex min-w-0 items-center gap-2 sm:gap-3">
+              <Mascot size={48} />
+              <p className="min-w-0 text-sm font-extrabold leading-relaxed text-white sm:text-base">
+                أَهْلًا يَا {child.name}!
+                <span className="mt-1 block text-xs font-bold text-sky-200 sm:text-sm">هَلْ أَنْتَ جَاهِزٌ لِلْمُغَامَرَةِ؟</span>
               </p>
             </div>
-
-            {/* ─ صورة الطفل ─ */}
-            <div
-              className="flex shrink-0 flex-col items-center rounded-[var(--radius-sm)] border p-1 text-center shadow-md backdrop-blur-md"
-              style={{
-                borderColor: 'rgba(255,183,47,.38)',
-                background: 'rgba(255,255,255,.10)',
-                boxShadow: '0 0 18px rgba(255,183,47,.20)',
-              }}
-            >
-              <ChildAvatar avatar={child.avatar} name={child.name} size={84} />
-              <span
-                className="max-w-16 truncate text-xs font-extrabold"
-                style={{ color: '#ffe066', textShadow: '0 1px 3px rgba(0,0,0,.55)' }}
-              >
-                {child.name}
-              </span>
+            <div className="flex max-w-20 flex-col items-center rounded-xl border border-amber-300/40 bg-white/10 p-2 text-center">
+              <ChildAvatar avatar={child.avatar} name={child.name} size={56} />
+              <span className="mt-1 max-w-full truncate text-xs font-extrabold text-amber-200">{child.name}</span>
             </div>
           </div>
         </header>
@@ -783,7 +705,7 @@ export function Home() {
         to="/login"
         aria-label="تبديل الطالب"
         title="تبديل الطالب"
-        className="fixed flex items-center justify-center text-xl"
+        className={`fixed flex items-center justify-center text-xl ${isNativeApp ? 'hidden' : ''}`}
         style={{
           bottom: 20, left: 80,
           width: 46, height: 46,
@@ -808,7 +730,7 @@ export function Home() {
         to="/parent"
         aria-label="منطقة ولي الأمر"
         title="منطقة ولي الأمر"
-        className="fixed flex items-center justify-center"
+        className={`fixed flex items-center justify-center ${isNativeApp ? 'hidden' : ''}`}
         style={{
           bottom: 20, left: 20,
           width: 52, height: 52,

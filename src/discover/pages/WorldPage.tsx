@@ -96,9 +96,10 @@ export function WorldPage() {
   const [quizResult, setQuizResult] = useState<{ score: number; total: number } | null>(null)
 
   const speakItem = (item: DiscoverItem) => {
-    speakArabic(item.nameAr)
-    const arabicDuration = Math.max(850, Math.min(1800, 420 + item.nameAr.replace(/[^\u0600-\u06FF]/g, '').length * 95))
-    window.setTimeout(() => speakEnglish(item.nameEn, { rate: 0.82 }), arabicDuration)
+    speakArabic(item.nameAr, {
+      onEnd: () => speakEnglish(item.nameEn, { rate: 0.82 }),
+      onError: () => speakEnglish(item.nameEn, { rate: 0.82 }),
+    })
   }
 
   useEffect(() => {

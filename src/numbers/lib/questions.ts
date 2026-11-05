@@ -64,8 +64,15 @@ const additionQuestion = (pool: number[], upper: number, style: number, requeste
   return { prompt: `لَدَى لَيْلَى ${NAMES[a]} ${item.plural}، وَحَصَلَتْ عَلَى ${NAMES[b]} ${item.plural} أُخْرَى. كَمْ أَصْبَحَ عَدَدُهَا؟`, say: `${NAMES[a]} زَائِدُ ${NAMES[b]} يُسَاوِي كَمْ؟`, groups: [a, b], emoji: item.emoji, options: numOpts(nums(sum, 1, 20)), answer: sum, skill: "add", num: a };
 };
 function expressionOptions(a: number, b: number, upper: number): Opt[] {
-  const answer = `${a} + ${b}`; const candidates = [`${a} + ${b}`];
-  for (let x = 1; x <= upper; x += 1) for (let y = 1; y <= upper - x; y += 1) { const label = `${x} + ${y}`; if (label !== answer && !candidates.includes(label)) candidates.push(label); }
+  const candidates = [`${a} + ${b}`];
+  for (let x = 1; x <= upper; x += 1) {
+    for (let y = 1; y <= upper - x; y += 1) {
+      // لا تعرض عملية صحيحة ثانية لمجرد تبديل ترتيب العددين.
+      if (x + y === a + b) continue;
+      const label = `${x} + ${y}`;
+      if (!candidates.includes(label)) candidates.push(label);
+    }
+  }
   return shuffle(candidates.slice(0, 4)).map((label) => ({ value: label, label }));
 }
 export function makeAdditionSet(learned: number[] = [], size = 10): Q[] {

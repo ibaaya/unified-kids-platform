@@ -28,18 +28,32 @@ export function useChildProfile(): UseChildProfileResult {
 
   const load = useCallback(async () => {
     setLoading(true)
-    const existing = await getActiveChild()
-    if (existing?.id) {
-      await checkWorldUnlocks(existing.id)
-      const updated = await touchDailyStreak(existing.id)
-      setChild(updated ?? existing)
-      setHasAnyChildren(true)
-    } else {
+    try {
+      const existing = await getActiveChild()
+      if (existing?.id) {
+        // Unlock/streak maintenance must not leave a guarded page blank if it
+        // fails on a device whose local database is upgrading or unavailable.
+        let current = existing
+        try {
+          await checkWorldUnlocks(existing.id)
+          current = (await touchDailyStreak(existing.id)) ?? existing
+        } catch (error) {
+          console.error('[child-profile] progress refresh failed', error)
+        }
+        setChild(current)
+        setHasAnyChildren(true)
+      } else {
+        setChild(null)
+        const all = await listChildren()
+        setHasAnyChildren(all.length > 0)
+      }
+    } catch (error) {
+      console.error('[child-profile] profile load failed', error)
       setChild(null)
-      const all = await listChildren()
-      setHasAnyChildren(all.length > 0)
+      setHasAnyChildren(false)
+    } finally {
+      setLoading(false)
     }
-    setLoading(false)
   }, [])
 
   useEffect(() => {

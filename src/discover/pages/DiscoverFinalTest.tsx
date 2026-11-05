@@ -204,7 +204,7 @@ export function DiscoverFinalTest() {
 
     return (
       <div
-        className="min-h-screen px-4 py-6 pb-20"
+        className="discover-final-test min-h-screen px-4 py-6 pb-20"
         dir="rtl"
         style={{ background: 'linear-gradient(160deg,#edf8f5 0%,#f4f7ff 55%,#fff8ec 100%)' }}
       >
@@ -212,7 +212,7 @@ export function DiscoverFinalTest() {
           <header className="mb-6 rounded-3xl border-2 border-white/80 bg-white/90 p-5 text-center shadow-xl">
             <Link
             to="/discover"
-            className="group mb-5 inline-flex items-center gap-2.5 overflow-hidden rounded-2xl px-5 py-3 font-extrabold text-white shadow-lg transition-all duration-300 hover:-translate-y-0.5 hover:shadow-2xl active:scale-95"
+            className="group relative mb-5 inline-flex items-center gap-2.5 overflow-hidden rounded-2xl px-5 py-3 font-extrabold text-white shadow-lg transition-all duration-300 hover:-translate-y-0.5 hover:shadow-2xl active:scale-95"
             style={{
               background: 'linear-gradient(135deg, #2fb68c, #3aa0d9)',
               boxShadow: '0 10px 28px rgba(47,182,140,.40), inset 0 1px 0 rgba(255,255,255,.35)',
@@ -404,16 +404,42 @@ export function DiscoverFinalTest() {
     )
   }
 
-  if (!question) return null
+  if (!question) {
+    return (
+      <div className="discover-final-test flex min-h-screen items-center justify-center px-4 py-8" dir="rtl">
+        <section className="w-full max-w-md rounded-3xl bg-white p-6 text-center shadow-xl">
+          <div className="text-5xl">🧩</div>
+          <h1 className="mt-3 text-xl font-extrabold text-gray-800">تعذّر تحميل أسئلة هذا المستوى</h1>
+          <p className="mt-2 text-sm text-gray-600">ارجع إلى قائمة المستويات ثم حاول فتح الاختبار مرة أخرى.</p>
+          <button onClick={goToLevelSelector} className="mt-5 rounded-2xl bg-emerald-600 px-5 py-3 font-bold text-white">
+            العودة إلى المستويات
+          </button>
+        </section>
+      </div>
+    )
+  }
 
   const options = getDiscoverQuizQuestionItems(question)
+  if (options.length === 0) {
+    return (
+      <div className="discover-final-test flex min-h-screen items-center justify-center px-4 py-8" dir="rtl">
+        <section className="w-full max-w-md rounded-3xl bg-white p-6 text-center shadow-xl">
+          <div className="text-5xl">🧩</div>
+          <h1 className="mt-3 text-xl font-extrabold text-gray-800">خيارات هذا السؤال غير متاحة</h1>
+          <button onClick={goToLevelSelector} className="mt-5 rounded-2xl bg-emerald-600 px-5 py-3 font-bold text-white">
+            العودة إلى المستويات
+          </button>
+        </section>
+      </div>
+    )
+  }
   const level = LEVELS.find((item) => item.id === selectedLevel)!
   const isTrueFalse = question.type === 'trueFalse'
   const showHintButton = selectedLevel === 'hard' && Boolean(question.hint)
 
   return (
     <div
-      className="min-h-screen px-4 py-6"
+      className="discover-final-test min-h-screen px-4 py-6"
       dir="rtl"
       style={{ background: `linear-gradient(160deg,${level.color}14,#f4f7ff,#fff8ec)` }}
     >

@@ -19,16 +19,16 @@ export function SoundToggle() {
 
 export default function SkillsShell({ children, title, back }: { children: ReactNode; title?: string; back?: { to: string; label: string } }) {
   return (
-    <div dir="rtl" className="skills-root min-h-screen bg-gradient-to-br from-sky-100 via-pink-50 to-indigo-100 pt-16 font-arabic text-slate-800" style={{ backgroundImage: 'linear-gradient(135deg, rgba(224,242,254,.70), rgba(253,242,248,.72), rgba(224,231,255,.74)), url("/images/skills_bg.webp")', backgroundPosition: 'center', backgroundSize: 'cover', backgroundAttachment: 'fixed' }}>
-      <header className="mx-auto flex max-w-5xl items-center justify-between gap-2 p-4">
+    <div dir="rtl" className="skills-root min-h-screen bg-gradient-to-br from-sky-100 via-pink-50 to-indigo-100 pt-16 pb-28 font-arabic text-slate-800" style={{ backgroundImage: 'linear-gradient(135deg, rgba(224,242,254,.70), rgba(253,242,248,.72), rgba(224,231,255,.74)), url("/images/skills_bg.webp")', backgroundPosition: 'center', backgroundSize: 'cover', backgroundAttachment: 'fixed' }}>
+      <header className="mx-auto grid max-w-5xl grid-cols-[minmax(0,1fr)_auto] items-center gap-3 px-4 py-3 sm:flex sm:justify-between">
        <Link
             to={back?.to ?? '/'}
-            className="group relative inline-flex items-center gap-3 overflow-hidden rounded-full border-4 border-indigo-300 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 px-8 py-4 text-xl font-black text-white shadow-[0_8px_0_0_rgba(67,56,202,0.6)] transition-all duration-200 hover:-translate-y-0.5 hover:scale-105 hover:shadow-[0_12px_0_0_rgba(67,56,202,0.6)] active:translate-y-1 active:shadow-[0_4px_0_0_rgba(67,56,202,0.6)]"
+            className="group relative col-span-1 inline-flex min-h-11 items-center justify-center gap-1.5 overflow-hidden rounded-full border-2 border-indigo-300 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 px-3 py-2 text-sm font-black text-white shadow-[0_4px_0_0_rgba(67,56,202,0.6)] transition-all duration-200 hover:-translate-y-0.5 sm:gap-2 sm:border-4 sm:px-6 sm:py-3 sm:text-lg"
           >
             <span className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/40 to-transparent transition-transform duration-700 group-hover:translate-x-full" />
 
             {/* الأيقونة الثابتة */}
-            <span className="relative text-2xl transition-transform duration-200 group-hover:-translate-x-1">
+            <span className="relative text-lg transition-transform duration-200 group-hover:-translate-x-1 sm:text-2xl">
               ⬅️
             </span>
 
@@ -36,18 +36,18 @@ export default function SkillsShell({ children, title, back }: { children: React
               {back?.label ?? 'الْمَنَصَّةُ'}
             </span>
 
-            <span className="relative text-2xl transition-transform duration-200 group-hover:rotate-12">
+            <span className="relative hidden text-2xl transition-transform duration-200 group-hover:rotate-12 sm:inline">
               ⭐
             </span>
           </Link>
   
-        {title && <h1 className="text-center text-xl font-black text-indigo-900 md:text-2xl">{title}</h1>}
-        <div className="flex items-center gap-2">
-          <span className="rounded-2xl bg-white px-3 py-2 text-lg font-black text-amber-600 shadow" aria-label="النُّجُومُ">⭐ {toAr(getTotalStars())}</span>
+        {title && <h1 className="col-span-2 order-last rounded-2xl bg-white/80 px-3 py-2 text-center text-lg font-black text-indigo-900 shadow-sm sm:order-none sm:bg-transparent sm:px-2 sm:text-xl md:text-2xl">{title}</h1>}
+        <div className="flex items-center justify-end gap-2">
+          <span className="rounded-2xl bg-white px-2 py-2 text-sm font-black text-amber-600 shadow sm:px-3 sm:text-lg" aria-label="النُّجُومُ">⭐ {toAr(getTotalStars())}</span>
           <SoundToggle />
         </div>
       </header>
-      <main className="mx-auto max-w-5xl p-4 pb-16">{children}</main>
+      <main className="mx-auto max-w-5xl p-4 pb-24">{children}</main>
     </div>
   );
 }

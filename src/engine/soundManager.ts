@@ -1,5 +1,6 @@
 import { playRecordedAudio, stopRecordedAudio } from './recordedAudioManager'
 import { normalizeAnswerFeedback } from '../utils/feedbackPrompts'
+import { hasNativeSpeech, speakNative, stopNativeSpeech } from '../platform/nativeSpeech'
 
 /**
  * محرك النطق العربي: يبدأ بالتسجيلات الأصلية إن وُجدت، ثم يعود إلى Web Speech API.
@@ -27,16 +28,16 @@ function pickArabicVoice(): SpeechSynthesisVoice | null {
 }
 
 export function isSpeechSupported(): boolean {
-  return typeof window !== 'undefined' && ('speechSynthesis' in window || 'Audio' in window)
+  return typeof window !== 'undefined' && (Boolean(window.speechSynthesis) || hasNativeSpeech())
 }
 
 /** يهيئ الأصوات مبكرًا لأن بعض المتصفحات لا توفر getVoices() فورًا. */
 export function primeVoices(): void {
-  if (!isSpeechSupported()) return
+  if (typeof window === 'undefined' || !window.speechSynthesis) return
 
   cachedVoice = pickArabicVoice()
 
-  if (!voicesLoaded) {
+  if (!voicesLoaded && typeof window.speechSynthesis.addEventListener === 'function') {
     window.speechSynthesis.addEventListener(
       'voiceschanged',
       () => {
@@ -76,8 +77,10 @@ export function speakArabic(text: string, options: SpeakOptions = {}, audioId?: 
   const ttsFallbackId = '\u0000tts-fallback'
   const fallbackToSpeechSynthesis = () => {
     // لا نمرر النص كمعرّف مرة أخرى، كي لا يعثر البحث على التسجيل نفسه ويدخل في حلقة.
-    if (typeof window === 'undefined' || !('speechSynthesis' in window)) {
-      options.onError?.()
+    if (typeof window === 'undefined' || !window.speechSynthesis) {
+      if (!speakNative(speechText, { lang: 'ar-SA', rate: options.rate ?? 0.8, pitch: options.pitch ?? 1.1, onEnd: options.onEnd, onError: options.onError })) {
+        options.onError?.()
+      }
       return
     }
     if (!speakArabic(speechText, options, ttsFallbackId)) options.onError?.()
@@ -88,7 +91,8 @@ export function speakArabic(text: string, options: SpeakOptions = {}, audioId?: 
       window.clearTimeout(pendingSpeakTimer)
       pendingSpeakTimer = null
     }
-    if (isSpeechSupported()) window.speechSynthesis.cancel()
+    if (window.speechSynthesis) window.speechSynthesis.cancel()
+    stopNativeSpeech()
     return true
   }
 
@@ -99,6 +103,10 @@ export function speakArabic(text: string, options: SpeakOptions = {}, audioId?: 
   stopRecordedAudio()
 
   const synthesis = window.speechSynthesis
+  if (!synthesis) {
+    stopNativeSpeech()
+    return speakNative(speechText, { lang: 'ar-SA', rate: options.rate ?? 0.8, pitch: options.pitch ?? 1.1, onEnd: options.onEnd, onError: options.onError })
+  }
   const requestId = ++speakRequestId
 
   if (pendingSpeakTimer !== null) {
@@ -142,7 +150,6 @@ export function speakArabicSequence(texts: SpeechSequenceItem[], options: SpeakO
     .filter((item) => Boolean(item.text))
   if (cleanItems.length === 0) return false
 
-  const synthesis = window.speechSynthesis
   const requestId = ++speakRequestId
 
   if (pendingSpeakTimer !== null) {
@@ -151,6 +158,24 @@ export function speakArabicSequence(texts: SpeechSequenceItem[], options: SpeakO
   }
 
   stopRecordedAudio()
+  const synthesis = window.speechSynthesis
+  if (!synthesis) {
+    stopNativeSpeech()
+    let index = 0
+    const speakNext = () => {
+      if (requestId !== speakRequestId) return
+      if (index >= cleanItems.length) { options.onEnd?.(); return }
+      const item = cleanItems[index++]
+      const playNext = () => { if (requestId === speakRequestId) window.setTimeout(speakNext, 60) }
+      const useNative = () => {
+        if (!speakNative(item.text, { lang: 'ar-SA', rate: options.rate ?? 0.8, pitch: options.pitch ?? 1.1, onEnd: playNext, onError: options.onError })) options.onError?.()
+      }
+      if (item.audioId && playRecordedAudio(item.audioId, playNext, useNative)) return
+      useNative()
+    }
+    speakNext()
+    return true
+  }
   synthesis.cancel()
   synthesis.resume()
 
@@ -193,6 +218,7 @@ export function speakArabicSequence(texts: SpeechSequenceItem[], options: SpeakO
 
 export function stopSpeaking(): void {
   stopRecordedAudio()
+  stopNativeSpeech()
   speakRequestId += 1
 
   if (pendingSpeakTimer !== null && typeof window !== 'undefined') {
@@ -200,5 +226,5 @@ export function stopSpeaking(): void {
     pendingSpeakTimer = null
   }
 
-  if (isSpeechSupported()) window.speechSynthesis.cancel()
+  if (typeof window !== 'undefined' && window.speechSynthesis) window.speechSynthesis.cancel()
 }
