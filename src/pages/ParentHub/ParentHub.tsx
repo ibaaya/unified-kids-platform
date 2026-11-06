@@ -4,7 +4,7 @@
  * ثم يوجّه إلى صفحة الإعدادات الخاصة بكل قسم
  */
 import { useEffect, useState } from 'react'
-import { useNavigate, useSearchParams } from 'react-router-dom'
+import { Link, useNavigate, useSearchParams } from 'react-router-dom'
 import { Capacitor } from '@capacitor/core'
 import { ParentDashboard } from '../ParentDashboard/ParentDashboard'
 import { EnglishParentDashboard } from '../../english/pages/EnglishParentDashboard'
@@ -52,6 +52,18 @@ function ParentUpdateNotice() {
         <p className="text-sm">افتح App Store لتحديث التطبيق.</p>
       )}
     </aside>
+  )
+}
+
+function ParentPrivacyLink() {
+  return (
+    <Link
+      to="/privacy"
+      style={{ bottom: 'calc(var(--safe-bottom, 0px) + 1rem)' }}
+      className="fixed right-4 z-[80] rounded-full border border-white/70 bg-slate-950/85 px-4 py-2.5 text-xs font-bold text-white shadow-lg backdrop-blur hover:bg-slate-900"
+    >
+      سياسة الخصوصية
+    </Link>
   )
 }
 
@@ -110,6 +122,7 @@ export function ParentHub() {
     return (
       <div className="relative min-h-screen">
         <ParentUpdateNotice />
+        <ParentPrivacyLink />
         {/* زر العودة لاختيار القسم */}
         <button
           onClick={() => setActiveSection(null)}
@@ -126,6 +139,7 @@ export function ParentHub() {
     return (
       <div className="relative min-h-screen">
         <ParentUpdateNotice />
+        <ParentPrivacyLink />
         <button
           onClick={() => setActiveSection(null)}
           className="app-shell-nav-center fixed z-[70] flex items-center gap-2 rounded-2xl border-2 border-white/80 bg-blue-600/90 px-3 py-2 text-sm font-bold text-white shadow-lg backdrop-blur-sm transition hover:scale-105"
@@ -142,6 +156,7 @@ export function ParentHub() {
     return (
       <div className="relative min-h-screen">
         <ParentUpdateNotice />
+        <ParentPrivacyLink />
         <button
           onClick={() => setActiveSection(null)}
           className="app-shell-nav-center fixed z-[70] flex items-center gap-2 rounded-2xl border-2 border-white/80 bg-violet-600/90 px-3 py-2 text-sm font-bold text-white shadow-lg backdrop-blur-sm transition hover:scale-105"
@@ -158,6 +173,7 @@ export function ParentHub() {
     return (
       <div className="relative min-h-screen" style={{ background: 'linear-gradient(160deg,#edf8f5,#f4f7ff)' }}>
         <ParentUpdateNotice />
+        <ParentPrivacyLink />
         <button
           onClick={() => setActiveSection(null)}
           className="app-shell-nav-center fixed z-[70] flex items-center gap-2 rounded-2xl border-2 border-white/80 bg-emerald-600/90 px-3 py-2 text-sm font-bold text-white shadow-lg backdrop-blur-sm transition hover:scale-105"
@@ -177,6 +193,7 @@ export function ParentHub() {
       style={{ background: 'linear-gradient(135deg, #1e1b4b 0%, #312e81 50%, #1e3a8a 100%)' }}
     >
       <ParentUpdateNotice />
+      <ParentPrivacyLink />
       {/* رأس الصفحة */}
       <div className="mb-8 text-center">
         <div className="mb-2 text-5xl">⚙️</div>
