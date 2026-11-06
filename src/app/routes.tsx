@@ -2,6 +2,7 @@ import { Routes, Route, Navigate } from 'react-router-dom'
 
 // Hub
 import { HubPage } from '../pages/Hub/HubPage'
+import { PrivacyPage } from '../pages/Privacy/PrivacyPage'
 import { ParentHub } from '../pages/ParentHub/ParentHub'
 
 // Arabic module (existing)
@@ -82,6 +83,7 @@ export function AppRoutes() {
     <Routes>
       {/* HUB */}
       <Route path="/" element={<HubPage />} />
+      <Route path="/privacy" element={<PrivacyPage />} />
       <Route path="/onboarding" element={<Onboarding />} />
       <Route path="/login" element={<ProtectedParentRoute><StudentLogin /></ProtectedParentRoute>} />
       <Route path="/parent" element={<ProtectedParentRoute><ParentHub /></ProtectedParentRoute>} />

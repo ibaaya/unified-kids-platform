@@ -709,6 +709,10 @@ export function HubPage() {
       {/* ─ زر ولي الأمر (يأتي من مكوّن ParentButton) ─ */}
       <ParentButton showOnNativeHome />
 
+      <Link to="/privacy" className="fixed bottom-4 right-4 z-40 rounded-full border border-white/30 bg-slate-950/60 px-3 py-2 text-xs font-bold text-white/90 backdrop-blur hover:bg-slate-950/80">
+        سياسة الخصوصية
+      </Link>
+
       {/* ══════════════════════════════════════
           نافذة الفيديو المنبثقة
       ══════════════════════════════════════ */}
