@@ -1,12 +1,26 @@
 apply plugin: 'com.android.application'
 
-// Keep release credentials outside the repository. Set these environment
-// variables in the local build environment or CI before producing a release.
-def releaseStoreFile = System.getenv('ANDROID_KEYSTORE_PATH')
-def releaseStorePassword = System.getenv('ANDROID_KEYSTORE_PASSWORD')
-def releaseKeyAlias = System.getenv('ANDROID_KEY_ALIAS')
-def releaseKeyPassword = System.getenv('ANDROID_KEY_PASSWORD')
+// Read release credentials from an ignored local properties file or environment.
+// Never commit keystore credentials or print them to build logs.
+def releaseProperties = new Properties()
+def releasePropertiesFile = rootProject.file('keystore.properties')
+if (releasePropertiesFile.exists()) {
+    releasePropertiesFile.withInputStream { releaseProperties.load(it) }
+}
+def releaseStoreFile = System.getenv('ANDROID_KEYSTORE_PATH') ?: releaseProperties.getProperty('storeFile')
+def releaseStorePassword = System.getenv('ANDROID_KEYSTORE_PASSWORD') ?: releaseProperties.getProperty('storePassword')
+def releaseKeyAlias = System.getenv('ANDROID_KEY_ALIAS') ?: releaseProperties.getProperty('keyAlias')
+def releaseKeyPassword = System.getenv('ANDROID_KEY_PASSWORD') ?: releaseProperties.getProperty('keyPassword')
 def hasReleaseSigning = releaseStoreFile && releaseStorePassword && releaseKeyAlias && releaseKeyPassword
+
+def platformVersion = new groovy.json.JsonSlurper().parse(file('../../version.json')).version.toString()
+def versionParts = platformVersion.tokenize('.').collect { it as int }
+if (versionParts.size() != 3) {
+    throw new GradleException("version.json must contain a semantic version with three numbers: ${platformVersion}")
+}
+// Reserve three decimal places for patch and minor so normal semver upgrades
+// always produce a higher Play Store versionCode.
+def playVersionCode = versionParts[0] * 1000000 + versionParts[1] * 1000 + versionParts[2]
 
 android {
     namespace = "com.ayasrah.rehlaty"
@@ -15,8 +29,8 @@ android {
         applicationId "com.ayasrah.rehlaty"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 1
-        versionName "1.0"
+        versionCode playVersionCode
+        versionName platformVersion
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         aaptOptions {
              // Files and dirs to omit from the packaged assets dir, modified to accommodate modern web apps.
@@ -72,4 +86,15 @@ try {
     }
 } catch(Exception e) {
     logger.info("google-services.json not found, google-services plugin not applied. Push Notifications won't work")
+}
+
+// Never silently produce an unsigned artifact when a store release is requested.
+tasks.configureEach { task ->
+    if (task.name == 'bundleRelease' || task.name == 'assembleRelease') {
+        task.doFirst {
+            if (!hasReleaseSigning) {
+                throw new GradleException('Release signing is not configured. Fill android/keystore.properties (local, ignored by Git) before building a store release.')
+            }
+        }
+    }
 }

@@ -72,7 +72,7 @@ npm install
 
 ## توقيع إصدار Android
 
-معرّف Android وiOS النهائي هو `com.ayasrah.rehlaty`. لا تحفظ ملف keystore أو كلمات مروره في Git. أنشئ keystore خاصًا بالمالك واحفظ نسخة احتياطية آمنة، ثم عيّن المتغيرات التالية في بيئة البناء:
+معرّف Android وiOS النهائي هو `com.ayasrah.rehlaty`. لا تحفظ ملف keystore أو كلمات مروره في Git. يمكن إعداد التوقيع عبر متغيرات البيئة أو بإنشاء `android/keystore.properties` اعتمادًا على القالب `android/keystore.properties.example` (الملف الحقيقي مستثنى من Git). يجب توفير مسار ملف keystore وكلمة مرور المخزن واسم المفتاح وكلمة مرور المفتاح. لا تضع القيم الحقيقية في ملف متعقّب أو في سجل الأوامر.
 
 ```powershell
 $env:ANDROID_KEYSTORE_PATH = 'C:\secure\rehlaty-release.jks'
@@ -81,7 +81,7 @@ $env:ANDROID_KEY_ALIAS = '...'
 $env:ANDROID_KEY_PASSWORD = '...'
 ```
 
-بعد `npm run cap:sync`، أنشئ Android App Bundle من مجلد `android` باستخدام `gradlew.bat bundleRelease`. يوقّع إعداد Gradle الإصدار تلقائيًا عند وجود المتغيرات الأربعة؛ لا تُدرج القيم الحقيقية في الأوامر المسجلة أو ملفات المشروع.
+اسم إصدار Android يتبع `version.json`، ويُشتق `versionCode` منه ليزداد مع كل إصدار. بعد إعداد بيانات التوقيع، شغّل `npm run cap:sync`، ثم من مجلد `android` نفّذ `gradlew.bat bundleRelease`. ملف المتجر الناتج: `android/app/build/outputs/bundle/release/app-release.aab`. لا تُدرج القيم الحقيقية في الأوامر المسجلة أو ملفات المشروع.
 
 ## توقيع إصدار iOS
 
