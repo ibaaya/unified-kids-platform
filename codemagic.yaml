@@ -9,8 +9,6 @@ workflows:
 
     environment:
       ios_signing:
-        distribution_type: app_store
-        bundle_identifier: com.ayasrah.rehlaty
         provisioning_profiles:
           - rehlaty_profile_v2
       node: 22
