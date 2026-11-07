@@ -1,0 +1,44 @@
+workflows:
+  ios-release:
+    name: iOS Release
+    max_build_duration: 60
+    instance_type: mac_mini_m2
+
+    # Create a Codemagic Developer Portal integration with this exact key name.
+    integrations:
+      app_store_connect: "Rehlaty App Store Connect"
+
+    environment:
+      ios_signing:
+        distribution_type: app_store
+        bundle_identifier: com.ayasrah.rehlaty
+      node: 22
+      xcode: latest
+
+    scripts:
+      - name: Install npm dependencies
+        script: npm ci
+
+      - name: Build web assets for native iOS
+        script: npm run build:native
+
+      - name: Sync Capacitor iOS project
+        script: npx cap sync ios
+
+      - name: Apply iOS provisioning profiles
+        script: xcode-project use-profiles
+
+      - name: Build IPA for distribution
+        script: |
+          xcode-project build-ipa \
+            --project ios/App/App.xcodeproj \
+            --scheme App
+
+    artifacts:
+      - build/ios/ipa/*.ipa
+      - /tmp/xcodebuild_logs/*.log
+
+    publishing:
+      app_store_connect:
+        auth: integration
+        submit_to_testflight: true
